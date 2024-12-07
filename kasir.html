@@ -5,62 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kasir - POS</title>
   <link rel="stylesheet" href="css/kasir.css">
-
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 
 </head>
-<body>
+<body data-page="kasir">
   <div class="main-container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <h2>Pos Cashiering Rumah Makan</h2>
+    <!-- Sidebar akan otomatis dimuat dari sidebar.js -->
+
+    <section class="content">
+      <div class="categories">
+        <button class="active" onclick="showCategory('food')">Food</button>
+        <button onclick="showCategory('drinks')">Drinks</button>
       </div>
-      <nav class="sidebar-nav">
-        <ul>
-          <li><a href="#">Dashboard</a></li>
-          <li><a href="#">Kategori</a></li>
-          <li><a href="#">Produk</a></li>
-          <li><a href="#" class="active">Kasir</a></li>
-          <li><a href="#">Pengguna</a></li>
-          <li><a href="#">Meja</a></li>
-        </ul>
-      </nav>
+      <div class="products" id="product-list"></div>
+    </section>
+  
+    <aside class="order-summary">
+      <h3>Order Summary</h3>
+      <ul class="order-items" id="order-items"></ul>
+      <div class="total" id="total">Total: Rp. 0</div>
     </aside>
-
-    <!-- Main Content -->
-    <div class="content">
-      <header>
-        <h1>Kasir</h1>
-        <div class="user-info">Audy (Administrator)</div>
-      </header>
-
-      <div class="transaction-section">
-        <div class="total">
-          <p>Total:</p>
-          <h2>Rp. 0</h2>
-        </div>
-        <input type="text" placeholder="Cari Produk / Scan Barcode" id="search-bar">
-      </div>
-
-      <div class="products">
-        <div class="product-category">
-          <button class="category-btn" data-category="drinks">Drinks</button>
-          <button class="category-btn" data-category="food">Food</button>
-        </div>
-        <div class="product-list" id="product-list">
-          <!-- Produk akan muncul berdasarkan kategori -->
-        </div>
-      </div>
-
-      <div class="footer">
-        <button class="action-btn">Diskon</button>
-        <button class="action-btn">Simpan</button>
-        <button class="action-btn">Bayar</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="kasir.js"></script>
+  
+  <script src="js/kasir.js"></script>
+  <script src="js/sidebar.js"></script>
 </body>
 </html>
