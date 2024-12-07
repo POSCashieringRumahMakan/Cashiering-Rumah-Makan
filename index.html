@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS Cashier</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>POS Cashier</h1>
+  </header>
+  <main>
+    <section>
+      <h2>Daftar Produk</h2>
+      <table id="productTable">
+        <thead>
+          <tr>
+            <th>Nama Produk</th>
+            <th>Kategori</th>
+            <th>Harga</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data produk akan ditambahkan di sini -->
+        </tbody>
+      </table>
+    </section>
+    <section>
+      <h2>Tambah Produk</h2>
+      <form id="productForm">
+        <label for="productName">Nama Produk:</label>
+        <input type="text" id="productName" required>
+        <label for="productCategory">Kategori:</label>
+        <input type="text" id="productCategory" required>
+        <label for="productPrice">Harga (IDR):</label>
+        <input type="number" id="productPrice" required>
+        <label for="productStatus">Status:</label>
+        <select id="productStatus">
+          <option value="true">Tersedia</option>
+          <option value="false">Tidak Tersedia</option>
+        </select>
+        <button type="submit">Tambah Produk</button>
+      </form>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
