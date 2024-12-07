@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kasir - POS</title>
+  <link rel="stylesheet" href="css/kasir.css">
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+</head>
+<body>
+  <div class="main-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>Pos Cashiering Rumah Makan</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Kategori</a></li>
+          <li><a href="#">Produk</a></li>
+          <li><a href="#" class="active">Kasir</a></li>
+          <li><a href="#">Pengguna</a></li>
+          <li><a href="#">Meja</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="content">
+      <header>
+        <h1>Kasir</h1>
+        <div class="user-info">Audy (Administrator)</div>
+      </header>
+
+      <div class="transaction-section">
+        <div class="total">
+          <p>Total:</p>
+          <h2>Rp. 0</h2>
+        </div>
+        <input type="text" placeholder="Cari Produk / Scan Barcode" id="search-bar">
+      </div>
+
+      <div class="products">
+        <div class="product-category">
+          <button class="category-btn" data-category="drinks">Drinks</button>
+          <button class="category-btn" data-category="food">Food</button>
+        </div>
+        <div class="product-list" id="product-list">
+          <!-- Produk akan muncul berdasarkan kategori -->
+        </div>
+      </div>
+
+      <div class="footer">
+        <button class="action-btn">Diskon</button>
+        <button class="action-btn">Simpan</button>
+        <button class="action-btn">Bayar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="kasir.js"></script>
+</body>
+</html>
