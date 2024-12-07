@@ -1,3 +1,29 @@
+// Fungsi untuk mencari produk
+function searchProducts() {
+  const query = document.getElementById("search").value.toLowerCase();
+  const productList = document.getElementById("product-list");
+
+  // Ambil kategori aktif
+  const activeCategory = document.querySelector(".categories button.active").textContent.toLowerCase();
+  const productsInCategory = products[activeCategory];
+
+  // Filter produk berdasarkan input pencarian
+  const filteredProducts = productsInCategory.filter(product =>
+    product.name.toLowerCase().includes(query)
+  );
+
+  // Render produk hasil pencarian
+  productList.innerHTML = "";
+  filteredProducts.forEach(product => {
+    const productCard = document.createElement("div");
+    productCard.classList.add("product-card");
+    productCard.innerHTML = `<h4>${product.name}</h4><p>Rp. ${product.price.toLocaleString()}</p>`;
+    productCard.onclick = () => addToOrder(product);
+    productList.appendChild(productCard);
+  });
+}
+
+
 // Data Produk
 const products = {
   food: [
@@ -50,17 +76,27 @@ function addToOrder(product) {
 // Fungsi untuk menampilkan daftar order
 function renderOrder() {
   const orderItems = document.getElementById("order-items");
+  const subtotalElement = document.getElementById("subtotal");
   const totalElement = document.getElementById("total");
-  orderItems.innerHTML = "";
-  let total = 0;
 
+  orderItems.innerHTML = "";
+  let subtotal = 0;
+
+  // Menampilkan setiap item dalam pesanan
   order.forEach(item => {
-    total += item.price * item.quantity;
+    subtotal += item.price * item.quantity;
+
     const li = document.createElement("li");
     li.innerHTML = `${item.quantity}x ${item.name} - Rp. ${(item.price * item.quantity).toLocaleString()}`;
     orderItems.appendChild(li);
   });
 
+  // Menghitung subtotal dan total (termasuk pajak 10%)
+  const tax = subtotal * 0.1;
+  const total = subtotal + tax;
+
+  // Memperbarui tampilan
+  subtotalElement.innerHTML = `Subtotal: Rp. ${subtotal.toLocaleString()}`;
   totalElement.innerHTML = `Total: Rp. ${total.toLocaleString()}`;
 }
 
