@@ -160,6 +160,18 @@ body {
   text-align: center;
 }
 
+.order-items li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-items li .remove-icon {
+  cursor: pointer;
+  color: red;
+}
+
+
 /* Media Queries for Responsiveness */
 
 /* Tablet (max-width: 768px) */

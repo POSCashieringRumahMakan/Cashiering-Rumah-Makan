@@ -18,7 +18,7 @@ function searchProducts() {
     const productCard = document.createElement("div");
     productCard.classList.add("product-card");
     productCard.innerHTML = `<h4>${product.name}</h4><p>Rp. ${product.price.toLocaleString()}</p>`;
-    productCard.onclick = () => addToOrder(product);
+    productCard.addEventListener("click", () => addToOrder(product));
     productList.appendChild(productCard);
   });
 }
@@ -56,7 +56,7 @@ function showCategory(category) {
     const productCard = document.createElement("div");
     productCard.classList.add("product-card");
     productCard.innerHTML = `<h4>${product.name}</h4><p>Rp. ${product.price.toLocaleString()}</p>`;
-    productCard.onclick = () => addToOrder(product);
+    productCard.addEventListener("click", () => addToOrder(product)); // Gunakan `addEventListener` untuk kompatibilitas yang lebih baik
     productList.appendChild(productCard);
   });
 }
@@ -83,11 +83,14 @@ function renderOrder() {
   let subtotal = 0;
 
   // Menampilkan setiap item dalam pesanan
-  order.forEach(item => {
+  order.forEach((item, index) => { // Pastikan ada parameter `index`
     subtotal += item.price * item.quantity;
 
     const li = document.createElement("li");
-    li.innerHTML = `${item.quantity}x ${item.name} - Rp. ${(item.price * item.quantity).toLocaleString()}`;
+    li.innerHTML = `
+      ${item.quantity}x ${item.name} - Rp. ${(item.price * item.quantity).toLocaleString()}
+      <i class="fas fa-trash-alt remove-icon" onclick="removeFromOrder(${index})"></i>
+    `;
     orderItems.appendChild(li);
   });
 
@@ -98,6 +101,13 @@ function renderOrder() {
   // Memperbarui tampilan
   subtotalElement.innerHTML = `Subtotal: Rp. ${subtotal.toLocaleString()}`;
   totalElement.innerHTML = `Total: Rp. ${total.toLocaleString()}`;
+}
+
+// Fungsi untuk menghapus item dari pesanan
+function removeFromOrder(index) {
+  order.splice(index, 1); // Menghapus item berdasarkan indeks
+  saveOrderToLocalStorage();
+  renderOrder();
 }
 
 // Fungsi untuk menyimpan order ke localStorage
