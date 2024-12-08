@@ -1,12 +1,11 @@
-// kategori.js
 document.addEventListener('DOMContentLoaded', function () {
   const categoryForm = document.getElementById('category-form');
   const categoryTableBody = document.getElementById('category-body');
   const categoryNameInput = document.getElementById('category-name');
   const categoryTypeInput = document.getElementById('category-type');
 
-  // Simpan kategori ke dalam array untuk contoh ini
-  let categories = [];
+  // Muat kategori dari localStorage jika ada
+  let categories = JSON.parse(localStorage.getItem('categories')) || [];
 
   // Fungsi untuk menambah kategori baru
   categoryForm.addEventListener('submit', function (e) {
@@ -18,6 +17,9 @@ document.addEventListener('DOMContentLoaded', function () {
       if (categoryName && categoryType) {
           const category = { name: categoryName, type: categoryType };
           categories.push(category);
+
+          // Simpan kategori ke localStorage
+          localStorage.setItem('categories', JSON.stringify(categories));
 
           // Reset form
           categoryNameInput.value = '';
@@ -59,6 +61,13 @@ document.addEventListener('DOMContentLoaded', function () {
   // Fungsi untuk menghapus kategori
   window.deleteCategory = function (index) {
       categories.splice(index, 1);
+      
+      // Simpan perubahan kategori ke localStorage
+      localStorage.setItem('categories', JSON.stringify(categories));
+
       renderCategories();
   }
+
+  // Render kategori yang ada saat halaman dimuat
+  renderCategories();
 });
