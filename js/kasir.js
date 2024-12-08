@@ -55,10 +55,55 @@ function showCategory(category) {
   products[category].forEach(product => {
     const productCard = document.createElement("div");
     productCard.classList.add("product-card");
-    productCard.innerHTML = `<h4>${product.name}</h4><p>Rp. ${product.price.toLocaleString()}</p>`;
-    productCard.addEventListener("click", () => addToOrder(product)); // Gunakan `addEventListener` untuk kompatibilitas yang lebih baik
+
+    // Cek apakah produk sudah ada di order
+    const existing = order.find(item => item.name === product.name);
+    const quantity = existing ? existing.quantity : 0;
+
+    productCard.innerHTML = `
+      <h4>${product.name}</h4>
+      <p>Rp. ${product.price.toLocaleString()}</p>
+      <div class="quantity-control">
+        <button onclick="decreaseQuantity('${product.name}')">-</button>
+        <span class="quantity">${quantity}</span>
+        <button onclick="increaseQuantity('${product.name}')">+</button>
+      </div>
+    `;
     productList.appendChild(productCard);
   });
+}
+
+// Fungsi untuk menambah jumlah pesanan
+function increaseQuantity(productName) {
+  const product = Object.values(products)
+    .flat()
+    .find(item => item.name === productName);
+
+  const existing = order.find(item => item.name === product.name);
+  if (existing) {
+    existing.quantity++;
+  } else {
+    order.push({ ...product, quantity: 1 });
+  }
+
+  saveOrderToLocalStorage();
+  showCategory("food"); // Refresh kartu untuk memperbarui jumlah
+  renderOrder();
+}
+
+// Fungsi untuk mengurangi jumlah pesanan
+function decreaseQuantity(productName) {
+  const existing = order.find(item => item.name === productName);
+  if (existing) {
+    existing.quantity--;
+    if (existing.quantity === 0) {
+      order = order.filter(item => item.name !== productName); // Hapus dari order jika jumlah 0
+    }
+  }
+
+  saveOrderToLocalStorage();
+  showCategory("food"); // Refresh kartu untuk memperbarui jumlah
+  renderOrder();
 }
 
 // Fungsi untuk menambahkan produk ke daftar order
