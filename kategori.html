@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Halaman Kategori - POS</title>
+  <link rel="stylesheet" href="css/kasir.css">  <!-- Gunakan CSS dari kasir.css agar tampilannya sama -->
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body data-page="kategori"> <!-- Menambahkan data-page untuk menyorot menu kategori -->
+  <div class="main-container">
+    <!-- Sidebar akan dimuat otomatis dari sidebar.js -->
+
+    <!-- search bar as top bar -->
+    <div class="top-bar">
+      <input type="text" id="search-category" placeholder="Cari Kategori..." oninput="searchCategory()">
+    </div>
+
+    <section class="content">
+
+      <!-- Form untuk tambah kategori -->
+      <div class="order-summary">
+        <h3>Tambah Kategori</h3>
+        <form id="category-form">
+          <label for="category-name">Nama Kategori</label>
+          <input type="text" id="category-name" placeholder="Nama Kategori" required>
+          
+          <label for="category-type">Jenis Kategori</label>
+          <input type="text" id="category-type" placeholder="Jenis Kategori" required>
+          
+          <button type="submit">Tambah Kategori</button>
+        </form>
+      </div>
+
+      <!-- Tabel Kategori -->
+      <table id="categoryTable">
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Kategori</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="category-body">
+          <!-- Data Kategori akan dimuat di sini -->
+        </tbody>
+      </table>
+    </section>
+
+
+  </div>
+
+  <script src="js/kategori.js"></script>
+  <script src="js/sidebar.js"></script>
+</body>
+</html>
