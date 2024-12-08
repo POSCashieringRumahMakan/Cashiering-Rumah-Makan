@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kategori - POS</title>
+    <link rel="stylesheet" href="css/kasir.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/kategori.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="img/logopadang.png" type="image/png">
+</head>
+
+<body data-page="kategori">
+    <div class="main-container">
+        <!-- Sidebar -->
+        <script src="js/sidebar.js"></script>
+
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <input type="text" id="search" placeholder="Cari kategori..." oninput="searchCategories()">
+        </div>
+
+        <!-- Content Section -->
+        <section class="content">
+            <!-- Title and Action -->
+            <div class="content-header">
+                <h1>Kategori Produk</h1>
+            </div>
+
+            <!-- Kategori Table -->
+            <table class="category-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Kategori</th>
+                        <th>Jenis</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="category-list">
+                    <!-- Data kategori akan dimuat secara dinamis -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- Form Tambah Kategori -->
+    <aside class="order-summary">
+        <h3>Form Tambah Kategori</h3>
+        <form id="category-form" onsubmit="saveCategory(event)">
+            <input type="hidden" id="category-id">
+
+            <label for="namaKategori">Nama Kategori:</label>
+            <input type="text" id="namaKategori" required>
+
+            <label for="jenisKategori">Jenis Kategori:</label>
+            <select id="jenisKategori" required>
+                <!-- Opsi jenis kategori -->
+                <option value="Makanan">Makanan</option>
+                <option value="Minuman">Minuman</option>
+                <option value="Snack">Snack</option>
+            </select>
+
+            <button type="submit">Simpan</button>
+        </form>
+    </aside>
+
+    <script src="js/kategori.js"></script>
+</body>
+
+</html>

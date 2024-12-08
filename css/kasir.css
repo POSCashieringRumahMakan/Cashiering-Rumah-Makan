@@ -330,4 +330,134 @@ body {
   .order-summary .total h4 {
     font-size: 18px;
   }
+<<<<<<< HEAD
 }
+=======
+}
+
+
+
+/* KATEGORI CSS */
+/* Menggunakan font yang lebih modern */
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Styling untuk top bar */
+.top-bar {
+  margin-bottom: 20px;
+}
+
+#search-category {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+}
+
+/* Styling untuk form tambah kategori */
+.order-summary {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.order-summary h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.order-summary label {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #555;
+  display: block;
+}
+
+.order-summary input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.order-summary button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.order-summary button:hover {
+  background-color: #45a049;
+}
+
+/* Styling untuk tabel kategori */
+#categoryTable {
+  width: 80%; /* Lebar tabel dikurangi sedikit agar tidak memenuhi seluruh lebar */
+  margin-left: 0; /* Memindahkan tabel ke kiri */
+  margin-top: 30px;
+  border-collapse: collapse;
+}
+
+#categoryTable th, #categoryTable td {
+  padding: 10px 15px; /* Menambah padding untuk jarak lebih lebar */
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+/* Memperkecil lebar kolom untuk Nama, Kategori, dan Aksi */
+#categoryTable th:nth-child(1), 
+#categoryTable td:nth-child(1) {
+  width: 15%; /* Lebar kolom Nama */
+}
+
+#categoryTable th:nth-child(2), 
+#categoryTable td:nth-child(2) {
+  width: 20%; /* Lebar kolom Kategori */
+}
+
+#categoryTable th:nth-child(3), 
+#categoryTable td:nth-child(3) {
+  width: 15%; /* Lebar kolom Aksi */
+}
+
+#categoryTable th {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
+
+#categoryTable tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#categoryTable tr:hover {
+  background-color: #ddd;
+}
+
+#categoryTable td {
+  color: #555;
+}
+
+#categoryTable .aksi-btn {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#categoryTable .aksi-btn:hover {
+  color: #0056b3;
+}
+>>>>>>> c491d9d7cd0c4203250693feb16d44c706ed2906
