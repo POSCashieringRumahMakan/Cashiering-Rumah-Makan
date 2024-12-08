@@ -23,7 +23,6 @@ function searchProducts() {
   });
 }
 
-
 // Data Produk
 const products = {
   food: [
@@ -70,6 +69,7 @@ function addToOrder(product) {
   } else {
     order.push({ ...product, quantity: 1 });
   }
+  saveOrderToLocalStorage();
   renderOrder();
 }
 
@@ -100,5 +100,22 @@ function renderOrder() {
   totalElement.innerHTML = `Total: Rp. ${total.toLocaleString()}`;
 }
 
+// Fungsi untuk menyimpan order ke localStorage
+function saveOrderToLocalStorage() {
+  localStorage.setItem("order", JSON.stringify(order));
+}
+
+// Fungsi untuk memuat order dari localStorage
+function loadOrderFromLocalStorage() {
+  const storedOrder = localStorage.getItem("order");
+  if (storedOrder) {
+    order = JSON.parse(storedOrder);
+    renderOrder();
+  }
+}
+
 // Tampilkan kategori Food saat pertama kali
 showCategory("food");
+
+// Muat data order dari localStorage saat halaman pertama kali dimuat
+loadOrderFromLocalStorage();
