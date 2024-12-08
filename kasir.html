@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,11 +21,21 @@
     </div>
 
     <section class="content">
-
       <!-- Categories -->
       <div class="categories">
-        <button class="active" onclick="showCategory('food')">Makanan</button>
-        <button onclick="showCategory('drinks')">Minuman</button>
+        <!-- Card untuk Makanan -->
+        <button class="category-card active" onclick="showCategory('food')">
+          <i class="fas fa-utensils category-icon"></i>
+          <h3 class="category-title">Makanan</h3>
+          <p class="category-items">13 items</p>
+        </button>
+
+        <!-- Card untuk Minuman -->
+        <button class="category-card" onclick="showCategory('drinks')">
+          <i class="fas fa-coffee category-icon"></i>
+          <h3 class="category-title">Minuman</h3>
+          <p class="category-items">8 items</p>
+        </button>
       </div>
 
       <!-- Products -->
