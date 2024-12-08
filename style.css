@@ -182,7 +182,7 @@ body {
 /* Styling untuk responsivitas */
 @media (max-width: 768px) {
   .main-container {
-    margin-left: 0;
+    margin-left: 65px;
   }
 
   .top-bar input {
@@ -190,3 +190,37 @@ body {
   }
 }
 
+/* Media Query untuk Tablet (max-width: 1024px) */
+@media screen and (max-width: 1024px) {
+  .top-bar input[type="text"] {
+    width: 70%; /* Lebar lebih besar pada tablet */
+    font-size: 14px; /* Kurangi ukuran font */
+    padding: 8px 12px; /* Padding lebih kecil */
+  }
+}
+
+/* Media Query untuk Ponsel Besar (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  .top-bar {
+    padding: 8px;
+  }
+
+  .top-bar input[type="text"] {
+    width: 80%; /* Lebar lebih besar */
+    font-size: 13px; /* Ukuran font lebih kecil */
+    padding: 6px 10px; /* Padding lebih kecil */
+  }
+}
+
+/* Media Query untuk Ponsel Kecil (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  .top-bar {
+    padding: 5px;
+  }
+
+  .top-bar input[type="text"] {
+    width: 90%; /* Full-width hampir penuh */
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+}
