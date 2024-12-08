@@ -417,17 +417,17 @@ body {
 /* Memperkecil lebar kolom untuk Nama, Kategori, dan Aksi */
 #categoryTable th:nth-child(1), 
 #categoryTable td:nth-child(1) {
-  width: 25%; /* Lebar kolom Nama */
+  width: 15%; /* Lebar kolom Nama */
 }
 
 #categoryTable th:nth-child(2), 
 #categoryTable td:nth-child(2) {
-  width: 35%; /* Lebar kolom Kategori */
+  width: 20%; /* Lebar kolom Kategori */
 }
 
 #categoryTable th:nth-child(3), 
 #categoryTable td:nth-child(3) {
-  width: 25%; /* Lebar kolom Aksi */
+  width: 15%; /* Lebar kolom Aksi */
 }
 
 #categoryTable th {
