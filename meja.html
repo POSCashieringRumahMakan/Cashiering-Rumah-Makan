@@ -19,35 +19,15 @@
       <div class="top-bar">
         <!-- Search bar -->
         <input type="text" id="search" placeholder="Cari Meja..." oninput="searchTables()">
-        <button id="add-table-btn" onclick="openModal()">Tambah Meja</button>
+        
       </div>
 
       <section class="content">
         <h1>Data Meja</h1>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>No Meja</th>
-              <th>Kapasitas</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="table-data">
-            <tr>
-              <td>1</td>
-              <td>4</td>
-              <td>Tersedia</td>
-              <td><button onclick="openBookingModal(1, 4)">Booking</button></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>2</td>
-              <td>Tersedia</td>
-              <td><button onclick="openBookingModal(2, 2)">Booking</button></td>
-            </tr>
-          </tbody>
-        </table>
+        <button id="add-table-btn" onclick="openModal()">Tambah Meja</button>
+        <div id="table-data" class="table-cards-container">
+          <!-- Card meja akan dimasukkan disini oleh JavaScript -->
+        </div>
       </section>
     </div>
   </div>
@@ -59,127 +39,79 @@
       <h2>Tambah Meja</h2>
       <form id="add-table-form">
         <label for="table-number">No Meja</label>
-        <input type="text" id="table-number" name="table-number" required>
+        <input type="text" id="table-number" required>
         
         <label for="capacity">Kapasitas</label>
-        <input type="number" id="capacity" name="capacity" required>
-        
+        <input type="number" id="capacity" required>
+
         <label for="status">Status</label>
-        <select id="status" name="status" required>
+        <select id="status" required>
           <option value="Tersedia">Tersedia</option>
           <option value="Tidak Tersedia">Tidak Tersedia</option>
         </select>
-        
+
         <button type="submit">Simpan</button>
       </form>
     </div>
-    
   </div>
 
-  <div id="booking-modal" style="display:none;">
-    <form id="booking-form">
-        <label for="customer-name">Nama:</label>
+  <!-- Modal untuk Booking Meja -->
+  <div id="booking-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeBookingModal()">&times;</span>
+      <h2>Booking Meja</h2>
+      <form id="booking-form">
+        <label for="customer-name">Nama Customer</label>
         <input type="text" id="customer-name" required>
-        <label for="customer-phone">No HP:</label>
-        <input type="tel" id="customer-phone" required>
-        <label for="customer-email">Email:</label>
+
+        <label for="customer-phone">No HP</label>
+        <input type="text" id="customer-phone" required>
+
+        <label for="customer-email">Email</label>
         <input type="email" id="customer-email" required>
-        <label for="booking-date">Tanggal Booking:</label>
+
+        <label for="booking-date">Tanggal Booking</label>
         <input type="date" id="booking-date" required>
-        <button type="submit">Simpan</button>
-        <button type="button" onclick="closeBookingModal()">Batal</button>
-    </form>
-</div>
 
-<!-- Modal untuk edit meja -->
-<div id="edit-table-modal" style="display: none;">
-  <form id="edit-table-form">
-      <label for="edit-table-number">Nomor Meja:</label>
-      <input type="text" id="edit-table-number" required><br>
-
-      <label for="edit-capacity">Kapasitas:</label>
-      <input type="number" id="edit-capacity" required><br>
-
-      <label for="edit-status">Status:</label>
-      <select id="edit-status" required>
-          <option value="Tersedia">Tersedia</option>
-          <option value="Tidak Tersedia">Tidak Tersedia</option>
-      </select><br>
-
-      <button type="submit">Simpan</button>
-      <button type="button" onclick="closeEditModal()">Batal</button>
-  </form>
-</div>
-
-
+        <button type="submit">Booking</button>
       </form>
     </div>
   </div>
- 
+  <!-- Modal untuk Edit Table -->
+<<div id="edit-table-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeEditModal()">&times;</span>
+    <h2>Edit Meja</h2>
+    <form id="edit-table-form">
+      <label for="edit-table-number">Nomor Meja</label>
+      <input type="text" id="edit-table-number" required>
+
+      <label for="edit-capacity">Kapasitas</label>
+      <input type="number" id="edit-capacity" required>
+
+      <label for="edit-status">Status</label>
+      <select id="edit-status">
+        <option value="Tersedia">Tersedia</option>
+        <option value="Tidak Tersedia">Tidak Tersedia</option>
+      </select>
+
+      <button type="submit">Simpan Perubahan</button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Detail Table -->
+<div id="detail-modal" class="modal">
+  <div class="modal-content">
+    <span onclick="closeDetailModal()" class="close">&times;</span>
+    <h2>Detail Meja</h2>
+    <div id="table-detail"></div>
+    <button onclick="closeDetailModal()">Oke</button> <!-- Tombol Oke untuk menutup modal -->
+  </div>
+</div>
 
 
-  <!-- <script src="js/kasir.js"></script> -->
   <script src="js/meja.js"></script>
   <script src="js/sidebar.js"></script>
-
-  <!-- <script>
-    // Fungsi untuk membuka modal tambah meja
-    function openModal() {
-      document.getElementById("add-table-modal").style.display = "block";
-    }
-
-    // Fungsi untuk menutup modal tambah meja
-    function closeModal() {
-      document.getElementById("add-table-modal").style.display = "none";
-    }
-
-    // Fungsi untuk membuka modal booking
-    function openBookingModal(tableNumber, capacity) {
-      document.getElementById("seats").value = tableNumber;
-      document.getElementById("capacity").value = capacity;
-      document.getElementById("booking-modal").style.display = "block";
-    }
-
-    // Fungsi untuk menutup modal booking
-    function closeBookingModal() {
-      document.getElementById("booking-modal").style.display = "none";
-    }
-
-    // Menutup modal ketika area luar modal diklik
-    window.onclick = function(event) {
-      if (event.target == document.getElementById("add-table-modal")) {
-        closeModal();
-      }
-      if (event.target == document.getElementById("booking-modal")) {
-        closeBookingModal();
-      }
-    }
-
-    // Fungsi untuk menambahkan table baru
-    document.getElementById("add-table-form").addEventListener("submit", function(event) {
-      event.preventDefault();
-      let tableNumber = document.getElementById("table-number").value;
-      let capacity = document.getElementById("capacity").value;
-      let status = document.getElementById("status").value;
-      let tableData = document.getElementById("table-data");
-
-      let row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${tableNumber}</td>
-        <td>${capacity}</td>
-        <td>${status}</td>
-        <td><button onclick="openBookingModal(${tableNumber}, ${capacity})">Booking</button></td>
-      `;
-      tableData.appendChild(row);
-      closeModal();
-    });
-
-    // Fungsi untuk menyimpan booking
-    document.getElementById("booking-form").addEventListener("submit", function(event) {
-      event.preventDefault();
-      alert("Booking telah disimpan!");
-      closeBookingModal();
-    });
-  </script> -->
 </body>
 </html>

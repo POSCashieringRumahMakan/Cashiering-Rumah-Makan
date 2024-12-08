@@ -4,176 +4,204 @@ let tables = [
     { id: 3, number: 'B1', capacity: 6, status: 'Tersedia', customer: null },
 ];
 
-const pengguna = {
-    name: "Sindy",
-    phone: "081234567890",
-    email: "sindyy.doe@example.com",
-};
+const pengguna = JSON.parse(localStorage.getItem('pengguna')) || [];
+
+document.addEventListener('DOMContentLoaded', () => {
+    displayTables();
+});
 
 function displayTables() {
-    const tableDataContainer = document.getElementById('table-data');
-    tableDataContainer.innerHTML = '';
+    const tableContainer = document.getElementById('table-data');
+    tableContainer.innerHTML = '';
 
     tables.forEach(table => {
-        const row = document.createElement('tr');
-        let actionButtons = `
-            <button onclick="viewTableDetails(${table.id})">Detail</button>
-            <button onclick="editTable(${table.id})">Edit</button>
-            <button onclick="deleteTable(${table.id})">Hapus</button>
+        const card = document.createElement('div');
+        card.classList.add('table-card');
+        card.innerHTML = `
+            <h3>Meja ${table.number}</h3>
+            <p>Kapasitas: ${table.capacity}</p>
+            <p class="status ${table.status === 'Tidak Tersedia' ? 'taken' : ''}">${table.status}</p>
         `;
         
+        // Tombol 'Booking' hanya muncul jika meja 'Tersedia'
         if (table.status === 'Tersedia') {
-            actionButtons = `<button onclick="bookTable(${table.id})">Booking</button>` + actionButtons;
+            card.innerHTML += `
+                <button onclick="bookTable(${table.id})">Booking</button>
+            `;
         }
-
-        row.innerHTML = `
-            <td>${table.number}</td>
-            <td>${table.capacity}</td>
-            <td>${table.status}</td>
-            <td>${actionButtons}</td>
+        
+        // Tombol 'Edit' selalu muncul
+        card.innerHTML += `
+            <button onclick="editTable(${table.id})">Edit</button>
         `;
-        tableDataContainer.appendChild(row);
+        
+        // Tombol 'Delete' dan 'Detail' selalu tampil
+        card.innerHTML += `
+            <button onclick="deleteTable(${table.id})">Delete</button>
+            <button onclick="viewTableDetails(${table.id})">Detail</button>
+        `;
+        
+        tableContainer.appendChild(card);
     });
 }
 
+function displayFilteredTables(filteredTables) {
+    const tableContainer = document.getElementById('table-data');
+    tableContainer.innerHTML = '';
+    filteredTables.forEach(table => {
+        const card = document.createElement('div');
+        card.classList.add('table-card');
+        card.innerHTML = `
+            <h3>Meja ${table.number}</h3>
+            <p>Kapasitas: ${table.capacity}</p>
+            <p class="status ${table.status === 'Tidak Tersedia' ? 'taken' : ''}">${table.status}</p>
+        `;
+        
+        // Tombol 'Booking' hanya muncul jika meja 'Tersedia'
+        if (table.status === 'Tersedia') {
+            card.innerHTML += `
+                <button onclick="bookTable(${table.id})">Booking</button>
+            `;
+        }
+        
+        // Tombol 'Edit' selalu muncul
+        card.innerHTML += `
+            <button onclick="editTable(${table.id})">Edit</button>
+        `;
+        
+        // Tombol 'Delete' dan 'Detail' selalu tampil
+        card.innerHTML += `
+            <button onclick="deleteTable(${table.id})">Delete</button>
+            <button onclick="viewTableDetails(${table.id})">Detail</button>
+        `;
+        
+        tableContainer.appendChild(card);
+    });
+}
+
+function searchTables() {
+    const searchInput = document.getElementById('search').value.toLowerCase();
+    const filteredTables = tables.filter(table =>
+        table.number.toLowerCase().includes(searchInput)
+    );
+    displayFilteredTables(filteredTables);
+}
+
 function openModal() {
-    document.getElementById("add-table-modal").style.display = "block";
+    const modal = document.getElementById('add-table-modal');
+    modal.style.display = 'block';
 }
 
 function closeModal() {
-    document.getElementById("add-table-modal").style.display = "none";
+    const modal = document.getElementById('add-table-modal');
+    modal.style.display = 'none';
 }
 
-document.getElementById("add-table-form").addEventListener("submit", function(event) {
+document.getElementById('add-table-form').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const tableNumber = document.getElementById('table-number').value;
+    const number = document.getElementById('table-number').value;
     const capacity = document.getElementById('capacity').value;
     const status = document.getElementById('status').value;
 
-    const newTable = {
-        id: tables.length + 1,
-        number: tableNumber,
-        capacity: parseInt(capacity),
-        status: status,
-        customer: null,
-    };
-
+    const newTable = { id: tables.length + 1, number, capacity, status };
     tables.push(newTable);
+
     displayTables();
     closeModal();
-    document.getElementById("add-table-form").reset();
 });
 
-function editTable(id) {
-    const table = tables.find(t => t.id === id);
-    if (table) {
-        document.getElementById('edit-table-number').value = table.number;
-        document.getElementById('edit-capacity').value = table.capacity;
-        document.getElementById('edit-status').value = table.status;
+function bookTable(tableId) {
+    const modal = document.getElementById('booking-modal');
+    modal.style.display = 'block';
 
-        const form = document.getElementById('edit-table-form');
-        
-        form.onsubmit = function(event) {
-            event.preventDefault();
+    document.getElementById('booking-form').onsubmit = function(event) {
+        event.preventDefault();
 
-            const newCapacity = parseInt(document.getElementById('edit-capacity').value);
-            if (isNaN(newCapacity) || newCapacity <= 0) {
-                alert("Kapasitas harus berupa angka yang valid.");
-                return;
-            }
+        const customerName = document.getElementById('customer-name').value;
+        const customerPhone = document.getElementById('customer-phone').value;
+        const customerEmail = document.getElementById('customer-email').value;
+        const bookingDate = document.getElementById('booking-date').value;
 
-            table.number = document.getElementById('edit-table-number').value;
-            table.capacity = newCapacity;
-            table.status = document.getElementById('edit-status').value;
+        const table = tables.find(t => t.id === tableId);
+        table.status = 'Tidak Tersedia';
+        table.customer = { customerName, customerPhone, customerEmail, bookingDate };
 
-            displayTables();
-            closeEditModal();
-            form.reset();
-        };
-
-        openEditModal();
-    }
-}
-
-function openEditModal() {
-    document.getElementById("edit-table-modal").style.display = "block";
-}
-
-function closeEditModal() {
-    document.getElementById("edit-table-modal").style.display = "none";
-}
-
-function deleteTable(id) {
-    tables = tables.filter(table => table.id !== id);
-    displayTables();
-}
-
-function viewTableDetails(id) {
-    const table = tables.find(t => t.id === id);
-    if (table) {
-        let customerDetails = 'Belum ada booking.';
-        if (table.customer) {
-            customerDetails = `
-                Nama: ${table.customer.name}\n
-                No HP: ${table.customer.phone}\n
-                Email: ${table.customer.email}\n
-                Tanggal Booking: ${table.customer.date}
-            `;
-        }
-
-        alert(`Detail Meja: ${table.number}\nKapasitas: ${table.capacity}\nStatus: ${table.status}\n\nCustomer:\n${customerDetails}`);
-    }
-}
-
-function openBookingModal(tableId) {
-    const bookingModal = document.getElementById('booking-modal');
-    bookingModal.style.display = 'block';
-    bookingModal.dataset.tableId = tableId;
-
-    if (pengguna) {
-        document.getElementById('customer-name').value = pengguna.name || '';
-        document.getElementById('customer-phone').value = pengguna.phone || '';
-        document.getElementById('customer-email').value = pengguna.email || '';
-    }
+        displayTables();
+        closeBookingModal();
+    };
 }
 
 function closeBookingModal() {
-    const bookingModal = document.getElementById('booking-modal');
-    bookingModal.style.display = 'none';
-    document.getElementById('booking-form').reset();
+    const modal = document.getElementById('booking-modal');
+    modal.style.display = 'none';
 }
 
-function bookTable(id) {
-    openBookingModal(id);
-}
-
-document.getElementById('booking-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const bookingModal = document.getElementById('booking-modal');
-    const tableId = parseInt(bookingModal.dataset.tableId);
-
-    const customerName = document.getElementById('customer-name').value;
-    const customerPhone = document.getElementById('customer-phone').value;
-    const customerEmail = document.getElementById('customer-email').value;
-    const bookingDate = document.getElementById('booking-date').value;
-
+function viewTableDetails(tableId) {
     const table = tables.find(t => t.id === tableId);
-    if (table) {
-        table.status = 'Tidak Tersedia';
-        table.customer = {
-            name: customerName,
-            phone: customerPhone,
-            email: customerEmail,
-            date: bookingDate,
-        };
+    const modal = document.getElementById('detail-modal');
+    const tableDetail = document.getElementById('table-detail');
 
+    tableDetail.innerHTML = `
+        <h3>Meja ${table.number}</h3>
+        <p>Kapasitas: ${table.capacity}</p>
+        <p>Status: ${table.status}</p>
+        ${table.customer ? `
+            <h4>Customer Info:</h4>
+            <p>Nama: ${table.customer.customerName}</p>
+            <p>No HP: ${table.customer.customerPhone}</p>
+            <p>Email: ${table.customer.customerEmail}</p>
+            <p>Tanggal Booking: ${table.customer.bookingDate}</p>
+        ` : '<p>Tidak ada pemesanan untuk meja ini.</p>'}
+    `;
+    
+    modal.style.display = 'block';
+}
+
+function closeDetailModal() {
+    const modal = document.getElementById('detail-modal');
+    modal.style.display = 'none';
+}
+
+function editTable(tableId) {
+    const table = tables.find(t => t.id === tableId);
+    
+    // Mengisi form dengan data meja yang ada
+    document.getElementById('edit-table-number').value = table.number;
+    document.getElementById('edit-capacity').value = table.capacity;
+    document.getElementById('edit-status').value = table.status;
+
+    // Menyimpan ID meja yang sedang diedit
+    document.getElementById('edit-table-form').onsubmit = function(event) {
+        event.preventDefault();
+
+        // Mengambil data dari form
+        const number = document.getElementById('edit-table-number').value;
+        const capacity = document.getElementById('edit-capacity').value;
+        const status = document.getElementById('edit-status').value;
+
+        // Memperbarui data meja
+        table.number = number;
+        table.capacity = capacity;
+        table.status = status;
+
+        // Menutup modal dan memperbarui tampilan meja
         displayTables();
-        alert(`Booking berhasil!\nMeja: ${table.number}\nNama: ${customerName}\nNo HP: ${customerPhone}\nEmail: ${customerEmail}\nTanggal: ${bookingDate}`);
-    }
+        closeEditModal();
+    };
 
-    closeBookingModal();
-});
+    // Menampilkan modal
+    const modal = document.getElementById('edit-table-modal');
+    modal.style.display = 'block';
+}
 
-displayTables();
+function closeEditModal() {
+    const modal = document.getElementById('edit-table-modal');
+    modal.style.display = 'none';
+}
+
+
+function deleteTable(tableId) {
+    tables = tables.filter(table => table.id !== tableId);
+    displayTables();
+}
