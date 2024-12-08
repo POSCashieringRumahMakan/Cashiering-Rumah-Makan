@@ -1,88 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>POS Cashier Rumah Makan</title>
+  <title>Beranda - POS Rumah Makan Padang SABAR</title>
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 </head>
-<body>
-  <header>
-    <h1>POS Cashier Rumah Makan</h1>
-    <nav>
-      <button class="tab-button" onclick="showTab('product')">Produk</button>
-      <button class="tab-button" onclick="showTab('category')">Kategori</button>
-    </nav>
-  </header>
-  <main>
-    <section id="productTab" class="tab-content">
-      <h2>Daftar Produk</h2>
-      <table id="productTable">
-        <thead>
-          <tr>
-            <th>Foto</th>
-            <th>Nama Produk</th>
-            <th>Kategori</th>
-            <th>Harga</th>
-            <th>Status</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Data produk akan ditampilkan di sini -->
-        </tbody>
-      </table>
 
-      <h2>Tambah / Edit Produk</h2>
-      <form id="productForm">
-        <label for="productName">Nama Produk:</label>
-        <input type="text" id="productName" required>
-        
-        <label for="productCategory">Kategori:</label>
-        <select id="productCategory">
-          <!-- Pilihan kategori akan dimuat dari Local Storage -->
-        </select>
-        
-        <label for="productPrice">Harga (IDR):</label>
-        <input type="number" id="productPrice" required>
-        
-        <label for="productPhoto">Foto:</label>
-        <input type="file" id="productPhoto" accept="image/*">
-        
-        <label for="productStatus">Status:</label>
-        <select id="productStatus">
-          <option value="true">Tersedia</option>
-          <option value="false">Tidak Tersedia</option>
-        </select>
-        
-        <button type="submit">Tambah Produk</button>
-      </form>
-    </section>
+<body data-page="index">
+  <div class="main-container">
+    <!-- Sidebar akan otomatis dimuat dari sidebar.js -->
 
-    <section id="categoryTab" class="tab-content">
-      <h2>Daftar Kategori</h2>
-      <ul id="categoryList">
-        <!-- Daftar kategori akan ditampilkan di sini -->
-      </ul>
+        <!-- Top Bar -->
+        <div class="top-bar">
+          <input type="text" id="search" placeholder="Cari pelanggan..." oninput="searchMembers()">
+      </div>
 
-      <h2>Tambah Kategori</h2>
-      <form id="categoryForm">
-        <label for="categoryName">Nama Kategori:</label>
-        <input type="text" id="categoryName" required>
-        <button type="submit">Tambah Kategori</button>
-      </form>
-    </section>
-  </main>
-  <footer>
-    <div class="footer-content">
-      <p>© 2024 POS Cashier Rumah Makan. All rights reserved.</p>
-      <p>
-        Dibuat dengan ❤️ oleh 
-        <a href="https://github.com/POSCashieringRumahMakan/Cashiering-Rumah-Makan" target="_blank">Tim Developer</a>
-      </p>
-    </div>
-  </footer>
-  <script src="script.js"></script>
+    <section class="content">
+      <!-- Halaman Utama / Beranda -->
+      <div class="welcome-message">
+        <h1>Selamat datang di POS Rumah Makan Padang SABAE</h1>
+        <p>Temukan berbagai pilihan hidangan Padang terbaik yang kami sajikan untuk Anda. Nikmati pengalaman makan yang luar biasa!</p>
+        <p>Kunjungi kami untuk menikmati hidangan lezat atau jelajahi menu kami secara langsung.</p>
+      </div>
+    
+      <!-- Kotak-kotak untuk tautan -->
+      <div class="link-boxes">
+        <a href="menu.html" class="link-box">
+          <i class="fas fa-utensils"></i>
+          <span>Menu</span>
+        </a>
+        <a href="order.html" class="link-box">
+          <i class="fas fa-receipt"></i>
+          <span>Pesanan</span>
+        </a>
+        <a href="report.html" class="link-box">
+          <i class="fas fa-chart-bar"></i>
+          <span>Laporan</span>
+        </a>
+        <a href="settings.html" class="link-box">
+          <i class="fas fa-cog"></i>
+          <span>Pengaturan</span>
+        </a>
+      </div>
+    </section>    
+
+    <script src="js/kasir.js"></script>
+    <script src="js/sidebar.js"></script>
+  </div>
 </body>
+
 </html>
