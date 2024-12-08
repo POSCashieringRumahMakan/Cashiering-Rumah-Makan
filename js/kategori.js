@@ -3,17 +3,11 @@ const categoryList = document.getElementById('category-list');
 const categoryForm = document.getElementById('category-form');
 const categoryIdField = document.getElementById('category-id');
 const categoryNameField = document.getElementById('namaKategori');
-const categoryTypeField = document.getElementById('jenisKategori');
 
 // Mengambil data kategori dari localStorage
 function getCategories() {
     let categories = localStorage.getItem('categories');
-    if (!categories) {
-        categories = [];
-    } else {
-        categories = JSON.parse(categories);
-    }
-    return categories;
+    return categories ? JSON.parse(categories) : [];
 }
 
 // Menyimpan data kategori ke localStorage
@@ -31,7 +25,6 @@ function renderCategories() {
         row.innerHTML = `
             <td>${index + 1}</td>
             <td>${category.name}</td>
-            <td>${category.type}</td>
             <td>
                 <button class="edit-button" onclick="editCategory(${index})">Edit</button>
                 <button class="delete-button" onclick="deleteCategory(${index})">Hapus</button>
@@ -46,21 +39,15 @@ function saveCategory(event) {
     event.preventDefault(); // Mencegah form untuk reload halaman
 
     const name = categoryNameField.value;
-    const type = categoryTypeField.value;
-
     const categories = getCategories();
 
     if (categoryIdField.value) {
         // Update kategori
-        const categoryId = categoryIdField.value;
-        categories[categoryId].name = name;
-        categories[categoryId].type = type;
+        const categoryId = parseInt(categoryIdField.value, 10);
+        categories[categoryId] = { name };
     } else {
         // Tambah kategori baru
-        categories.push({
-            name,
-            type
-        });
+        categories.push({ name });
     }
 
     saveCategories(categories);
@@ -83,14 +70,12 @@ function editCategory(index) {
 
     categoryIdField.value = index; // Menyimpan ID kategori yang akan diedit
     categoryNameField.value = category.name;
-    categoryTypeField.value = category.type;
 }
 
 // Fungsi untuk mengosongkan form
 function clearForm() {
     categoryIdField.value = '';
     categoryNameField.value = '';
-    categoryTypeField.value = '';
 }
 
 // Inisialisasi halaman dengan data kategori

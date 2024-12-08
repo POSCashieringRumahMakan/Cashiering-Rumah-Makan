@@ -1,11 +1,36 @@
-/* Style untuk tabel produk */
+/* Import font terbaru dari Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+
+/* Styling global */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7fb;
+    color: #333;
+}
+
+/* Layout utama */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 30px;
+}
+
+/* Tabel produk */
 .product-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
 }
 
-.product-table th, .product-table td {
+.product-table th,
+.product-table td {
     padding: 10px;
     text-align: left;
     border: 1px solid #ddd;
@@ -15,130 +40,90 @@
     background-color: #f4f4f4;
 }
 
+.product-table td {
+    white-space: nowrap;
+}
+
+.product-table td button {
+    padding: 5px 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
 /* Gaya untuk tombol Edit */
 button.edit-button {
-    background-color: #007bff; /* Hijau */
+    background-color: #007bff;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+}
+
+button.edit-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
 }
 
 /* Gaya untuk tombol Hapus */
 button.delete-button {
-    background-color: #ff0000; /* Merah */
+    background-color: #ff0000;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-/* Efek hover */
-button.edit-button:hover {
-    background-color: #0056b3; /* Lebih gelap saat hover */
 }
 
 button.delete-button:hover {
-    background-color: #e60000; /* Lebih gelap saat hover */
+    background-color: #e60000;
+    transform: scale(1.05);
 }
 
-/* Style untuk form produk */
+/* Form tambah produk - DIPINDAHKAN KE BAWAH TABEL */
 .order-summary {
-    width: 300px;
-    background-color: #f7f7f7;
-    padding: 20px;
-    border-radius: 12px;
-    position: fixed;
-    right: 20px;
-    top: 100px;
-    color: #000;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-#product-form {
-    display: block;
-}
-
-#product-form input, #product-form select {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-}
-
-#product-form button {
-    background-color: #ff6242;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#product-form button:hover {
-    background-color: #ff8164;
-}
-
-/* Styling untuk form tambah pelanggan */
-.order-summary {
-    width: 400px; /* Memperlebar form */
+    max-width: 400px;
     background-color: #f7f7f7;
     padding: 25px;
     border-radius: 12px;
-    position: fixed;
-    right: 20px;
-    top: 100px;
-    color: #000;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Efek bayangan lebih lembut */
-    font-family: 'Montserrat', sans-serif; /* Font yang konsisten dengan desain */
-  }
-  
-  /* Judul form */
-  .order-summary h3 {
+    position: relative;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin-top: 40px; /* Pindahkan form ke bawah tabel */
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 30px; /* Menambahkan jarak di bawah form */
+}
+
+.order-summary h3 {
     font-size: 22px;
     font-weight: 600;
-    margin-bottom: 20px;
     color: #333;
     text-align: center;
-  }
-  
-  /* Styling label */
-  .order-summary label {
+    margin-bottom: 20px;
+}
+
+.order-summary label {
     font-size: 16px;
-    margin-bottom: 8px;
-    color: #444;
     font-weight: 600;
-    display: block; /* Membuat label berada di atas input */
-    margin-top: 15px;
-  }
-  
-  /* Styling input dan select */
-  .order-summary input,
-  .order-summary select {
-    width: 100%; /* Agar input dan select mengisi seluruh lebar form */
+    color: #444;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.order-summary input,
+.order-summary select {
+    width: 100%;
     padding: 12px;
     font-size: 16px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
-    border-radius: 8px; /* Sudut lebih melengkung untuk input */
-    box-sizing: border-box; /* Menjamin padding tidak mempengaruhi lebar total */
-    transition: border-color 0.3s ease; /* Efek transisi saat focus */
-  }
-  
-  /* Styling saat input, select dalam kondisi focus */
-  .order-summary input:focus,
-  .order-summary select:focus {
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.order-summary input:focus,
+.order-summary select:focus {
     outline: none;
-    border-color: #ff8164; /* Warna hijau saat focus */
-  }
-  
-  /* Styling untuk tombol simpan */
-  .order-summary button {
+    border-color: #ff8164;
+}
+
+.order-summary button {
     width: 100%;
     padding: 12px;
     font-size: 18px;
@@ -149,49 +134,80 @@ button.delete-button:hover {
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
-  
-  /* Efek hover pada tombol simpan */
-  .order-summary button:hover {
-    background-color: #ff8164; /* Warna hijau sedikit lebih gelap saat hover */
-  }
-  
- /* Tabel Produk */
-.product-table {
-    width: 60%; /* Sesuaikan lebar tabel */
-    border-collapse: collapse;
-    margin-top: 20px;
-    float: left; /* Agar tabel berada di sebelah kiri */
 }
 
-.product-table th, 
-.product-table td {
-    border: 1px solid #ddd;
-    text-align: left;
-    padding: 8px; /* Padding untuk membuat teks lebih rapi */
-}
-
-.product-table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-}
-
-.product-table td {
-    white-space: nowrap; /* Mencegah teks panjang memecah baris */
-}
-
-.product-table td button {
-    padding: 5px 10px; /* Padding tombol agar lebih nyaman */
+.order-summary button:hover {
+    background-color: #ff8164;
 }
 
 /* Responsif untuk layar kecil */
 @media (max-width: 768px) {
-    .product-table {
-        width: 100%; /* Lebar tabel penuh pada layar kecil */
+    /* Form */
+    .order-summary {
+        width: 100%;
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        margin-bottom: 20px; /* Pastikan ada jarak setelah form */
     }
 
-    .product-table th, .product-table td {
-        font-size: 12px; /* Mengurangi ukuran font untuk layar kecil */
-        padding: 6px; /* Padding lebih kecil pada layar kecil */
+    .order-summary h3 {
+        font-size: 20px;
+    }
+
+    .order-summary input,
+    .order-summary select,
+    .order-summary button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    /* Tabel produk */
+    .product-table {
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 40px; /* Menambahkan jarak bawah untuk tabel */
+    }
+
+    .product-table th,
+    .product-table td {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    .product-table td button {
+        font-size: 12px;
+    }
+}
+
+/* Responsif untuk layar lebih kecil (ponsel) */
+@media (max-width: 480px) {
+    .order-summary {
+        width: 100%;
+        padding: 15px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .order-summary h3 {
+        font-size: 18px;
+    }
+
+    .order-summary input,
+    .order-summary select,
+    .order-summary button {
+        font-size: 12px;
+    }
+
+    .product-table th,
+    .product-table td {
+        font-size: 10px;
+        padding: 8px;
+    }
+
+    .product-table td button {
+        padding: 5px;
     }
 }
