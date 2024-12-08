@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengguna - POS</title>
+    <link rel="stylesheet" href="css/kasir.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/pengguna.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="img/logopadang.png" type="image/png">
+</head>
+
+<body data-page="pengguna">
+    <div class="main-container">
+        <!-- Sidebar -->
+        <script src="js/sidebar.js"></script>
+
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <input type="text" id="search" placeholder="Cari pelanggan..." oninput="searchMembers()">
+        </div>
+
+        <!-- Content Section -->
+        <section class="content">
+            <!-- Title and Action -->
+            <div class="content-header">
+                <h1>Laporan Data Pelanggan</h1>
+            </div>
+
+            <!-- Member Table -->
+            <table class="member-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>No. Telepon</th>
+                        <th>Tingkatan</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="member-list">
+                    <!-- Data pelanggan akan dimuat secara dinamis -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- Form Tambah Pelanggan -->
+    <aside class="order-summary">
+        <h3>Form Tambah Pelanggan</h3>
+        <form id="member-form" onsubmit="saveMember(event)">
+            <input type="hidden" id="member-id">
+            <label for="nama">Nama:</label>
+            <input type="text" id="nama" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+            <label for="noTelepon">No. Telepon:</label>
+            <input type="text" id="noTelepon" required>
+            <label for="tingkatan">Tingkatan:</label>
+            <select id="tingkatan" required>
+                <option value="Gold">Gold</option>
+                <option value="Silver">Silver</option>
+                <option value="Bronze">Bronze</option>
+                <option value="Platinum">Platinum</option>
+            </select>
+            <button type="submit">Simpan</button>
+        </form>
+    </aside>
+
+    <script src="js/pengguna.js"></script>
+</body>
+
+</html>
