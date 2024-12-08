@@ -54,3 +54,83 @@
     width: 150px;
     height: auto;
   }
+  .hamburger {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+  /* Sidebar dengan posisi fixed dan tersembunyi di luar layar */
+/* Sidebar: default tersembunyi di luar layar */
+.sidebar {
+  background-color: #ff6242;
+  width: 100px;
+  padding: 20px;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: -250px; /* Tersembunyi di luar layar */
+  bottom: 0;
+  transition: transform 0.3s ease; /* Animasi transisi */
+}
+
+/* Sidebar tampil saat kelas 'show' ditambahkan */
+.sidebar.show {
+  transform: translateX(250px); /* Geser ke dalam layar */
+}
+
+/* Gaya lainnya */
+.sidebar h2 {
+  text-align: center;
+}
+
+.sidebar-header {
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.sidebar-nav ul {
+  list-style-type: none;
+  padding: 0;
+  
+}
+
+.sidebar-nav ul li {
+  margin: 10px 0;
+}
+
+.sidebar-nav ul li a i {
+  margin-right: 8px; /* Jarak antara ikon dan teks */
+  
+}
+.sidebar-nav ul li a span {
+  display: none; /* Menyembunyikan teks */
+}
+
+
+.sidebar-nav a {
+  text-decoration: none;
+  color: white;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  
+}
+.sidebar-nav ul li a span {
+  display: none; /* Menyembunyikan teks */
+}
+
+
+.sidebar-nav a.active,
+.sidebar-nav a:hover {
+  background-color: #ff8164;
+}
+
+img {
+  width: 70px;
+  height: auto;
+}
+
+.hamburger {
+  display: block;
+}
+  }
