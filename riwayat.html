@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riwayat Pesanan</title>
+  <link rel="stylesheet" href="css/riwayat.css">
+  <link rel="stylesheet" href="css/kasir.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body data-page="riwayat">
+  <div class="main-container">
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <!-- Sidebar content akan dimuat dari sidebar.js -->
+    </div>
+
+    <!-- Konten utama -->
+    <div class="content-container">
+      <div class="top-bar">
+        <!-- Search bar -->
+        <input type="text" id="search" placeholder="Cari Pesanan..." oninput="searchOrders()">
+      </div>
+
+      <section class="content">
+        <h1>Riwayat Pesanan</h1>
+        <button id="print-btn" onclick="printPDF()">Cetak PDF</button>
+        <div id="order-data" class="order-cards-container">
+          <!-- Card pesanan akan dimasukkan disini oleh JavaScript -->
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Modal untuk Edit Pesanan -->
+  <div id="edit-order-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeEditModal()">&times;</span>
+      <h2>Edit Pesanan</h2>
+      <form id="edit-order-form">
+        <label for="edit-customer-name">Nama Customer</label>
+        <input type="text" id="edit-customer-name" required>
+
+        <label for="edit-menu-name">Nama Menu</label>
+        <input type="text" id="edit-menu-name" required>
+
+        <label for="edit-quantity">Kuantiti</label>
+        <input type="number" id="edit-quantity" required>
+
+        <label for="edit-total-price">Total Harga</label>
+        <input type="number" id="edit-total-price" required>
+
+        <label for="edit-table-number">No Kursi</label>
+        <input type="number" id="edit-table-number" required>
+
+        <button type="submit">Simpan Perubahan</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Detail Pesanan -->
+  <div id="detail-order-modal" class="modal">
+    <div class="modal-content">
+      <span onclick="closeDetailModal()" class="close">&times;</span>
+      <h2>Detail Pesanan</h2>
+      <div id="order-detail"></div>
+      <button onclick="closeDetailModal()">Oke</button>
+    </div>
+  </div>
+
+  <script src="js/riwayat.js"></script>
+  <script src="js/sidebar.js"></script>
+</body>
+</html>
