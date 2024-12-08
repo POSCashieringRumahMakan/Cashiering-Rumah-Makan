@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const sidebarHTML = `
       <aside class="sidebar">
         <div class="sidebar-header">
-          <h2>Pos Cashiering Rumah Makan</h2>
+          <img src="img/logopadang.png" alt="Logo Rumah Makan Padang">
         </div>
         <nav class="sidebar-nav">
           <ul>

@@ -50,3 +50,7 @@
     background-color: #ff8164;
   }
   
+  img {
+    width: 150px;
+    height: auto;
+  }
