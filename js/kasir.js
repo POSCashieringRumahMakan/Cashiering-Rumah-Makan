@@ -39,9 +39,11 @@ const products = {
 
 // Order List
 let order = [];
+let activeCategory = "food"; // Default ke "food"
 
 // Fungsi untuk menampilkan kategori produk
 function showCategory(category) {
+  activeCategory = category; // Simpan kategori aktif
   const productList = document.getElementById("product-list");
   productList.innerHTML = "";
 
@@ -87,7 +89,7 @@ function increaseQuantity(productName) {
   }
 
   saveOrderToLocalStorage();
-  showCategory("food"); // Refresh kartu untuk memperbarui jumlah
+  showCategory(activeCategory); // Gunakan kategori aktif
   renderOrder();
 }
 
@@ -102,7 +104,7 @@ function decreaseQuantity(productName) {
   }
 
   saveOrderToLocalStorage();
-  showCategory("food"); // Refresh kartu untuk memperbarui jumlah
+  showCategory(activeCategory); // Gunakan kategori aktif
   renderOrder();
 }
 
@@ -121,30 +123,30 @@ function addToOrder(product) {
 // Fungsi untuk menampilkan daftar order
 function renderOrder() {
   const orderItems = document.getElementById("order-items");
-  const subtotalElement = document.getElementById("subtotal");
   const totalElement = document.getElementById("total");
 
+  // Cek apakah elemen ada untuk menghindari error
+  if (!orderItems || !totalElement) {
+    console.error("Elemen order-items atau total tidak ditemukan!");
+    return;
+  }
+
   orderItems.innerHTML = "";
-  let subtotal = 0;
+  let total = 0;
 
   // Menampilkan setiap item dalam pesanan
-  order.forEach((item, index) => { // Pastikan ada parameter `index`
-    subtotal += item.price * item.quantity;
+  order.forEach((item, index) => {
+    total += item.price * item.quantity;
 
     const li = document.createElement("li");
     li.innerHTML = `
-      ${item.quantity}x ${item.name} - Rp. ${(item.price * item.quantity).toLocaleString()}
-      <i class="fas fa-trash-alt remove-icon" onclick="removeFromOrder(${index})"></i>
-    `;
+    ${item.quantity}x ${item.name} - Rp. ${(item.price * item.quantity).toLocaleString()}
+    <i class="fas fa-trash-alt remove-icon" onclick="removeFromOrder(${index})"></i>
+  `;
     orderItems.appendChild(li);
   });
 
-  // Menghitung subtotal dan total (termasuk pajak 10%)
-  const tax = subtotal * 0.1;
-  const total = subtotal + tax;
-
-  // Memperbarui tampilan
-  subtotalElement.innerHTML = `Subtotal: Rp. ${subtotal.toLocaleString()}`;
+  // Memperbarui total
   totalElement.innerHTML = `Total: Rp. ${total.toLocaleString()}`;
 }
 
