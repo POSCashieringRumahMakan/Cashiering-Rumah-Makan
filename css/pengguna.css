@@ -1,95 +1,70 @@
-.modal {
-    display: none; /* Tersembunyi secara default */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Warna latar transparan */
-    justify-content: center; /* Tengah secara horizontal */
-    align-items: center; /* Tengah secara vertikal */
-    z-index: 1000;
-  }
-  
-  .modal.show {
-    display: flex; /* Tampilkan modal */
-  }
-  
-  .modal-content {
-    background-color: #fff;
+/* Member Cards Styling */
+.member-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Menyesuaikan ukuran kartu */
+    gap: 20px;
     padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-  }
-  
-  .modal-content h2 {
-    margin-bottom: 20px;
-  }
-  
-  .modal-content label {
-    display: block;
-    text-align: left;
-    margin: 10px 0 5px;
-  }
-  
-  .modal-content input,
-  .modal-content select {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-  
-  .modal-actions {
+    justify-items: center; /* Agar item dalam grid berada di tengah secara horizontal */
+    align-items: center; /* Agar item dalam grid berada di tengah secara vertikal */
+    margin: 0 auto; /* Memberikan margin otomatis agar grid berada di tengah */
+    max-width: 1200px; /* Maksimal lebar kontainer agar tidak terlalu lebar pada layar besar */
+}
+
+/* Styling Card */
+.member-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%; /* Mengatur agar lebar kartu sesuai dengan ruang yang tersedia */
+    max-width: 300px; /* Maksimal lebar kartu */
+}
+
+/* Efek saat hover */
+.member-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.member-card h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.member-card p {
+    font-size: 1rem;
+    margin: 8px 0;
+}
+
+.member-card .actions {
     display: flex;
     justify-content: space-between;
-  }
-  
-  .modal-actions button {
-    padding: 10px 20px;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.member-card .actions button {
+    padding: 8px 20px;
+    background-color: #007bff;
+    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-  }
-  
-  .modal-actions button:nth-child(1) {
-    background-color: #ff8164;
-    color: white;
-  }
-  
-  .modal-actions button:nth-child(2) {
-    background-color: #ddd;
-  }
-  
-  .member-table {
-    width: 60%; /* Sesuaikan lebar tabel */
-    border-collapse: collapse;
-    margin-top: 20px;
-    float: left; /* Agar tabel berada di sebelah kiri */
+    transition: background-color 0.3s ease;
 }
 
-.member-table th,
-.member-table td {
-    border: 1px solid #ddd;
-    text-align: left;
-    padding: 8px;
+.member-card .actions button:hover {
+    background-color: #0056b3;
 }
 
-.member-table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
+.member-card .actions .delete-btn {
+    background-color: #f44336;
 }
 
-.member-table td {
-    white-space: nowrap; /* Mencegah teks panjang memecah baris */
-}
-
-.member-table td button {
-    padding: 5px 10px;
+.member-card .actions .delete-btn:hover {
+    background-color: #e53935;
 }
 
 /* Styling untuk form tambah pelanggan */
@@ -167,156 +142,86 @@
   #noTelepon {
     letter-spacing: 1px; /* Memberikan jarak antar karakter untuk input telepon */
   }
-  
-  /* Gaya untuk tombol Edit */
-button.edit-btn {
-    background-color: #007bff; /* Warna tombol Edit */
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
+
+/* Top Bar Responsif */
+.top-bar {
+    padding: 10px;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-button.edit-btn:hover {
-    background-color: #0056b3; /* Efek hover tombol Edit */
+.top-bar input {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
 }
 
-/* Gaya untuk tombol Hapus */
-button.delete-btn {
-    background-color: #ff0000; /* Warna tombol Hapus */
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
+/* Gaya Responsif */
+@media (max-width: 768px) {
+    .member-cards {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Menyesuaikan untuk layar kecil */
+        padding: 10px;
+    }
 
-button.delete-btn:hover {
-    background-color: #e60000; /* Efek hover tombol Hapus */
-}
+    .top-bar input {
+        max-width: 100%; /* Agar input pencarian memenuhi lebar layar */
+    }
 
-  /* Responsif untuk perangkat dengan layar kecil */
-  @media (max-width: 768px) {
     .order-summary {
-      width: 100%; /* Lebar form menjadi 100% pada layar kecil */
-      margin-left: 0;
-      margin-top: 20px;
+        max-width: 50%; /* Lebar form 90% pada layar kecil */
+        padding: 15px; /* Mengurangi padding */
     }
-  
+
     .order-summary h3 {
-      font-size: 20px;
+        font-size: 1.5rem; /* Mengurangi ukuran font judul */
+        text-align: center; /* Agar judul tetap terpusat */
     }
-  
-    .order-summary label,
+
+    .order-summary label {
+        font-size: 0.9rem; /* Mengurangi ukuran font label */
+    }
+
     .order-summary input,
     .order-summary select,
     .order-summary button {
-      font-size: 14px; /* Mengurangi ukuran font pada layar kecil */
+        font-size: 0.9rem; /* Mengurangi ukuran font input dan button */
+        padding: 10px; /* Menambah ruang dalam input dan tombol */
     }
-  }
-  
-  /* Default Layout (Layar Besar) */
-.main-container {
-    display: flex;
-    flex-direction: column;
+
+    h1 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
 }
 
-/* Layout Responsif untuk Layar Kecil */
-@media (max-width: 768px) {
-  .main-container {
-    flex-direction: column; /* Ubah tata letak menjadi kolom */
-  }
+@media (max-width: 480px) {
+    .member-cards {
+        grid-template-columns: 1fr; /* Satu kolom untuk layar sangat kecil */
+    }
 
-  
-  .order-summary {
-    padding: 15px;
-  }
+    .top-bar input {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+    .order-summary {
+        max-width: 100%; /* Lebar 100% pada layar sangat kecil */
+        padding: 10px; /* Mengurangi padding lebih lanjut */
+    }
 
-  /* Pindahkan form ke bawah tabel */
-  .order-summary {
-    width: 100%; /* Buat form mengambil lebar penuh */
-    margin-top: 20px; /* Tambahkan jarak dari tabel */
-    padding: 15px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-  }
+    .order-summary h3 {
+        font-size: 1.2rem; /* Ukuran judul lebih kecil lagi */
+    }
 
-  .order-summary h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-
-  .order-summary form {
-    display: flex;
-    flex-direction: column; /* Susun elemen form secara vertikal */
-  }
-
-  .order-summary label {
-    margin-bottom: 8px;
-    font-weight: bold;
-  }
-
-  .order-summary input,
-  .order-summary select,
-  .order-summary button {
-    margin-bottom: 10px;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-
-  .order-summary button {
-    background-color: #ff6242;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .order-summary button:hover {
-    background-color: #e14d36;
-  }
-
-  /* Sesuaikan Tabel pada Layar Kecil */
-  .member-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .member-table th,
-  .member-table td {
-    font-size: 14px;
-    text-align: left;
-    padding: 10px 5px;
-  }
-
-  .member-table tbody tr {
-    border-bottom: 1px solid #ddd;
-  }
-
-  .content-header h1 {
-    font-size: 20px;
-    text-align: center;
-    margin-bottom: 15px;
-  }
-
-  /* Hilangkan input pencarian di atas tabel jika tidak diperlukan */
-  .top-bar {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-
-  #search {
-    width: 100%;
-    max-width: 300px;
-    padding: 10px;
-    font-size: 16px;
-  }
-
+    .order-summary input,
+    .order-summary select,
+    .order-summary button {
+        font-size: 0.85rem; /* Menyesuaikan ukuran font */
+        padding: 8px; /* Mengurangi padding untuk input dan tombol */
+    }
 }
