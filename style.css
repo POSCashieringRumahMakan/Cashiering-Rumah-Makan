@@ -7,8 +7,10 @@
 
 body {
   font-family: 'Montserrat', sans-serif;
-  background-color: #ffffff; /* Warna dasar putih */
-  color: #333333; /* Warna teks utama */
+  background-color: #ffffff;
+  /* Warna dasar putih */
+  color: #333333;
+  /* Warna teks utama */
   line-height: 1.6;
 }
 
@@ -54,10 +56,10 @@ body {
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-
 /* Sidebar (Jika ada) */
 .sidebar {
-  background-color: #ff6242; /* Warna kustom untuk sidebar */
+  background-color: #ff6242;
+  /* Warna kustom untuk sidebar */
   color: #ffffff;
   padding: 20px;
   width: 250px;
@@ -71,8 +73,9 @@ body {
 .main-container {
   display: flex;
   flex-direction: column;
-  margin-left: 250px; /* Ruang untuk sidebar */
-  padding: 20px;
+  margin-left: 250px;
+  /* Ruang untuk sidebar */
+  padding: 25px;
   margin-top: 60px;
 }
 
@@ -84,7 +87,8 @@ body {
 
 .welcome-message h1 {
   font-size: 36px;
-  color: #ff6242; /* Warna kustom */
+  color: #ff6242;
+  /* Warna kustom */
   margin-bottom: 20px;
 }
 
@@ -102,7 +106,8 @@ body {
 
 .info h3 {
   font-size: 28px;
-  color: #ff6242; /* Warna kustom */
+  color: #ff6242;
+  /* Warna kustom */
   margin-bottom: 10px;
 }
 
@@ -127,7 +132,8 @@ body {
 .cta button {
   padding: 15px 30px;
   font-size: 18px;
-  background-color: #ff6242; /* Warna kustom */
+  background-color: #ff6242;
+  /* Warna kustom */
   color: white;
   border: none;
   border-radius: 5px;
@@ -136,7 +142,8 @@ body {
 }
 
 .cta button:hover {
-  background-color: #e14d36; /* Warna lebih gelap saat hover */
+  background-color: #e14d36;
+  /* Warna lebih gelap saat hover */
 }
 
 /* Gaya untuk kotak-kotak tautan */
@@ -154,7 +161,8 @@ body {
   justify-content: center;
   text-align: center;
   padding: 20px;
-  background-color: #f8f9fa; /* Warna latar belakang */
+  background-color: #f8f9fa;
+  /* Warna latar belakang */
   border: 2px solid #e0e0e0;
   border-radius: 10px;
   text-decoration: none;
@@ -170,7 +178,8 @@ body {
 .link-box i {
   font-size: 2rem;
   margin-bottom: 10px;
-  color: #007bff; /* Warna ikon */
+  color: #007bff;
+  /* Warna ikon */
 }
 
 .link-box span {
@@ -193,9 +202,12 @@ body {
 /* Media Query untuk Tablet (max-width: 1024px) */
 @media screen and (max-width: 1024px) {
   .top-bar input[type="text"] {
-    width: 70%; /* Lebar lebih besar pada tablet */
-    font-size: 14px; /* Kurangi ukuran font */
-    padding: 8px 12px; /* Padding lebih kecil */
+    width: 70%;
+    /* Lebar lebih besar pada tablet */
+    font-size: 14px;
+    /* Kurangi ukuran font */
+    padding: 8px 12px;
+    /* Padding lebih kecil */
   }
 }
 
@@ -206,9 +218,45 @@ body {
   }
 
   .top-bar input[type="text"] {
-    width: 80%; /* Lebar lebih besar */
-    font-size: 13px; /* Ukuran font lebih kecil */
-    padding: 6px 10px; /* Padding lebih kecil */
+    width: 80%;
+    /* Lebar lebih besar */
+    font-size: 13px;
+    /* Ukuran font lebih kecil */
+    padding: 6px 10px;
+    /* Padding lebih kecil */
+  }
+
+  .welcome-message h1 {
+    font-size: 1.75rem;
+    /* Ukuran font lebih kecil */
+  }
+
+  .welcome-message p {
+    font-size: 0.9rem;
+    /* Ukuran font lebih kecil */
+  }
+
+  .welcome-message {
+    padding: 15px;
+    /* Kurangi padding */
+  }
+
+  .link-boxes {
+    grid-template-columns: repeat(2, 1fr);
+    /* Dua kolom */
+  }
+
+  .link-box {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .link-box i {
+    font-size: 18px;
+  }
+
+  .link-box span {
+    font-size: 10px;
   }
 }
 
@@ -219,8 +267,44 @@ body {
   }
 
   .top-bar input[type="text"] {
-    width: 90%; /* Full-width hampir penuh */
+    width: 90%;
+    /* Full-width hampir penuh */
     font-size: 12px;
     padding: 5px 8px;
+  }
+
+  .welcome-message h1 {
+    font-size: 1.5rem;
+    /* Ukuran font lebih kecil */
+  }
+
+  .welcome-message p {
+    font-size: 0.85rem;
+    /* Ukuran font lebih kecil */
+  }
+
+  .welcome-message {
+    padding: 10px;
+    /* Kurangi padding lagi */
+    margin: 10px auto;
+    /* Margin lebih kecil */
+  }
+
+  .link-boxes {
+    grid-template-columns: repeat(2, 1fr);
+    /* Tetap dua kolom untuk layar lebih kecil */
+  }
+
+  .link-box {
+    padding: 6px;
+    font-size: 10px;
+  }
+
+  .link-box i {
+    font-size: 16px;
+  }
+
+  .link-box span {
+    font-size: 8px;
   }
 }
