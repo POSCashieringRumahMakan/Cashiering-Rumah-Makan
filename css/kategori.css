@@ -16,7 +16,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 30px;
-    padding: 30px;
+    padding: px;
 }
 
 /* Tabel kategori dan produk */
@@ -225,3 +225,7 @@ button.delete-button:hover {
         padding: 5px;
     }
 }
+
+
+
+
