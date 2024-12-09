@@ -119,5 +119,9 @@ function searchMembers() {
     });
 }
 
+function printPage() {
+    window.print();
+}
+
 // Tampilkan pelanggan saat halaman dimuat
 document.addEventListener('DOMContentLoaded', displayMembers);

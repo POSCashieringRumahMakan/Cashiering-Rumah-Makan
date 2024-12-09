@@ -11,6 +11,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="img/logopadang.png" type="image/png">
+
+    <style>
+        
+        .print-btn {
+            background-color: #007bff;
+            /* Warna tombol */
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .print-btn:hover {
+            background-color: #0056b3;
+            /* Warna saat hover */
+        }
+    </style>
 </head>
 
 <body data-page="pengguna">
@@ -28,6 +47,7 @@
             <!-- Title and Action -->
             <div class="content-header">
                 <h1>Laporan Data Pelanggan</h1>
+                <button onclick="printPage()" class="print-btn">Cetak</button>
             </div>
 
             <!-- Member Cards -->
