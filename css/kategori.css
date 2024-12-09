@@ -1,48 +1,75 @@
-/* Tabel kategori */
-.category-table {
+/* Import font terbaru dari Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+
+/* Styling global */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7fb;
+    color: #333;
+}
+
+/* Layout utama */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 30px;
+}
+
+/* Tabel kategori dan produk */
+.category-table, .product-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
     background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
 }
 
-/* Header tabel */
-.category-table th {
+.category-table th, .category-table td,
+.product-table th, .product-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.category-table th, .product-table th {
     background-color: #f4f4f4;
     color: #333;
     font-weight: 600;
     text-align: left;
-    padding: 12px;
-    border-bottom: 2px solid #ddd;
+    letter-spacing: 0.05em;
 }
 
-/* Isi tabel */
-.category-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-    font-size: 0.95rem;
+.category-table td, .product-table td {
     color: #555;
+    font-size: 0.95rem;
     white-space: nowrap;
+    transition: background-color 0.3s ease;
+}
+
+.category-table tr:hover td, .product-table tr:hover td {
+    background-color: #f9f9f9; /* Hover effect */
 }
 
 /* Gaya untuk baris ganjil */
-.category-table tr:nth-child(odd) {
-    background-color: #fdfdfd;
+.category-table tr:nth-child(odd), .product-table tr:nth-child(odd) {
+    background-color: #fcfcfc;
 }
 
 /* Tombol Aksi */
 button.edit-button, button.delete-button {
-    padding: 6px 12px;
+    padding: 8px 14px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 /* Tombol Edit */
@@ -63,35 +90,37 @@ button.delete-button {
 }
 
 button.delete-button:hover {
-    background-color: #e53935;
+    background-color: #d32f2f;
     transform: scale(1.05);
 }
 
-/* Form kategori */
+/* Form kategori dan produk */
 .order-summary {
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
     background-color: #f7f7f7;
     padding: 25px;
     border-radius: 12px;
-    position: fixed;
-    right: 20px;
-    top: 100px;
-    color: #000;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin-top: 40px; /* Pindahkan form ke bawah tabel */
+    box-sizing: border-box;
     font-family: 'Montserrat', sans-serif;
+    margin-bottom: 30px; /* Menambahkan jarak di bawah form */
 }
 
 .order-summary h3 {
     font-size: 22px;
     font-weight: 600;
-    margin-bottom: 20px;
+    color: #333;
     text-align: center;
+    margin-bottom: 20px;
 }
 
 .order-summary label {
     font-size: 16px;
-    margin-bottom: 8px;
     font-weight: 600;
+    color: #444;
+    margin-bottom: 8px;
     display: block;
 }
 
@@ -101,8 +130,9 @@ button.delete-button:hover {
     padding: 12px;
     font-size: 16px;
     margin-bottom: 15px;
-    border-radius: 8px;
     border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
     transition: border-color 0.3s ease;
 }
 
@@ -119,6 +149,7 @@ button.delete-button:hover {
     font-weight: 600;
     background-color: #ff6242;
     color: white;
+    border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -130,17 +161,49 @@ button.delete-button:hover {
 
 /* Responsif untuk layar kecil */
 @media (max-width: 768px) {
-    .category-table th,
-    .category-table td {
+    .category-table th, .category-table td, .product-table th, .product-table td {
         font-size: 12px;
         padding: 6px;
     }
 
     .order-summary {
-        position: static;
+        width: 100%;
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .order-summary h3 {
+        font-size: 20px;
+    }
+
+    .order-summary input,
+    .order-summary select,
+    .order-summary button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .product-table, .category-table {
         width: 100%;
         margin-top: 20px;
-        box-shadow: none;
+    }
+
+    .product-table td button, .category-table td button {
+        font-size: 12px;
+    }
+}
+
+/* Responsif untuk layar lebih kecil (ponsel) */
+@media (max-width: 480px) {
+    .order-summary {
+        width: 100%;
+        padding: 15px;
+        margin-top: 15px;
+        margin-bottom: 15px;
     }
 
     .order-summary h3 {
@@ -150,31 +213,15 @@ button.delete-button:hover {
     .order-summary input,
     .order-summary select,
     .order-summary button {
-        font-size: 14px;
-        padding: 10px;
-    }
-}
-
-/* Responsif untuk layar sangat kecil */
-@media (max-width: 480px) {
-    .category-table th,
-    .category-table td {
-        font-size: 10px;
-        padding: 4px;
-    }
-
-    .order-summary {
-        padding: 15px;
-    }
-
-    .order-summary h3 {
-        font-size: 16px;
-    }
-
-    .order-summary input,
-    .order-summary select,
-    .order-summary button {
         font-size: 12px;
+    }
+
+    .product-table th, .product-table td, .category-table th, .category-table td {
+        font-size: 10px;
         padding: 8px;
+    }
+
+    .product-table td button, .category-table td button {
+        padding: 5px;
     }
 }
