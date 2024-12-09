@@ -191,7 +191,7 @@ body {
 /* Styling untuk responsivitas */
 @media (max-width: 768px) {
   .main-container {
-    margin-left: 65px;
+    margin-left: 91px;
   }
 
   .top-bar input {
@@ -263,15 +263,14 @@ body {
 /* Media Query untuk Ponsel Kecil (max-width: 480px) */
 @media screen and (max-width: 480px) {
   .top-bar {
-    padding: 5px;
+    padding: 17px;
   }
 
   .top-bar input[type="text"] {
-    width: 90%;
-    /* Full-width hampir penuh */
-    font-size: 12px;
-    padding: 5px 8px;
-  }
+    max-width: 50%;
+    margin: 0 10px;
+    margin-right: 90px;
+}
 
   .welcome-message h1 {
     font-size: 1.5rem;
