@@ -13,7 +13,15 @@ let products = [
         kategori: "Makanan Berat",
         harga: 30000,
         status: "Tersedia"
+    },
+    {
+        id: 3,
+        nama: "Nasi Gulai Tunjang",
+        kategori: "Makanan Berat",
+        harga: 35000,
+        status: "Tersedia"
     }
+
 ];
 
    // Fungsi untuk merender produk ke dalam halaman
