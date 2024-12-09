@@ -241,56 +241,90 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
+    const totalAmount = order.reduce((total, item) => total + (item.price * item.quantity), 0);
     if (selectedFilter.id === 'dine-in-filter') {
-      const totalAmount = order.reduce((total, item) => total + (item.price * item.quantity), 0);
       document.getElementById("dine-in-total").textContent = totalAmount.toLocaleString();
-      document.getElementById("dine-in-popup").style.display = "flex";
+      document.getElementById("dine-in-popup").style.display = "flex"; // Pop-up Makan di Tempat
     } else if (selectedFilter.id === 'takeaway-filter') {
-      const totalAmount = order.reduce((total, item) => total + (item.price * item.quantity), 0);
       document.getElementById("takeaway-total").textContent = totalAmount.toLocaleString();
-      document.getElementById("takeaway-popup").style.display = "flex";
+      document.getElementById("takeaway-popup").style.display = "flex"; // Pop-up Bawa Pulang
     }
   });
 
-  document.getElementById('pay-now').addEventListener('click', () => {
-    const paymentMethod = document.getElementById('payment-method').value; // Metode pembayaran
-    const cashAmountInput = document.getElementById('cash-amount'); // Input jumlah tunai
-    const totalAmount = parseFloat(document.getElementById("takeaway-total").textContent.replace(/,/g, '')); // Total Pesanan
-    const cashAmount = parseFloat(cashAmountInput.value) || 0; // Jumlah Tunai (default ke 0 jika kosong)
-
-    if (paymentMethod === "cash") {
-      if (cashAmount < totalAmount) {
-        // Notifikasi jika uang kurang
-        alert(`Jumlah uang tunai kurang! Total: Rp. ${totalAmount.toLocaleString()}, Anda hanya memberikan Rp. ${cashAmount.toLocaleString()}.`);
-        return; // Berhenti di sini jika uang kurang
-      } else {
-        const change = cashAmount - totalAmount; // Menghitung kembalian
-        alert(`Pembayaran berhasil! Kembalian Anda adalah Rp. ${change.toLocaleString()}.`);
-        cashAmountInput.value = ''; // Reset input jumlah tunai
-      }
-    } else {
-      alert(`Pembayaran berhasil menggunakan ${paymentMethod}!`);
-    }
-
-    // Reset data atau logika tambahan lainnya
-    order = []; // Kosongkan pesanan
-    saveOrderToLocalStorage(); // Simpan perubahan ke localStorage
-    renderOrder(); // Render ulang daftar pesanan
-    document.getElementById("takeaway-popup").style.display = "none"; // Tutup popup
-  });
-
+  // Listener untuk tombol "Makan di Tempat"
   document.getElementById('dinein-card').addEventListener('click', () => {
     const totalAmount = order.reduce((total, item) => total + (item.price * item.quantity), 0);
     document.getElementById("dine-in-total").textContent = totalAmount.toLocaleString();
-    document.getElementById("dine-in-popup").style.display = "flex";
+    document.getElementById("dine-in-popup").style.display = "flex"; // Menampilkan pop-up Makan di Tempat
   });
+
+document.getElementById('pay-now').addEventListener('click', () => {
+  const paymentMethod = document.getElementById('payment-method').value; // Metode pembayaran
+  const cashAmountInput = document.getElementById('cash-amount'); // Input jumlah tunai
+  const totalAmount = parseFloat(document.getElementById("takeaway-total").textContent.replace(/,/g, '')); // Total Pesanan
+  const cashAmount = parseFloat(cashAmountInput.value) || 0; // Jumlah Tunai (default ke 0 jika kosong)
+
+  if (paymentMethod === "cash") {
+    if (cashAmount < totalAmount) {
+      // Notifikasi jika uang kurang
+      alert(`Jumlah uang tunai kurang! Total: Rp. ${totalAmount.toLocaleString()}, Anda hanya memberikan Rp. ${cashAmount.toLocaleString()}.`);
+      return; // Berhenti di sini jika uang kurang
+    } else {
+      const change = cashAmount - totalAmount; // Menghitung kembalian
+      alert(`Pembayaran berhasil! Kembalian Anda adalah Rp. ${change.toLocaleString()}.`);
+      cashAmountInput.value = ''; // Reset input jumlah tunai
+    }
+  } else {
+    alert(`Pembayaran berhasil menggunakan ${paymentMethod}!`);
+  }
+
+  // Reset data atau logika tambahan lainnya
+  order = []; // Kosongkan pesanan
+  saveOrderToLocalStorage(); // Simpan perubahan ke localStorage
+  renderOrder(); // Render ulang daftar pesanan
+  document.getElementById("takeaway-popup").style.display = "none"; // Tutup popup
+});
+
+// Fungsi untuk memproses pembayaran
+document.getElementById('pay-now').addEventListener('click', () => {
+  const paymentMethod = document.getElementById('payment-method').value; // Metode pembayaran
+  const cashAmountInput = document.getElementById('cash-amount'); // Input jumlah tunai
+  const totalAmount = parseFloat(document.getElementById("dine-in-total").textContent.replace(/,/g, '')); // Total Pesanan
+  const cashAmount = parseFloat(cashAmountInput.value) || 0; // Jumlah Tunai (default ke 0 jika kosong)
+
+  if (paymentMethod === "cash") {
+    if (cashAmount < totalAmount) {
+      alert(`Jumlah uang tunai kurang! Total: Rp. ${totalAmount.toLocaleString()}, Anda hanya memberikan Rp. ${cashAmount.toLocaleString()}.`);
+      return; // Berhenti jika uang kurang
+    } else {
+      const change = cashAmount - totalAmount; // Menghitung kembalian
+      alert(`Pembayaran berhasil! Kembalian Anda adalah Rp. ${change.toLocaleString()}.`);
+      cashAmountInput.value = ''; // Reset input
+    }
+  } else {
+    alert(`Pembayaran berhasil menggunakan ${paymentMethod}!`);
+  }
+
+  // Reset data pesanan dan tutup pop-up
+  order = []; 
+  saveOrderToLocalStorage();
+  renderOrder();
+  document.getElementById("dine-in-popup").style.display = "none"; // Menutup pop-up
+});
+
+
+document.getElementById('dinein-card').addEventListener('click', () => {
+  const totalAmount = order.reduce((total, item) => total + (item.price * item.quantity), 0);
+  document.getElementById("dine-in-total").textContent = totalAmount.toLocaleString();
+  document.getElementById("dine-in-popup").style.display = "flex";
+});
 });
 
 document.addEventListener('DOMContentLoaded', function () {
   // Tombol close untuk pop-up Bawa Pulang
   const closeTakeawayBtn = document.getElementById('close-takeaway');
   if (closeTakeawayBtn) {
-    closeTakeawayBtn.addEventListener('click', function() {
+    closeTakeawayBtn.addEventListener('click', function () {
       const takeawayPopup = document.getElementById('takeaway-popup');
       takeawayPopup.style.display = 'none';
     });
@@ -299,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Tombol close untuk pop-up Makan di Tempat
   const closeDineInBtn = document.getElementById('close-dine-in');
   if (closeDineInBtn) {
-    closeDineInBtn.addEventListener('click', function() {
+    closeDineInBtn.addEventListener('click', function () {
       const dineInPopup = document.getElementById('dine-in-popup');
       dineInPopup.style.display = 'none';
     });
@@ -311,3 +345,64 @@ window.onload = function () {
   loadOrderFromLocalStorage();
   showCategory("food"); // Tampilkan kategori makanan pertama kali
 };
+
+// Fungsi Cetak Dinamis
+function printOrderDynamic(orderType) {
+  // Ambil data berdasarkan jenis pesanan (bawa pulang atau makan di tempat)
+  let name, note, paymentMethod, cashAmount, total, extraInfo = "";
+
+  if (orderType === "takeaway") {
+    name = document.getElementById("takeaway-name").value || "Tidak Diketahui";
+    note = document.getElementById("takeaway-note").value || "-";
+    paymentMethod = document.getElementById("payment-method").value || "-";
+    cashAmount = document.getElementById("cash-amount").value || "0";
+    total = document.getElementById("takeaway-total").textContent || "0";
+  } else if (orderType === "dinein") {
+    name = document.getElementById("dine-in-name").value || "Tidak Diketahui";
+    note = document.getElementById("dine-in-note").value || "-";
+    paymentMethod = document.getElementById("dine-in-payment-method").value || "-";
+    cashAmount = document.getElementById("dine-in-cash-amount").value || "0";
+    total = document.getElementById("dine-in-total").textContent || "0";
+    extraInfo = `<p><strong>Nomor Meja:</strong> ${document.getElementById("table-number").value || "-"}</p>`;
+  }
+
+  // Jendela Cetak
+  const printWindow = window.open("", "", "width=600,height=400");
+
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Struk Pesanan</title>
+        <style>
+          body { font-family: Arial, sans-serif; padding: 20px; }
+          h1 { text-align: center; }
+          p { margin: 5px 0; }
+        </style>
+      </head>
+      <body>
+        <h1>Struk Pesanan</h1>
+        <p><strong>Nama Pemesan:</strong> ${name}</p>
+        <p><strong>Catatan:</strong> ${note}</p>
+        <p><strong>Metode Pembayaran:</strong> ${paymentMethod}</p>
+        <p><strong>Jumlah Tunai:</strong> Rp. ${parseInt(cashAmount).toLocaleString()}</p>
+        <p><strong>Total:</strong> Rp. ${parseInt(total).toLocaleString()}</p>
+        ${extraInfo}
+        <script>
+          window.print();
+          window.onafterprint = function () { window.close(); }
+        </script>
+      </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+}
+
+// Event Listener untuk Tombol Cetak
+document.getElementById("print-takeaway").addEventListener("click", () => {
+  printOrderDynamic("takeaway");
+});
+
+document.getElementById("print-dinein").addEventListener("click", () => {
+  printOrderDynamic("dinein");
+});
