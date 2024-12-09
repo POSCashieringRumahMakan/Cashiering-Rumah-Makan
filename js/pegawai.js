@@ -1,7 +1,7 @@
 // Data awal pegawai
 const employees = [
-    { id: 1, nama: 'Balqis Rosa', jabatan: 'Kasir', email: 'balqisrosa@example.com', noTelepon: '08123456789', status: 'Aktif' },
-    { id: 2, nama: 'Audyardha', jabatan: 'Manajer', email: 'audyardha@example.com', noTelepon: '08987654321', status: 'Aktif' },
+    { id: 1, nama: 'Rania Ayuni', jabatan: 'Kasir', email: 'balqisrosa@example.com', noTelepon: '08123456789', status: 'Aktif' },
+    { id: 2, nama: 'Sindy Maulina', jabatan: 'Manajer', email: 'audyardha@example.com', noTelepon: '08987654321', status: 'Aktif' },
 ];
 
 // Fungsi menampilkan daftar pegawai
@@ -63,7 +63,7 @@ function saveEmployee(event) {
         employees.push(newEmployee);
     }
 
-    document.getElementById('employee-form').reset();
+    document.getElementById('member-form').reset();
     document.getElementById('employee-id').value = '';
     displayEmployees();
 }
@@ -78,10 +78,10 @@ function deleteEmployee(id) {
     }
 }
 
-// Fungsi mengedit pegawai
 function editEmployee(id) {
     const employee = employees.find((employee) => employee.id === id);
     if (employee) {
+        console.log('Editing employee:', employee); // Debug log
         document.getElementById('employee-id').value = employee.id;
         document.getElementById('nama').value = employee.nama;
         document.getElementById('jabatan').value = employee.jabatan;

@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <li><a href="menu.html" class="sidebar-link" data-page="menu"><i class="fas fa-utensils"></i><span>Menu</span></a></li>
           <li><a href="kasir.html" class="sidebar-link" data-page="kasir"><i class="fas fa-cash-register"></i><span>Kasir</span></a></li>
           <li><a href="pengguna.html" class="sidebar-link" data-page="pengguna"><i class="fas fa-users"></i><span>Pengguna</span></a></li>
-          <li><a href="pegawai.html" class="sidebar-link" data-page="pengawai"><i class="fa-solid fa-address-card"></i><span>Pegawai</span></a></li>
+          <li><a href="pegawai.html" class="sidebar-link" data-page="pegawai"><i class="fa-solid fa-address-card"></i><span>Pegawai</span></a></li>
           <li><a href="meja.html" class="sidebar-link" data-page="meja"><i class="fas fa-chair"></i><span>Meja</span></a></li>
           <li><a href="riwayat.html" class="sidebar-link" data-page="riwayat"><i class="fas fa-receipt"></i><span>Riwayat</span></a></li>
 

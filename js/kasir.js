@@ -482,6 +482,10 @@ document.addEventListener('DOMContentLoaded', function () {
       extraInfo = `<p><strong>Nomor Meja:</strong> ${document.getElementById("table-number").value || "-"}</p>`;
     }
 
+    // Ambil total dan jumlah tunai dari elemen tanpa mengubah formatnya
+    const formattedCashAmount = document.getElementById(orderType === "takeaway" ? "cash-amount" : "dine-in-cash-amount").value || "0";
+    const formattedTotal = document.getElementById(orderType === "takeaway" ? "takeaway-total" : "dine-in-total").textContent || "0";
+
     // Jendela Cetak
     const printWindow = window.open("", "", "width=600,height=400");
 
@@ -500,8 +504,8 @@ document.addEventListener('DOMContentLoaded', function () {
         <p><strong>Nama Pemesan:</strong> ${name}</p>
         <p><strong>Catatan:</strong> ${note}</p>
         <p><strong>Metode Pembayaran:</strong> ${paymentMethod}</p>
-        <p><strong>Jumlah Tunai:</strong> Rp. ${parseInt(cashAmount).toLocaleString()}</p>
-        <p><strong>Total:</strong> Rp. ${parseInt(total).toLocaleString()}</p>
+        <p><strong>Jumlah Tunai:</strong> ${formattedCashAmount}</p>
+        <p><strong>Total:</strong> ${formattedTotal}</p>
         ${extraInfo}
         <script>
           window.print();
