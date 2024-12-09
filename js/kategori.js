@@ -45,7 +45,7 @@ function saveCategory(event) {
 
     const name = categoryNameField.value.trim();
     if (name === '') {
-        alert('Nama kategori tidak boleh kosong.');
+        alert('Data Kategori Berhasil Ditambah!');
         return;
     }
 
