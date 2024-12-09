@@ -1,61 +1,75 @@
-/* Style untuk tabel kategori */
+/* Tabel kategori */
 .category-table {
-    width: 60%; /* Lebar default */
+    width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    float: left; /* Posisi di kiri */
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
-.category-table th, 
-.category-table td {
-    border: 1px solid #ddd;
-    text-align: left;
-    padding: 8px; /* Padding untuk teks */
-}
-
+/* Header tabel */
 .category-table th {
     background-color: #f4f4f4;
-    font-weight: bold;
+    color: #333;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px;
+    border-bottom: 2px solid #ddd;
 }
 
+/* Isi tabel */
 .category-table td {
-    white-space: nowrap; /* Hindari teks terpotong */
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+    color: #555;
+    white-space: nowrap;
 }
 
-.category-table td button {
-    padding: 5px 10px; /* Padding tombol */
+/* Gaya untuk baris ganjil */
+.category-table tr:nth-child(odd) {
+    background-color: #fdfdfd;
 }
 
-/* Gaya untuk tombol Edit dan Hapus */
+/* Tombol Aksi */
 button.edit-button, button.delete-button {
+    padding: 6px 12px;
     border: none;
-    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
     cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+/* Tombol Edit */
 button.edit-button {
-    background-color: #007bff; /* Biru */
-    color: white;
-}
-
-button.delete-button {
-    background-color: #ff0000; /* Merah */
+    background-color: #007bff;
     color: white;
 }
 
 button.edit-button:hover {
     background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Tombol Hapus */
+button.delete-button {
+    background-color: #f44336;
+    color: white;
 }
 
 button.delete-button:hover {
-    background-color: #e60000;
+    background-color: #e53935;
+    transform: scale(1.05);
 }
 
-/* Style untuk form kategori */
+/* Form kategori */
 .order-summary {
-    width: 400px; /* Lebar form default */
+    width: 400px;
     background-color: #f7f7f7;
     padding: 25px;
     border-radius: 12px;
@@ -116,21 +130,17 @@ button.delete-button:hover {
 
 /* Responsif untuk layar kecil */
 @media (max-width: 768px) {
-    .category-table {
-        width: 100%; /* Lebar penuh */
-    }
-
-    .category-table th, 
+    .category-table th,
     .category-table td {
         font-size: 12px;
         padding: 6px;
     }
 
     .order-summary {
-        position: static; /* Posisi tidak tetap */
-        width: 100%; /* Lebar penuh */
+        position: static;
+        width: 100%;
         margin-top: 20px;
-        box-shadow: none; /* Hilangkan bayangan */
+        box-shadow: none;
     }
 
     .order-summary h3 {
@@ -147,7 +157,7 @@ button.delete-button:hover {
 
 /* Responsif untuk layar sangat kecil */
 @media (max-width: 480px) {
-    .category-table th, 
+    .category-table th,
     .category-table td {
         font-size: 10px;
         padding: 4px;

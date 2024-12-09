@@ -25,11 +25,12 @@
 
         <!-- Content Section -->
         <section class="content">
+            <!-- Title and Action -->
             <div class="content-header">
-                <h1>Kategori Produk</h1>
+                <h1>Data Kategori</h1>
             </div>
 
-            <!-- Kategori Table -->
+            <!-- Table: Kategori -->
             <table class="category-table">
                 <thead>
                     <tr>
@@ -38,25 +39,40 @@
                         <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="category-list">
-                    <!-- Data kategori akan dimuat secara dinamis -->
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Makanan Ringan</td>
+                        <td>
+                            <button class="edit-button">Edit</button>
+                            <button class="delete-button">Hapus</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Minuman</td>
+                        <td>
+                            <button class="edit-button">Edit</button>
+                            <button class="delete-button">Hapus</button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </section>
+
+        <!-- Form Tambah Kategori -->
+        <aside class="order-summary">
+            <h3>Form Tambah Kategori</h3>
+            <form id="category-form" onsubmit="saveCategory(event)">
+                <input type="hidden" id="category-id">
+
+                <label for="namaKategori">Nama Kategori:</label>
+                <input type="text" id="namaKategori" placeholder="Masukkan nama kategori" required>
+
+                <button type="submit">Simpan</button>
+            </form>
+        </aside>
     </div>
-
-    <!-- Form Tambah Kategori -->
-    <aside class="order-summary">
-        <h3>Form Tambah Kategori</h3>
-        <form id="category-form" onsubmit="saveCategory(event)">
-            <input type="hidden" id="category-id">
-
-            <label for="namaKategori">Nama Kategori:</label>
-            <input type="text" id="namaKategori" required>
-
-            <button type="submit">Simpan</button>
-        </form>
-    </aside>
 
     <script src="js/kategori.js"></script>
 </body>
