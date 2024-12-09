@@ -124,5 +124,25 @@ function searchEmployees() {
     });
 }
 
+// Fungsi untuk mencetak halaman
+function printPage() {
+    window.print();
+}
+
+// Fungsi untuk mendownload PDF
+function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Ambil konten dari div#employee-list
+    const content = document.getElementById('employee-list').innerHTML;
+    doc.html(content, {
+        callback: function (doc) {
+            doc.save('laporan_pegawai.pdf'); // Menyimpan file PDF
+        }
+    });
+}
+
+
 // Tampilkan pegawai saat halaman dimuat
 document.addEventListener('DOMContentLoaded', displayEmployees);

@@ -13,70 +13,120 @@
     <link rel="shortcut icon" href="img/logopadang.png" type="image/png">
 </head>
 <style>
+    /* Styling untuk tombol cetak dan PDF */
+    .btn-cetak,
+    .btn-pdf {
+        padding: 10px 20px;
+        background-color: #ff6242;
+        /* Warna hijau */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        margin: 10px 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-cetak:hover,
+    .btn-pdf:hover {
+        background-color: #ff8164;
+    }
+
+    @media print {
+        .order-summary {
+            display: none;
+        }
+
+        .top-bar {
+            display: none;
+        }
+
+        sidebar {
+            display: none !important;
+        }
+    }
+
     /* Gaya Responsif */
-@media (max-width: 768px) {
-    .member-cards {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Menyesuaikan untuk layar kecil */
-        padding: 10px;
+    @media (max-width: 768px) {
+        .member-cards {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            /* Menyesuaikan untuk layar kecil */
+            padding: 10px;
+        }
+
+        .top-bar input {
+            max-width: 100%;
+            /* Agar input pencarian memenuhi lebar layar */
+        }
+
+        .order-summary {
+            max-width: 100%;
+            /* Lebar form 90% pada layar kecil */
+            padding: 10px;
+            /* Mengurangi padding */
+        }
+
+        .order-summary h3 {
+            font-size: 1.5rem;
+            /* Mengurangi ukuran font judul */
+            text-align: center;
+            /* Agar judul tetap terpusat */
+        }
+
+        .order-summary label {
+            font-size: 0.9rem;
+            /* Mengurangi ukuran font label */
+        }
+
+        .order-summary input,
+        .order-summary select,
+        .order-summary button {
+            font-size: 0.9rem;
+            /* Mengurangi ukuran font input dan button */
+            padding: 10px;
+            /* Menambah ruang dalam input dan tombol */
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            text-align: center;
+        }
     }
 
-    .top-bar input {
-        max-width: 100%; /* Agar input pencarian memenuhi lebar layar */
-    }
-    .order-summary {
-        max-width: 100%; /* Lebar form 90% pada layar kecil */
-        padding: 10px; /* Mengurangi padding */
-    }
+    @media (max-width: 480px) {
+        .member-cards {
+            grid-template-columns: 1fr;
+            /* Satu kolom untuk layar sangat kecil */
+        }
 
-    .order-summary h3 {
-        font-size: 1.5rem; /* Mengurangi ukuran font judul */
-        text-align: center; /* Agar judul tetap terpusat */
-    }
+        .top-bar input {
+            font-size: 0.9rem;
+            padding: 8px;
+        }
 
-    .order-summary label {
-        font-size: 0.9rem; /* Mengurangi ukuran font label */
-    }
+        .order-summary {
+            max-width: 90%;
+            /* Lebar 100% pada layar sangat kecil */
+            padding: 10px;
+            /* Mengurangi padding lebih lanjut */
+            margin: auto;
+        }
 
-    .order-summary input,
-    .order-summary select,
-    .order-summary button {
-        font-size: 0.9rem; /* Mengurangi ukuran font input dan button */
-        padding: 10px; /* Menambah ruang dalam input dan tombol */
-    }
+        .order-summary h3 {
+            font-size: 1.2rem;
+            /* Ukuran judul lebih kecil lagi */
+        }
 
-    h1 {
-        font-size: 1.5rem;
-        text-align: center;
+        .order-summary input,
+        .order-summary select,
+        .order-summary button {
+            font-size: 0.85rem;
+            /* Menyesuaikan ukuran font */
+            padding: 8px;
+            /* Mengurangi padding untuk input dan tombol */
+        }
     }
-}
-
-@media (max-width: 480px) {
-    .member-cards {
-        grid-template-columns: 1fr; /* Satu kolom untuk layar sangat kecil */
-    }
-
-    .top-bar input {
-        font-size: 0.9rem;
-        padding: 8px;
-    }
-    .order-summary {
-        max-width: 90%; /* Lebar 100% pada layar sangat kecil */
-        padding: 10px; /* Mengurangi padding lebih lanjut */
-        margin: auto;
-    }
-
-    .order-summary h3 {
-        font-size: 1.2rem; /* Ukuran judul lebih kecil lagi */
-    }
-
-    .order-summary input,
-    .order-summary select,
-    .order-summary button {
-        font-size: 0.85rem; /* Menyesuaikan ukuran font */
-        padding: 8px; /* Mengurangi padding untuk input dan tombol */
-    }
-}
-
 </style>
 
 <body data-page="pegawai">
@@ -94,6 +144,8 @@
             <!-- Title and Action -->
             <div class="content-header">
                 <h1>Laporan Data Pegawai</h1>
+                <!-- Tombol Cetak & PDF -->
+                <button onclick="printPage()" class="btn-cetak">Cetak Laporan</button>
             </div>
 
             <!-- Employee Cards -->
@@ -144,6 +196,9 @@
     </div>
 
     <script src="js/pegawai.js"></script>
+    <!-- Tambahkan jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</body>
 </body>
 
 
