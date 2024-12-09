@@ -119,7 +119,16 @@
 
         <!-- Form input untuk Nomor Meja -->
         <label for="table-number">Nomor Meja:</label>
-        <input type="number" id="table-number" placeholder="Masukkan nomor meja">
+        <select id="table-number">
+          <option value="" disabled selected>Pilih nomor meja</option>
+          <option value="1">A1</option>
+          <option value="2">A2</option>
+          <option value="3">A3</option>
+          <option value="4">B1</option>
+          <option value="5">B2</option>
+          <option value="6">B3</option>
+          <!-- Tambahkan lebih banyak nomor meja jika diperlukan -->
+        </select>
 
         <!-- Pilihan Metode Pembayaran -->
         <label for="dine-in-payment-method">Metode Pembayaran:</label>

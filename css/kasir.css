@@ -60,7 +60,10 @@ body {
 /* Main Container */
 .main-container {
   display: flex;
+  position: relative;
   width: 100%;
+  grid-template-columns: 1fr 300px; /* Konten utama (1fr) dan kolom pesanan (300px) */
+  height: 100vh; /* Pastikan tinggi penuh layar */
 }
 
 /* Main Content */
@@ -230,6 +233,7 @@ body {
 /* Order Summary */
 .order-summary {
   width: 300px;
+  position: absolute; /* Pisahkan daftar pesanan dari flow normal */
   background-color: #f7f7f7;
   padding: 20px;
   border-radius: 12px;
@@ -398,7 +402,7 @@ body {
 }
 
 .popup button {
-  background-color: #4CAF50;
+  background-color: #ff6242;
   color: white;
   padding: 10px 20px;
   margin: 10px 5px;
@@ -483,14 +487,20 @@ body {
   }
 
   .order-summary {
-    width: 100%;
+    width: 90%;
     position: static;
     margin-top: 20px;
     box-shadow: none;
+    margin: auto;
+    margin-bottom: 30px;
   }
 
   .products {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .products .product-card {
+    width: 100%;
   }
 
   .top-bar input[type="text"] {
