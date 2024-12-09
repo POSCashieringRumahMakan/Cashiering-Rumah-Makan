@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pegawai - POS</title>
+    <link rel="stylesheet" href="css/kasir.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/pengguna.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="img/logopadang.png" type="image/png">
+</head>
+<style>
+    /* Gaya Responsif */
+@media (max-width: 768px) {
+    .member-cards {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Menyesuaikan untuk layar kecil */
+        padding: 10px;
+    }
+
+    .top-bar input {
+        max-width: 100%; /* Agar input pencarian memenuhi lebar layar */
+    }
+    .order-summary {
+        max-width: 100%; /* Lebar form 90% pada layar kecil */
+        padding: 10px; /* Mengurangi padding */
+    }
+
+    .order-summary h3 {
+        font-size: 1.5rem; /* Mengurangi ukuran font judul */
+        text-align: center; /* Agar judul tetap terpusat */
+    }
+
+    .order-summary label {
+        font-size: 0.9rem; /* Mengurangi ukuran font label */
+    }
+
+    .order-summary input,
+    .order-summary select,
+    .order-summary button {
+        font-size: 0.9rem; /* Mengurangi ukuran font input dan button */
+        padding: 10px; /* Menambah ruang dalam input dan tombol */
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .member-cards {
+        grid-template-columns: 1fr; /* Satu kolom untuk layar sangat kecil */
+    }
+
+    .top-bar input {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+    .order-summary {
+        max-width: 90%; /* Lebar 100% pada layar sangat kecil */
+        padding: 10px; /* Mengurangi padding lebih lanjut */
+        margin: auto;
+    }
+
+    .order-summary h3 {
+        font-size: 1.2rem; /* Ukuran judul lebih kecil lagi */
+    }
+
+    .order-summary input,
+    .order-summary select,
+    .order-summary button {
+        font-size: 0.85rem; /* Menyesuaikan ukuran font */
+        padding: 8px; /* Mengurangi padding untuk input dan tombol */
+    }
+}
+
+</style>
+
+<body data-page="pegawai">
+    <div class="main-container">
+        <!-- Sidebar -->
+        <script src="js/sidebar.js"></script>
+
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <input type="text" id="search" placeholder="Cari pegawai..." oninput="searchEmployees()">
+        </div>
+
+        <!-- Content Section -->
+        <section class="content">
+            <!-- Title and Action -->
+            <div class="content-header">
+                <h1>Laporan Data Pegawai</h1>
+            </div>
+
+            <!-- Employee Cards -->
+            <div class="member-cards" id="employee-list">
+                <!-- Data pegawai akan dimuat secara dinamis dalam kartu -->
+            </div>
+        </section>
+
+        <!-- Form Tambah Pegawai -->
+        <aside class="order-summary"
+            style="width: 400px; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px; margin: 0 auto;">
+            <h3 style="font-size: 16px; margin-bottom: 10px; text-align: center;">Form Tambah Pegawai</h3>
+            <form id="member-form" onsubmit="saveEmployee(event)"
+                style="display: flex; flex-direction: column; gap: 0px;">
+                <input type="hidden" id="employee-id">
+                <div style="display: flex; flex-direction: column; gap: 0px;">
+                    <label for="nama" style="font-size: 12px; color: #555;">Nama:</label>
+                    <input type="text" id="nama" required
+                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0px;">
+                    <label for="jabatan" style="font-size: 12px; color: #555;">Jabatan:</label>
+                    <input type="text" id="jabatan" required
+                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0px;">
+                    <label for="email" style="font-size: 12px; color: #555;">Email:</label>
+                    <input type="email" id="email" required
+                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label for="noTelepon" style="font-size: 12px; color: #555;">No. Telepon:</label>
+                    <input type="text" id="noTelepon" required
+                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label for="status" style="font-size: 12px; color: #555;">Status:</label>
+                    <select id="status" required
+                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                        <option value="Aktif">Aktif</option>
+                        <option value="Tidak Aktif">Tidak Aktif</option>
+                    </select>
+                </div>
+                <button type="submit"
+                    style="padding: 10px; font-size: 14px; color: #fff; background-color: #ff6242; border: none; border-radius: 4px; cursor: pointer;">Simpan</button>
+            </form>
+        </aside>
+    </div>
+
+    <script src="js/pegawai.js"></script>
+</body>
+
+</html>
