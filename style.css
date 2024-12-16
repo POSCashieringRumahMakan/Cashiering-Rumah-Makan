@@ -187,6 +187,24 @@ body {
   font-weight: 600;
   color: #555;
 }
+/* Tombol Daftar */
+.btn-daftar {
+  padding: 10px 20px;
+  background-color: #254117;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 10px; /* Memberikan jarak dengan input search */
+  transition: background-color 0.3s ease;
+}
+
+.btn-daftar:hover {
+  background-color: #1d3717;
+}
+
 
 /* Styling untuk responsivitas */
 @media (max-width: 768px) {
