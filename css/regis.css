@@ -1,7 +1,7 @@
 /* Style untuk body */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #fff5d7;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,10 +13,10 @@ body {
 .registration-container {
     background: #fff;
     padding: 20px 30px;
-    border-radius: 10px;
+    border-radius: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 350px;
     text-align: center;
 }
 
@@ -45,6 +45,8 @@ body {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 14px;
+    box-sizing: border-box; /* Pastikan padding tidak mengubah lebar input */
+    display: flex;
 }
 
 .form-group input:focus {
@@ -57,7 +59,7 @@ body {
 .btn {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #254117;
+    background-color: #ff6242;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -68,7 +70,7 @@ body {
 }
 
 .btn:hover {
-    background-color: #1d3717;
+    background-color: #ff8164;
 }
 
 /* Pesan */
