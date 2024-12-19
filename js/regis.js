@@ -1,5 +1,5 @@
 // URL API untuk registrasi
-const API_URL = "http://localhost/toko-api/public/registrasi";
+const API_URL = "http://localhost/pos_cashiering/public/index.php/registrasi";
 
 // Tangani pengiriman form
 document.getElementById("registrationForm").addEventListener("submit", async function (event) {
@@ -26,6 +26,23 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     };
 
     try {
+        // Cek apakah email sudah terdaftar
+        const checkEmailResponse = await fetch(API_URL + '/check-email', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: email }),
+        });
+
+        const checkEmailResult = await checkEmailResponse.json();
+
+        if (checkEmailResult.exists) {
+            message.textContent = "Email sudah terdaftar!";
+            message.style.color = "red";
+            return;
+        }
+
         // Kirim data ke API menggunakan fetch
         const response = await fetch(API_URL, {
             method: "POST",
