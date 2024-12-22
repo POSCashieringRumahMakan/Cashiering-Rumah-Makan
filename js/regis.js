@@ -37,7 +37,7 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
 
         const checkEmailResult = await checkEmailResponse.json();
 
-        if (checkEmailResult.exists) {
+        if (checkEmailResult.message === "Email sudah terdaftar.") {
             message.textContent = "Email sudah terdaftar!";
             message.style.color = "red";
             return;
@@ -58,7 +58,11 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
         if (response.ok) {
             message.textContent = "Registrasi berhasil!";
             message.style.color = "green";
-            console.log("Response dari API:", result);
+
+            // Tunggu sebentar, lalu arahkan ke halaman masuk.html
+            setTimeout(() => {
+                window.location.href = "masuk.html";
+            }, 2000); // Tunggu 2 detik
         } else {
             message.textContent = result.message || "Registrasi gagal.";
             message.style.color = "red";
