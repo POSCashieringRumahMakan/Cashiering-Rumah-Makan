@@ -66,6 +66,13 @@
             <form id="category-form" onsubmit="saveCategory(event)">
                 <input type="hidden" id="category-id">
 
+                <label for="jenisKategori">Jenis Kategori:</label>
+                <select id="jenisKategori" required>
+                    <option value="">Pilih jenis kategori</option>
+                    <option value="makanan">Makanan</option>
+                    <option value="minuman">Minuman</option>
+                </select>
+
                 <label for="namaKategori">Nama Kategori:</label>
                 <input type="text" id="namaKategori" placeholder="Masukkan nama kategori" required>
 
@@ -73,6 +80,32 @@
             </form>
         </aside>
     </div>
+
+    <script>
+    function saveCategory(event) {
+        event.preventDefault();
+
+        const jenisKategori = document.getElementById('jenisKategori').value;
+        const namaKategori = document.getElementById('namaKategori').value;
+
+        if (!jenisKategori) {
+            alert('Jenis kategori harus dipilih!');
+            return;
+        }
+
+        // Simpan data kategori
+        const categoryData = {
+            id: document.getElementById('category-id').value || null,
+            jenis: jenisKategori,
+            nama: namaKategori
+        };
+
+        console.log('Data kategori:', categoryData);
+
+        // Lakukan operasi simpan data (misalnya kirim ke server atau simpan di localStorage)
+        alert('Kategori berhasil disimpan!');
+    }
+    </script>
 
     <script src="js/kategori.js"></script>
 </body>
