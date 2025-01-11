@@ -1,97 +1,71 @@
-// Mendapatkan elemen-elemen DOM
-const categoryTableBody = document.querySelector('.category-table tbody'); // Seleksi tbody
-const categoryForm = document.getElementById('category-form');
-const categoryIdField = document.getElementById('category-id');
-const categoryNameField = document.getElementById('namaKategori');
+// Fungsi untuk menarik data kategori
+async function fetchCategories() {
+    try {
+        // Melakukan fetch ke URL API
+        const response = await fetch('http://localhost:8000/api/kategori.php');
 
-// Mengambil data kategori dari localStorage
-function getCategories() {
-    const categories = localStorage.getItem('categories');
-    return categories ? JSON.parse(categories) : [];
+        // Tampilkan respons mentah untuk debugging
+        const responseText = await response.text();
+        console.log('API Response:', responseText);  // Menampilkan respons mentah
+
+        // Cek apakah status HTTP berhasil (200 OK)
+        if (!response.ok) {
+            throw new Error('Gagal mengambil data dari server');
+        }
+
+        // Pastikan respons yang diterima adalah valid JSON
+        let categories;
+        try {
+            categories = JSON.parse(responseText);
+        } catch (error) {
+            throw new Error('Response bukan JSON yang valid');
+        }
+
+        // Jika data kategori berhasil diterima, perbarui tampilan tabel
+        updateCategoryTable(categories);
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        alert('Terjadi kesalahan saat mengambil data kategori');
+    }
 }
 
-// Menyimpan data kategori ke localStorage
-function saveCategories(categories) {
-    localStorage.setItem('categories', JSON.stringify(categories));
-}
+// Fungsi untuk memperbarui tampilan tabel kategori
+function updateCategoryTable(categories) {
+    const tableBody = document.querySelector('.category-table tbody');
+    tableBody.innerHTML = ''; // Kosongkan tabel sebelum memasukkan data baru
 
-// Render data kategori ke dalam tabel
-function renderCategories() {
-    const categories = getCategories();
-    categoryTableBody.innerHTML = ''; // Kosongkan isi tabel sebelum di-render ulang
-
+    // Pastikan data kategori tidak kosong
     if (categories.length === 0) {
-        categoryTableBody.innerHTML = '<tr><td colspan="3">Tidak ada kategori</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="3">Tidak ada kategori ditemukan.</td></tr>';
         return;
     }
 
     categories.forEach((category, index) => {
+        // Membuat baris baru untuk setiap kategori
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${index + 1}</td>
-            <td>${category.name}</td>
+            <td>${category.nama_kategori}</td>
             <td>
-                <button class="edit-button" onclick="editCategory(${index})">Edit</button>
-                <button class="delete-button" onclick="deleteCategory(${index})">Hapus</button>
+                <button class="edit-button" onclick="editCategory(${category.id_kategori})">Edit</button>
+                <button class="delete-button" onclick="deleteCategory(${category.id_kategori})">Hapus</button>
             </td>
         `;
-        categoryTableBody.appendChild(row);
+        tableBody.appendChild(row);
     });
 }
 
-// Fungsi untuk menyimpan kategori
-function saveCategory(event) {
-    event.preventDefault(); // Mencegah form untuk reload halaman
-
-    const name = categoryNameField.value.trim();
-    if (name === '') {
-        alert('Data Kategori Berhasil Ditambah!');
-        return;
-    }
-
-    const categories = getCategories();
-
-    if (categoryIdField.value) {
-        // Update kategori
-        const categoryId = parseInt(categoryIdField.value, 10);
-        categories[categoryId] = { name };
-    } else {
-        // Tambah kategori baru
-        categories.push({ name });
-    }
-
-    saveCategories(categories);
-    clearForm();
-    renderCategories();
+// Fungsi untuk menangani aksi edit kategori
+function editCategory(id) {
+    console.log('Edit kategori dengan ID:', id);
+    // Implementasikan logika edit kategori di sini
 }
 
-// Fungsi untuk menghapus kategori
-function deleteCategory(index) {
-    if (!confirm('Apakah Anda yakin ingin menghapus kategori ini?')) return;
-
-    const categories = getCategories();
-    categories.splice(index, 1); // Hapus kategori pada index yang diberikan
-    saveCategories(categories);
-    renderCategories();
+// Fungsi untuk menangani aksi hapus kategori
+function deleteCategory(id) {
+    console.log('Hapus kategori dengan ID:', id);
+    // Implementasikan logika hapus kategori di sini
 }
 
-// Fungsi untuk mengedit kategori
-function editCategory(index) {
-    const categories = getCategories();
-    const category = categories[index];
-
-    categoryIdField.value = index; // Menyimpan ID kategori yang akan diedit
-    categoryNameField.value = category.name;
-}
-
-// Fungsi untuk mengosongkan form
-function clearForm() {
-    categoryIdField.value = '';
-    categoryNameField.value = '';
-}
-
-// Event listener untuk form submit
-categoryForm.addEventListener('submit', saveCategory);
-
-// Inisialisasi halaman dengan data kategori
-renderCategories();
+// Panggil fungsi fetchCategories saat halaman dimuat
+window.onload = fetchCategories;
