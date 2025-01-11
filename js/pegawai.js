@@ -9,22 +9,27 @@ function displayEmployees(employees) {
     }
 
     employees.forEach((employee) => {
-        const card = document.createElement('div');
-        card.classList.add('member-card');
-
-        card.innerHTML = `
-            <h3>${employee.nama}</h3>
-            <p><strong>Jabatan:</strong> ${employee.jabatan}</p>
-            <p><strong>Email:</strong> ${employee.email}</p>
-            <p><strong>No. Telepon:</strong> ${employee.no_telepon}</p>
-            <p><strong>Status:</strong> ${employee.status}</p>
-            <div class="actions">
-                <button class="edit-btn" onclick="editEmployee(${employee.id})">Edit</button>
-                <button class="delete-btn" onclick="deleteEmployee(${employee.id})">Hapus</button>
-            </div>
-        `;
-        employeeList.appendChild(card);
+        addEmployeeCard(employee, employeeList);
     });
+}
+
+// Fungsi untuk menambahkan kartu pegawai
+function addEmployeeCard(employee, employeeList) {
+    const card = document.createElement('div');
+    card.classList.add('member-card');
+
+    card.innerHTML = `
+        <h3>${employee.nama}</h3>
+        <p><strong>Jabatan:</strong> ${employee.jabatan}</p>
+        <p><strong>Email:</strong> ${employee.email}</p>
+        <p><strong>No. Telepon:</strong> ${employee.no_telepon}</p>
+        <p><strong>Status:</strong> ${employee.status}</p>
+        <div class="actions">
+            <button class="edit-btn" onclick="editEmployee(${employee.id})">Edit</button>
+            <button class="delete-btn" onclick="deleteEmployee(${employee.id})">Hapus</button>
+        </div>
+    `;
+    employeeList.appendChild(card);
 }
 
 // Fungsi untuk mengambil data pegawai dari API
@@ -58,22 +63,18 @@ function fetchEmployees() {
 }
 
 
-// Fungsi menambah atau memperbarui pegawai
+// Fungsi menyimpan data pegawai baru
 function saveEmployee(event) {
     event.preventDefault();
 
-    const employeeId = document.getElementById('employee-id').value;
     const nama = document.getElementById('nama').value;
     const jabatan = document.getElementById('jabatan').value;
     const email = document.getElementById('email').value;
     const noTelepon = document.getElementById('noTelepon').value;
     const status = document.getElementById('status').value;
 
-    const method = employeeId ? 'PUT' : 'POST';
-    const url = 'http://localhost:8000/api/pegawai.php' + (employeeId ? `?id=${employeeId}` : '');
-
-    fetch(url, {
-        method: method,
+    fetch('http://localhost:8000/api/pegawai.php', {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -85,13 +86,27 @@ function saveEmployee(event) {
             status,
         }),
     })
-        .then(response => response.json())
+        .then(response => response.text())
         .then(data => {
-            console.log(data);
-            fetchEmployees(); // Menarik ulang data pegawai setelah simpan
+            const jsonStart = data.indexOf('{');
+            const jsonData = jsonStart !== -1 ? data.substring(jsonStart) : data;
+
+            const json = JSON.parse(jsonData);
+
+            if (json.success) {
+                alert("Data berhasil disimpan!");
+                const newEmployee = { nama, jabatan, email, no_telepon: noTelepon, status, id: json.id };
+                const employeeList = document.getElementById('employee-list');
+                addEmployeeCard(newEmployee, employeeList);
+
+                document.getElementById('employee-form').reset();
+            } else {
+                alert(`Gagal menyimpan data: ${json.message}`);
+            }
         })
         .catch(error => {
-            console.error("Error saving employee:", error);
+            console.error("Gagal menyimpan data:", error);
+            alert("Gagal menyimpan data. Periksa koneksi atau API.");
         });
 }
 
