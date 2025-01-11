@@ -1,14 +1,20 @@
-let tables = [
-    { id: 1, number: 'A1', capacity: 4, status: 'Tersedia', customer: null },
-    { id: 2, number: 'A2', capacity: 2, status: 'Tidak Tersedia', customer: null },
-    { id: 3, number: 'B1', capacity: 6, status: 'Tersedia', customer: null },
-];
-
-const pengguna = JSON.parse(localStorage.getItem('pengguna')) || [];
+let tables = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    displayTables();
+    fetchTables();
 });
+
+function fetchTables() {
+    fetch('http://localhost:8000/api/table.php')
+        .then(response => response.json())
+        .then(data => {
+            tables = data; // Menyimpan data tabel dari API
+            displayTables();
+        })
+        .catch(error => {
+            console.error('Error fetching tables:', error);
+        });
+}
 
 function displayTables() {
     const tableContainer = document.getElementById('table-data');
@@ -104,11 +110,24 @@ document.getElementById('add-table-form').addEventListener('submit', function(ev
     const capacity = document.getElementById('capacity').value;
     const status = document.getElementById('status').value;
 
-    const newTable = { id: tables.length + 1, number, capacity, status };
-    tables.push(newTable);
+    const newTable = { number, capacity, status };
 
-    displayTables();
-    closeModal();
+    // Kirim data ke API untuk menambahkan tabel baru
+    fetch('http://localhost:8000/api/table.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newTable),
+    })
+    .then(response => response.json())
+    .then(() => {
+        fetchTables(); // Ambil ulang data tabel setelah berhasil menambahkan
+        closeModal();
+    })
+    .catch(error => {
+        console.error('Error adding table:', error);
+    });
 });
 
 function bookTable(tableId) {
@@ -127,8 +146,22 @@ function bookTable(tableId) {
         table.status = 'Tidak Tersedia';
         table.customer = { customerName, customerPhone, customerEmail, bookingDate };
 
-        displayTables();
-        closeBookingModal();
+        // Kirim data update ke API
+        fetch(`http://localhost:8000/api/table.php?id=${tableId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(table),
+        })
+        .then(response => response.json())
+        .then(() => {
+            displayTables();
+            closeBookingModal();
+        })
+        .catch(error => {
+            console.error('Error updating table booking:', error);
+        });
     };
 }
 
@@ -185,9 +218,22 @@ function editTable(tableId) {
         table.capacity = capacity;
         table.status = status;
 
-        // Menutup modal dan memperbarui tampilan meja
-        displayTables();
-        closeEditModal();
+        // Kirim data update ke API
+        fetch(`http://localhost:8000/api/table.php?id=${tableId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(table),
+        })
+        .then(response => response.json())
+        .then(() => {
+            displayTables();
+            closeEditModal();
+        })
+        .catch(error => {
+            console.error('Error updating table:', error);
+        });
     };
 
     // Menampilkan modal
@@ -200,8 +246,16 @@ function closeEditModal() {
     modal.style.display = 'none';
 }
 
-
 function deleteTable(tableId) {
-    tables = tables.filter(table => table.id !== tableId);
-    displayTables();
+    // Kirim permintaan untuk menghapus tabel
+    fetch(`http://localhost:8000/api/table.php?id=${tableId}`, {
+        method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then(() => {
+        fetchTables(); // Ambil ulang data tabel setelah menghapus
+    })
+    .catch(error => {
+        console.error('Error deleting table:', error);
+    });
 }
