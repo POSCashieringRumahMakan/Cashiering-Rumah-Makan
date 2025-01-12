@@ -1,19 +1,24 @@
-// Fungsi untuk menarik data kategori
+// Fungsi untuk menarik data kategori dari API
 async function fetchCategories() {
     try {
-        // Melakukan fetch ke URL API
-        const response = await fetch('http://localhost:8000/api/kategori.php');
+        // Melakukan fetch ke API
+        const response = await fetch('http://localhost:8000/api/kategori.php', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
 
-        // Tampilkan respons mentah untuk debugging
-        const responseText = await response.text();
-        console.log('API Response:', responseText);  // Menampilkan respons mentah
-
-        // Cek apakah status HTTP berhasil (200 OK)
+        // Periksa apakah respons HTTP berhasil
         if (!response.ok) {
-            throw new Error('Gagal mengambil data dari server');
+            throw new Error(`Gagal mengambil data dari server: ${response.statusText}`);
         }
 
-        // Pastikan respons yang diterima adalah valid JSON
+        // Ambil respons mentah dalam bentuk teks
+        const responseText = await response.text();
+        console.log('Raw API Response:', responseText); // Debugging respons mentah
+
+        // Coba parsing teks ke JSON
         let categories;
         try {
             categories = JSON.parse(responseText);
@@ -21,27 +26,27 @@ async function fetchCategories() {
             throw new Error('Response bukan JSON yang valid');
         }
 
-        // Jika data kategori berhasil diterima, perbarui tampilan tabel
+        // Jika berhasil, perbarui tabel kategori
         updateCategoryTable(categories);
     } catch (error) {
         console.error('Error fetching categories:', error);
-        alert('Terjadi kesalahan saat mengambil data kategori');
+        alert('Terjadi kesalahan saat mengambil data kategori: ' + error.message);
     }
 }
 
 // Fungsi untuk memperbarui tampilan tabel kategori
 function updateCategoryTable(categories) {
     const tableBody = document.querySelector('.category-table tbody');
-    tableBody.innerHTML = ''; // Kosongkan tabel sebelum memasukkan data baru
+    tableBody.innerHTML = ''; // Kosongkan tabel sebelum menambahkan data baru
 
-    // Pastikan data kategori tidak kosong
-    if (categories.length === 0) {
+    // Periksa apakah data kategori kosong
+    if (!categories || categories.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="3">Tidak ada kategori ditemukan.</td></tr>';
         return;
     }
 
+    // Iterasi setiap kategori dan tambahkan ke tabel
     categories.forEach((category, index) => {
-        // Membuat baris baru untuk setiap kategori
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${index + 1}</td>
@@ -59,12 +64,14 @@ function updateCategoryTable(categories) {
 function editCategory(id) {
     console.log('Edit kategori dengan ID:', id);
     // Implementasikan logika edit kategori di sini
+    alert(`Fungsi edit untuk ID kategori ${id} masih dalam pengembangan.`);
 }
 
 // Fungsi untuk menangani aksi hapus kategori
 function deleteCategory(id) {
     console.log('Hapus kategori dengan ID:', id);
     // Implementasikan logika hapus kategori di sini
+    alert(`Fungsi hapus untuk ID kategori ${id} masih dalam pengembangan.`);
 }
 
 // Panggil fungsi fetchCategories saat halaman dimuat
