@@ -154,44 +154,40 @@
         </section>
 
         <!-- Form Tambah Pegawai -->
-        <aside class="form-tambah-pegawai"
-            style="width: 400px; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px; margin: 0 auto;">
-            <h3 style="font-size: 16px; margin-bottom: 10px; text-align: center;">Form Pegawai</h3>
-            <form id="member-form" onsubmit="saveEmployee(event)"
-                style="display: flex; flex-direction: column; gap: 0px;">
+        <aside class="form-tambah-pegawai">
+            <div class="form-header">
+                <img src="img/logopadang.png" alt="Icon Pegawai" class="form-icon">
+                <h3>Form Pegawai</h3>
+            </div>
+            <form id="member-form" onsubmit="saveEmployee(event)">
                 <input type="hidden" id="employee-id">
-                <div style="display: flex; flex-direction: column; gap: 0px;">
-                    <label for="nama" style="font-size: 12px; color: #555;">Nama:</label>
-                    <input type="text" id="nama" required
-                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <div class="form-group">
+                    <label for="nama">Nama:</label>
+                    <input type="text" id="nama" required>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 0px;">
-                    <label for="jabatan" style="font-size: 12px; color: #555;">Jabatan:</label>
-                    <input type="text" id="jabatan" required
-                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <div class="form-group">
+                    <label for="jabatan">Jabatan:</label>
+                    <input type="text" id="jabatan" required>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 0px;">
-                    <label for="email" style="font-size: 12px; color: #555;">Email:</label>
-                    <input type="email" id="email" required
-                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" required>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 4px;">
-                    <label for="noTelepon" style="font-size: 12px; color: #555;">No. Telepon:</label>
-                    <input type="text" id="noTelepon" required
-                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <div class="form-group">
+                    <label for="noTelepon">No. Telepon:</label>
+                    <input type="text" id="noTelepon" required>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 4px;">
-                    <label for="status" style="font-size: 12px; color: #555;">Status:</label>
-                    <select id="status" required
-                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                    <select id="status" required>
                         <option value="Aktif">Aktif</option>
                         <option value="Tidak Aktif">Tidak Aktif</option>
                     </select>
                 </div>
-                <button type="submit" id="save-button"
-                    style="padding: 10px; font-size: 14px; color: #fff; background-color: #ff6242; border: none; border-radius: 4px; cursor: pointer;">Simpan</button>
+                <button type="submit" id="save-button">Simpan</button>
             </form>
         </aside>
+        
     </div>
 
     <script src="js/pegawai.js"></script>
