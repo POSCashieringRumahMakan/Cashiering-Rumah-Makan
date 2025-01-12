@@ -142,41 +142,45 @@ function editEmployee(id) {
                 // Jika status bukan 200 OK, tampilkan pesan error dan hentikan proses lebih lanjut
                 throw new Error(`Gagal memuat data pegawai. Status: ${response.status}`);
             }
-            return response.text();  // Ambil respons sebagai teks (karena mungkin bukan JSON)
+            return response.text();  // Ambil respons sebagai teks, karena ada pesan di luar JSON
         })
         .then(data => {
-            // Jika data berisi teks yang mengandung JSON, kita bisa mencari bagian JSON tersebut
-            try {
-                // Cek apakah respons mengandung JSON yang valid
-                let jsonData;
-                if (data.startsWith('Koneksi berhasil!')) {
-                    // Ambil bagian JSON dari respons (yang dimulai setelah 'Koneksi berhasil!')
-                    jsonData = data.substring('Koneksi berhasil!'.length);
-                } else {
-                    jsonData = data;
-                }
-                const parsedData = JSON.parse(jsonData);  // Parsing teks JSON
-                console.log('Respons dari server:', parsedData);  // Debugging respons
+            console.log("Data yang diterima dari server:", data);  // Debugging data
 
-                if (parsedData && parsedData.id) {
-                    // Isi form dengan data pegawai yang ditemukan
+            // Cek apakah respons dimulai dengan pesan "Koneksi berhasil!"
+            let jsonData;
+            if (data.startsWith('Koneksi berhasil!')) {
+                // Ambil bagian JSON dari respons (yang dimulai setelah 'Koneksi berhasil!')
+                jsonData = data.substring('Koneksi berhasil!'.length);
+            } else {
+                jsonData = data;
+            }
+
+            try {
+                // Parsing teks JSON yang benar
+                const parsedData = JSON.parse(jsonData);
+                console.log(parsedData); // Debugging parsed data
+
+                // Periksa apakah data yang diterima berisi informasi pegawai
+                if (parsedData && parsedData.id_pegawai === id) {
+                    // Jika data pegawai ditemukan, isi form
                     document.getElementById('nama').value = parsedData.nama;
                     document.getElementById('jabatan').value = parsedData.jabatan;
                     document.getElementById('email').value = parsedData.email;
-                    document.getElementById('noTelepon').value = parsedData.no_telepon;
+                    document.getElementById('noTelepon').value = parsedData.no_telepon || '';  // Gunakan '' jika no_telepon tidak ada
                     document.getElementById('status').value = parsedData.status;
 
                     // Set ID pegawai yang sedang diedit
-                    editingEmployeeId = parsedData.id;
+                    editingEmployeeId = parsedData.id_pegawai;
 
                     // Ubah tombol "Simpan" menjadi "Perbarui"
                     const saveButton = document.getElementById('save-button');
                     if (saveButton) saveButton.textContent = 'Perbarui';
                 } else {
-                    console.error('Data pegawai tidak ditemukan dalam respons.');
+                    console.error('Pegawai dengan id_pegawai ' + id + ' tidak ditemukan.');
+                    alert('Data pegawai tidak ditemukan.');
                 }
             } catch (error) {
-                // Jika data bukan JSON, tampilkan pesan error
                 console.error('Error parsing JSON:', error);
                 alert('Data yang diterima bukan JSON yang valid.');
             }
