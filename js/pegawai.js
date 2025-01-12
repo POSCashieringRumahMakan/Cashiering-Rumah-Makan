@@ -86,22 +86,42 @@ function saveEmployee(event) {
             status,
         }),
     })
-        .then(response => response.text())
+        .then(response => response.text()) // Ambil respons sebagai teks
         .then(data => {
+            console.log('Respons dari server:', data); // Debugging respons
+
+            // Cari bagian JSON dari respons
             const jsonStart = data.indexOf('{');
-            const jsonData = jsonStart !== -1 ? data.substring(jsonStart) : data;
+            if (jsonStart !== -1) {
+                const jsonData = data.substring(jsonStart); // Ambil bagian JSON saja
+                try {
+                    const json = JSON.parse(jsonData); // Parse JSON valid
+                    if (json.message === "Pegawai berhasil ditambahkan!") {
+                        alert("Data berhasil disimpan!");
+                        const newEmployee = {
+                            nama,
+                            jabatan,
+                            email,
+                            no_telepon: noTelepon,
+                            status,
+                            id: json.id || Date.now()
+                        };
+                        addEmployeeCard(newEmployee, document.getElementById('employee-list'));
 
-            const json = JSON.parse(jsonData);
-
-            if (json.success) {
-                alert("Data berhasil disimpan!");
-                const newEmployee = { nama, jabatan, email, no_telepon: noTelepon, status, id: json.id };
-                const employeeList = document.getElementById('employee-list');
-                addEmployeeCard(newEmployee, employeeList);
-
-                document.getElementById('employee-form').reset();
+                        // Reset form dan kembalikan fokus ke input pertama
+                        const formElement = document.getElementById('member-form');
+                        if (formElement) {
+                            formElement.reset();
+                            formElement.querySelector('input, select').focus(); // Fokus ke elemen pertama
+                        }
+                    } else {
+                        alert(`Gagal menyimpan data: ${json.message}`);
+                    }
+                } catch (error) {
+                    console.error("Kesalahan parsing JSON:", error);
+                }
             } else {
-                alert(`Gagal menyimpan data: ${json.message}`);
+                console.error("Data respons server tidak valid.");
             }
         })
         .catch(error => {
@@ -109,6 +129,7 @@ function saveEmployee(event) {
             alert("Gagal menyimpan data. Periksa koneksi atau API.");
         });
 }
+
 
 // Panggil fungsi fetchEmployees saat halaman dimuat
 document.addEventListener('DOMContentLoaded', fetchEmployees);
