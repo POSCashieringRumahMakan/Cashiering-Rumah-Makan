@@ -136,48 +136,46 @@ function saveEmployee(event) {
 }
 
 function editEmployee(id) {
+    console.log("ID pegawai yang dikirim:", id);  // Log ID yang dikirim
     fetch(`http://localhost:8000/api/pegawai.php?id=${id}`)
         .then(response => {
             if (!response.ok) {
-                // Jika status bukan 200 OK, tampilkan pesan error dan hentikan proses lebih lanjut
                 throw new Error(`Gagal memuat data pegawai. Status: ${response.status}`);
             }
-            return response.text();  // Ambil respons sebagai teks, karena ada pesan di luar JSON
+            return response.text();
         })
         .then(data => {
             console.log("Data yang diterima dari server:", data);  // Debugging data
-
-            // Cek apakah respons dimulai dengan pesan "Koneksi berhasil!"
             let jsonData;
             if (data.startsWith('Koneksi berhasil!')) {
-                // Ambil bagian JSON dari respons (yang dimulai setelah 'Koneksi berhasil!')
                 jsonData = data.substring('Koneksi berhasil!'.length);
             } else {
                 jsonData = data;
             }
 
             try {
-                // Parsing teks JSON yang benar
                 const parsedData = JSON.parse(jsonData);
-                console.log(parsedData); // Debugging parsed data
-
-                // Periksa apakah data yang diterima berisi informasi pegawai
+                console.log("Parsed data:", parsedData);  // Debugging parsed data
+                
                 if (parsedData && Array.isArray(parsedData) && parsedData.length > 0) {
-                    const employee = parsedData[0]; // Ambil pegawai pertama dari array
+                    const employee = parsedData[0];
+                    console.log("ID pegawai yang diterima:", employee.id_pegawai);  // Debugging employee ID
 
-                    // Jika data pegawai ditemukan, isi form
-                    document.getElementById('nama').value = employee.nama;
-                    document.getElementById('jabatan').value = employee.jabatan;
-                    document.getElementById('email').value = employee.email;
-                    document.getElementById('noTelepon').value = employee.no_telepon || '';  // Gunakan '' jika no_telepon tidak ada
-                    document.getElementById('status').value = employee.status;
+                    if (employee.id_pegawai == id) {
+                        document.getElementById('nama').value = employee.nama;
+                        document.getElementById('jabatan').value = employee.jabatan;
+                        document.getElementById('email').value = employee.email;
+                        document.getElementById('noTelepon').value = employee.no_telepon || '';
+                        document.getElementById('status').value = employee.status;
 
-                    // Set ID pegawai yang sedang diedit
-                    editingEmployeeId = employee.id_pegawai;
+                        editingEmployeeId = employee.id_pegawai;
 
-                    // Ubah tombol "Simpan" menjadi "Perbarui"
-                    const saveButton = document.getElementById('save-button');
-                    if (saveButton) saveButton.textContent = 'Perbarui';
+                        const saveButton = document.getElementById('save-button');
+                        if (saveButton) saveButton.textContent = 'Perbarui';
+                    } else {
+                        console.error('ID pegawai tidak cocok. Pegawai yang dimaksud tidak ditemukan.');
+                        alert('Data pegawai tidak ditemukan.');
+                    }
                 } else {
                     console.error('Pegawai dengan id_pegawai ' + id + ' tidak ditemukan.');
                     alert('Data pegawai tidak ditemukan.');
