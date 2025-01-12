@@ -162,16 +162,18 @@ function editEmployee(id) {
                 console.log(parsedData); // Debugging parsed data
 
                 // Periksa apakah data yang diterima berisi informasi pegawai
-                if (parsedData && parsedData.id_pegawai === id) {
+                if (parsedData && Array.isArray(parsedData) && parsedData.length > 0) {
+                    const employee = parsedData[0]; // Ambil pegawai pertama dari array
+
                     // Jika data pegawai ditemukan, isi form
-                    document.getElementById('nama').value = parsedData.nama;
-                    document.getElementById('jabatan').value = parsedData.jabatan;
-                    document.getElementById('email').value = parsedData.email;
-                    document.getElementById('noTelepon').value = parsedData.no_telepon || '';  // Gunakan '' jika no_telepon tidak ada
-                    document.getElementById('status').value = parsedData.status;
+                    document.getElementById('nama').value = employee.nama;
+                    document.getElementById('jabatan').value = employee.jabatan;
+                    document.getElementById('email').value = employee.email;
+                    document.getElementById('noTelepon').value = employee.no_telepon || '';  // Gunakan '' jika no_telepon tidak ada
+                    document.getElementById('status').value = employee.status;
 
                     // Set ID pegawai yang sedang diedit
-                    editingEmployeeId = parsedData.id_pegawai;
+                    editingEmployeeId = employee.id_pegawai;
 
                     // Ubah tombol "Simpan" menjadi "Perbarui"
                     const saveButton = document.getElementById('save-button');
@@ -190,6 +192,7 @@ function editEmployee(id) {
             alert('Gagal mengambil data pegawai. Periksa koneksi atau API.');
         });
 }
+
 
 // Panggil fungsi fetchEmployees saat halaman dimuat
 document.addEventListener('DOMContentLoaded', fetchEmployees);
