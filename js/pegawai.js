@@ -28,8 +28,12 @@ function addEmployeeCard(employee, employeeList) {
         <p><strong>No. Telepon:</strong> ${employee.no_telepon}</p>
         <p><strong>Status:</strong> ${employee.status}</p>
         <div class="actions">
-            <button class="edit-btn" onclick="editEmployee(${employee.id_pegawai})">Edit</button>
-            <button class="delete-btn" onclick="deleteEmployee(${employee.id_pegawai})">Hapus</button>
+            <button class="edit-btn" onclick="editEmployee(${employee.id_pegawai})">
+                <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="delete-btn" onclick="deleteEmployee(${employee.id_pegawai})">
+                <i class="fas fa-trash-alt"></i> Hapus
+            </button>
         </div>
     `;
     employeeList.appendChild(card);

@@ -1,0 +1,248 @@
+.member-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.member-card {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.member-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.member-card h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.member-card p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 5px 0;
+}
+
+.member-card .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.member-card .edit-btn,
+.member-card .delete-btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.member-card .edit-btn {
+    background: #4caf50;
+    color: #fff;
+}
+
+.member-card .edit-btn:hover {
+    background: #45a049;
+}
+
+.member-card .delete-btn {
+    background: #f44336;
+    color: #fff;
+}
+
+.member-card .delete-btn:hover {
+    background: #e53935;
+}
+
+.member-card .actions button {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Jarak antara ikon dan teks */
+}
+
+.member-card .actions button i {
+    font-size: 1rem;
+}
+
+/* Tambahan hover effects */
+.member-card .edit-btn:hover i {
+    color: #fff;
+}
+
+.member-card .delete-btn:hover i {
+    color: #fff;
+}
+
+/* Styling untuk form tambah pelanggan */
+.order-summary {
+    width: 400px; /* Lebar tetap */
+    background-color: #f7f7f7;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 20px; /* Tambahkan jarak dari tabel */
+    color: #000;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Efek bayangan tetap */
+    font-family: 'Montserrat', sans-serif; /* Font yang konsisten */
+}
+
+  
+  /* Judul form */
+  .order-summary h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+  }
+  
+  /* Styling label */
+  .order-summary label {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #444;
+    font-weight: 600;
+    display: block; /* Membuat label berada di atas input */
+    margin-top: 15px;
+  }
+  
+  /* Styling input dan select */
+  .order-summary input,
+  .order-summary select {
+    width: 100%; /* Agar input dan select mengisi seluruh lebar form */
+    padding: 12px;
+    font-size: 16px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px; /* Sudut lebih melengkung untuk input */
+    box-sizing: border-box; /* Menjamin padding tidak mempengaruhi lebar total */
+    transition: border-color 0.3s ease; /* Efek transisi saat focus */
+  }
+  
+  /* Styling saat input, select dalam kondisi focus */
+  .order-summary input:focus,
+  .order-summary select:focus {
+    outline: none;
+    border-color: #ff8164; /* Warna hijau saat focus */
+  }
+  
+  /* Styling untuk tombol simpan */
+  .order-summary button {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #ff6242;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Efek hover pada tombol simpan */
+  .order-summary button:hover {
+    background-color: #ff8164; /* Warna hijau sedikit lebih gelap saat hover */
+  }
+  
+  /* Styling pada input tipe text untuk no telepon */
+  #noTelepon {
+    letter-spacing: 1px; /* Memberikan jarak antar karakter untuk input telepon */
+  }
+
+/* Top Bar Responsif */
+.top-bar {
+    padding: 10px;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.top-bar input {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+/* Gaya Responsif */
+@media (max-width: 768px) {
+    .member-cards {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Menyesuaikan untuk layar kecil */
+        padding: 10px;
+        align-items: stretch;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .top-bar input {
+        max-width: 100%; /* Agar input pencarian memenuhi lebar layar */
+    }
+    .order-summary {
+        max-width: 100%; /* Lebar form 90% pada layar kecil */
+        padding: 10px; /* Mengurangi padding */
+    }
+
+    .order-summary h3 {
+        font-size: 1.5rem; /* Mengurangi ukuran font judul */
+        text-align: center; /* Agar judul tetap terpusat */
+    }
+
+    .order-summary label {
+        font-size: 0.9rem; /* Mengurangi ukuran font label */
+    }
+
+    .order-summary input,
+    .order-summary select,
+    .order-summary button {
+        font-size: 0.9rem; /* Mengurangi ukuran font input dan button */
+        padding: 10px; /* Menambah ruang dalam input dan tombol */
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .member-cards {
+        grid-template-columns: 1fr; /* Satu kolom untuk layar sangat kecil */
+    }
+
+    .top-bar input {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+    .order-summary {
+        max-width: 90%; /* Lebar 100% pada layar sangat kecil */
+        padding: 10px; /* Mengurangi padding lebih lanjut */
+        margin: auto;
+    }
+
+    .order-summary h3 {
+        font-size: 1.2rem; /* Ukuran judul lebih kecil lagi */
+    }
+
+    .order-summary input,
+    .order-summary select,
+    .order-summary button {
+        font-size: 0.85rem; /* Menyesuaikan ukuran font */
+        padding: 8px; /* Mengurangi padding untuk input dan tombol */
+    }
+}
