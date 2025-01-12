@@ -28,8 +28,8 @@ function addEmployeeCard(employee, employeeList) {
         <p><strong>No. Telepon:</strong> ${employee.no_telepon}</p>
         <p><strong>Status:</strong> ${employee.status}</p>
         <div class="actions">
-            <button class="edit-btn" onclick="editEmployee(${employee.id})">Edit</button>
-            <button class="delete-btn" onclick="deleteEmployee(${employee.id})">Hapus</button>
+            <button class="edit-btn" onclick="editEmployee(${employee.id_pegawai})">Edit</button>
+            <button class="delete-btn" onclick="deleteEmployee(${employee.id_pegawai})">Hapus</button>
         </div>
     `;
     employeeList.appendChild(card);
@@ -136,7 +136,8 @@ function saveEmployee(event) {
 }
 
 function editEmployee(id) {
-    console.log("ID pegawai yang dikirim:", id);  // Log ID yang dikirim
+    console.log("ID pegawai yang dikirim:", id); // Debugging ID
+
     fetch(`http://localhost:8000/api/pegawai.php?id=${id}`)
         .then(response => {
             if (!response.ok) {
@@ -145,44 +146,38 @@ function editEmployee(id) {
             return response.text();
         })
         .then(data => {
-            console.log("Data yang diterima dari server:", data);  // Debugging data
-            let jsonData;
-            if (data.startsWith('Koneksi berhasil!')) {
-                jsonData = data.substring('Koneksi berhasil!'.length);
-            } else {
-                jsonData = data;
+            console.log("Data yang diterima dari server:", data); // Debugging data
+
+            // Hilangkan pesan tambahan dari respons
+            let jsonData = data.replace(/^Koneksi berhasil!/, '').trim();
+
+            // Parse JSON
+            let parsedData;
+            try {
+                parsedData = JSON.parse(jsonData);
+            } catch (error) {
+                console.error("Kesalahan parsing JSON:", error);
+                alert("Data yang diterima bukan JSON yang valid.");
+                return;
             }
 
-            try {
-                const parsedData = JSON.parse(jsonData);
-                console.log("Parsed data:", parsedData);  // Debugging parsed data
-                
-                if (parsedData && Array.isArray(parsedData) && parsedData.length > 0) {
-                    const employee = parsedData[0];
-                    console.log("ID pegawai yang diterima:", employee.id_pegawai);  // Debugging employee ID
+            console.log("Parsed data:", parsedData); // Debugging parsed data
 
-                    if (employee.id_pegawai == id) {
-                        document.getElementById('nama').value = employee.nama;
-                        document.getElementById('jabatan').value = employee.jabatan;
-                        document.getElementById('email').value = employee.email;
-                        document.getElementById('noTelepon').value = employee.no_telepon || '';
-                        document.getElementById('status').value = employee.status;
-
-                        editingEmployeeId = employee.id_pegawai;
-
-                        const saveButton = document.getElementById('save-button');
-                        if (saveButton) saveButton.textContent = 'Perbarui';
-                    } else {
-                        console.error('ID pegawai tidak cocok. Pegawai yang dimaksud tidak ditemukan.');
-                        alert('Data pegawai tidak ditemukan.');
-                    }
+            // Jika data berupa array, cari pegawai berdasarkan ID
+            if (Array.isArray(parsedData)) {
+                const employee = parsedData.find(emp => emp.id_pegawai == id);
+                if (employee) {
+                    fillFormWithEmployeeData(employee);
                 } else {
-                    console.error('Pegawai dengan id_pegawai ' + id + ' tidak ditemukan.');
-                    alert('Data pegawai tidak ditemukan.');
+                    alert(`Pegawai dengan ID ${id} tidak ditemukan.`);
                 }
-            } catch (error) {
-                console.error('Error parsing JSON:', error);
-                alert('Data yang diterima bukan JSON yang valid.');
+            }
+            // Jika data langsung berupa objek pegawai
+            else if (parsedData && parsedData.id_pegawai == id) {
+                fillFormWithEmployeeData(parsedData);
+            } else {
+                console.error('Pegawai dengan ID ' + id + ' tidak ditemukan.');
+                alert('Data pegawai tidak ditemukan.');
             }
         })
         .catch(error => {
@@ -191,6 +186,58 @@ function editEmployee(id) {
         });
 }
 
+// Fungsi untuk mengisi form dengan data pegawai
+function fillFormWithEmployeeData(employee) {
+    document.getElementById('nama').value = employee.nama || '';
+    document.getElementById('jabatan').value = employee.jabatan || '';
+    document.getElementById('email').value = employee.email || '';
+    document.getElementById('noTelepon').value = employee.no_telepon || '';
+    document.getElementById('status').value = employee.status || '';
+
+    // Simpan ID pegawai untuk referensi edit
+    editingEmployeeId = employee.id_pegawai;
+
+    // Ubah teks tombol 'Save' menjadi 'Perbarui'
+    const saveButton = document.getElementById('save-button');
+    if (saveButton) saveButton.textContent = 'Perbarui';
+}
+
+// Fungsi untuk menghapus data pegawai
+function deleteEmployee(id) {
+    const confirmDelete = confirm("Apakah Anda yakin ingin menghapus data pegawai ini?");
+    if (!confirmDelete) return;
+
+    fetch(`http://localhost:8000/api/pegawai.php?id=${id}`, {
+        method: 'DELETE',
+    })
+        .then(response => response.text()) // Ambil respons sebagai teks
+        .then(data => {
+            console.log("Respons dari server:", data); // Debugging respons
+
+            // Hanya ambil bagian JSON dari respons
+            const jsonStart = data.indexOf('{');
+            if (jsonStart !== -1) {
+                const jsonData = data.substring(jsonStart); // Ambil JSON saja
+                try {
+                    const json = JSON.parse(jsonData); // Parse JSON
+                    if (json.message === "Pegawai berhasil dihapus!") {
+                        alert(json.message);
+                        fetchEmployees(); // Refresh daftar pegawai
+                    } else {
+                        alert(`Gagal menghapus data: ${json.message}`);
+                    }
+                } catch (error) {
+                    console.error("Kesalahan parsing JSON:", error);
+                }
+            } else {
+                console.error("Data respons server tidak valid.");
+            }
+        })
+        .catch(error => {
+            console.error("Gagal menghapus data:", error);
+            alert("Gagal menghapus data. Periksa koneksi atau API.");
+        });
+}
 
 // Panggil fungsi fetchEmployees saat halaman dimuat
 document.addEventListener('DOMContentLoaded', fetchEmployees);
