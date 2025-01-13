@@ -9,6 +9,7 @@ function fetchTables() {
         .then(response => response.json())
         .then(data => {
             tables = data; // Menyimpan data tabel dari API
+            console.log('Fetched tables:', tables); // Debug: memeriksa apakah id ada pada data
             displayTables();
         })
         .catch(error => {
@@ -28,25 +29,25 @@ function displayTables() {
             <p>Kapasitas: ${table.capacity}</p>
             <p class="status ${table.status === 'Tidak Tersedia' ? 'taken' : ''}">${table.status}</p>
         `;
-        
+
         // Tombol 'Booking' hanya muncul jika meja 'Tersedia'
         if (table.status === 'Tersedia') {
             card.innerHTML += `
                 <button onclick="bookTable(${table.id})">Booking</button>
             `;
         }
-        
+
         // Tombol 'Edit' selalu muncul
         card.innerHTML += `
             <button onclick="editTable(${table.id})">Edit</button>
         `;
-        
+
         // Tombol 'Delete' dan 'Detail' selalu tampil
         card.innerHTML += `
             <button onclick="deleteTable(${table.id})">Delete</button>
             <button onclick="viewTableDetails(${table.id})">Detail</button>
         `;
-        
+
         tableContainer.appendChild(card);
     });
 }
@@ -62,25 +63,19 @@ function displayFilteredTables(filteredTables) {
             <p>Kapasitas: ${table.capacity}</p>
             <p class="status ${table.status === 'Tidak Tersedia' ? 'taken' : ''}">${table.status}</p>
         `;
-        
-        // Tombol 'Booking' hanya muncul jika meja 'Tersedia'
+
         if (table.status === 'Tersedia') {
             card.innerHTML += `
                 <button onclick="bookTable(${table.id})">Booking</button>
             `;
         }
-        
-        // Tombol 'Edit' selalu muncul
+
         card.innerHTML += `
             <button onclick="editTable(${table.id})">Edit</button>
-        `;
-        
-        // Tombol 'Delete' dan 'Detail' selalu tampil
-        card.innerHTML += `
             <button onclick="deleteTable(${table.id})">Delete</button>
             <button onclick="viewTableDetails(${table.id})">Detail</button>
         `;
-        
+
         tableContainer.appendChild(card);
     });
 }
@@ -112,7 +107,6 @@ document.getElementById('add-table-form').addEventListener('submit', function(ev
 
     const newTable = { number, capacity, status };
 
-    // Kirim data ke API untuk menambahkan tabel baru
     fetch('http://localhost:8000/api/table.php', {
         method: 'POST',
         headers: {
@@ -122,7 +116,7 @@ document.getElementById('add-table-form').addEventListener('submit', function(ev
     })
     .then(response => response.json())
     .then(() => {
-        fetchTables(); // Ambil ulang data tabel setelah berhasil menambahkan
+        fetchTables();
         closeModal();
     })
     .catch(error => {
@@ -143,11 +137,15 @@ function bookTable(tableId) {
         const bookingDate = document.getElementById('booking-date').value;
 
         const table = tables.find(t => t.id === tableId);
+        if (!table) {
+            console.error('Table not found');
+            return;
+        }
+
         table.status = 'Tidak Tersedia';
         table.customer = { customerName, customerPhone, customerEmail, bookingDate };
 
-        // Kirim data update ke API
-        fetch(`http://localhost:8000/api/table.php?id=${tableId}`, {
+        fetch(`http://localhost:8000/api/table.php`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -172,6 +170,11 @@ function closeBookingModal() {
 
 function viewTableDetails(tableId) {
     const table = tables.find(t => t.id === tableId);
+    if (!table) {
+        console.error('Table not found');
+        return;
+    }
+
     const modal = document.getElementById('detail-modal');
     const tableDetail = document.getElementById('table-detail');
 
@@ -187,7 +190,7 @@ function viewTableDetails(tableId) {
             <p>Tanggal Booking: ${table.customer.bookingDate}</p>
         ` : '<p>Tidak ada pemesanan untuk meja ini.</p>'}
     `;
-    
+
     modal.style.display = 'block';
 }
 
@@ -197,63 +200,94 @@ function closeDetailModal() {
 }
 
 function editTable(tableId) {
-    const table = tables.find(t => t.id === tableId);
-    
-    // Mengisi form dengan data meja yang ada
+    console.log('Edit table ID:', tableId);  // Debug: Memastikan tableId diterima dengan benar
+
+    // Cek apakah tableId ada dalam data tables
+    const table = tables.find(t => t.id === String(tableId));  // Pastikan tipe data sama
+    if (!table) {
+        console.error('Table not found in array:', tableId);
+        console.log('Current tables data:', tables);  // Log data tabel yang diterima
+        return;
+    }
+
+    // Isi form dengan data tabel yang ingin diedit
     document.getElementById('edit-table-number').value = table.number;
     document.getElementById('edit-capacity').value = table.capacity;
     document.getElementById('edit-status').value = table.status;
 
-    // Menyimpan ID meja yang sedang diedit
+    // Form submit
     document.getElementById('edit-table-form').onsubmit = function(event) {
         event.preventDefault();
 
-        // Mengambil data dari form
         const number = document.getElementById('edit-table-number').value;
         const capacity = document.getElementById('edit-capacity').value;
         const status = document.getElementById('edit-status').value;
 
-        // Memperbarui data meja
+        if (!number || !capacity || !status) {
+            alert('Semua field harus diisi!');
+            return;
+        }
+
+        // Perbarui objek table yang sudah ada
         table.number = number;
         table.capacity = capacity;
         table.status = status;
 
-        // Kirim data update ke API
-        fetch(`http://localhost:8000/api/table.php?id=${tableId}`, {
+        // Update data tabel melalui API
+        fetch('http://localhost:8000/api/table.php', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(table),
+            body: JSON.stringify({
+                id: table.id,  // Mengirimkan ID untuk memperbarui data tabel yang benar
+                number: table.number,
+                capacity: table.capacity,
+                status: table.status
+            }),
         })
         .then(response => response.json())
-        .then(() => {
-            displayTables();
-            closeEditModal();
+        .then((data) => {
+            console.log('Table updated successfully:', data);
+
+            // Memperbarui data tabel yang ditampilkan
+            const index = tables.findIndex(t => t.id === String(tableId));
+            if (index !== -1) {
+                tables[index] = table; // Update data di array tables
+            }
+            displayTables();  // Menampilkan ulang data tabel yang sudah diperbarui
+            closeEditModal();  // Tutup modal setelah update
         })
         .catch(error => {
             console.error('Error updating table:', error);
         });
     };
 
-    // Menampilkan modal
+    // Tampilkan modal edit
     const modal = document.getElementById('edit-table-modal');
     modal.style.display = 'block';
 }
 
+// Fungsi untuk menutup modal edit
 function closeEditModal() {
     const modal = document.getElementById('edit-table-modal');
     modal.style.display = 'none';
 }
 
 function deleteTable(tableId) {
-    // Kirim permintaan untuk menghapus tabel
-    fetch(`http://localhost:8000/api/table.php?id=${tableId}`, {
+    const confirmation = confirm("Apakah Anda yakin ingin menghapus meja ini?");
+    if (!confirmation) return;
+
+    fetch(`http://localhost:8000/api/table.php`, {
         method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: tableId }),
     })
     .then(response => response.json())
     .then(() => {
-        fetchTables(); // Ambil ulang data tabel setelah menghapus
+        fetchTables();
     })
     .catch(error => {
         console.error('Error deleting table:', error);
