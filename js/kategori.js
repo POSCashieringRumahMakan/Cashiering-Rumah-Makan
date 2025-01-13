@@ -18,13 +18,12 @@ async function fetchCategories() {
         const responseText = await response.text();
         console.log('Raw API Response:', responseText); // Debugging respons mentah
 
-        // Coba parsing teks ke JSON
-        let categories;
-        try {
-            categories = JSON.parse(responseText);
-        } catch (error) {
-            throw new Error('Response bukan JSON yang valid');
-        }
+        // Hilangkan pesan tambahan dari respons jika ada
+        const jsonStart = responseText.indexOf('[');
+        if (jsonStart === -1) throw new Error('Response bukan JSON yang valid');
+
+        const validJson = responseText.substring(jsonStart);
+        const categories = JSON.parse(validJson);
 
         // Jika berhasil, perbarui tabel kategori
         updateCategoryTable(categories);
@@ -60,18 +59,114 @@ function updateCategoryTable(categories) {
     });
 }
 
+async function saveCategory(event) {
+    event.preventDefault();
+
+    // Ambil nilai input dari form
+    const idKategori = document.getElementById('category-id').value;
+    const jenisKategori = document.getElementById('jenisKategori').value;
+    const namaKategori = document.getElementById('namaKategori').value;
+
+    // Validasi input
+    if (!jenisKategori || !namaKategori) {
+        alert('Harap isi semua kolom.');
+        return;
+    }
+
+    const url = idKategori
+        ? `http://localhost:8000/api/kategori.php?id=${idKategori}`
+        : 'http://localhost:8000/api/kategori.php';
+    const method = idKategori ? 'PUT' : 'POST';
+
+    try {
+        const response = await fetch(url, {
+            method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                jenis_kategori: jenisKategori,
+                nama_kategori: namaKategori,
+            }),
+        });
+
+        const responseText = await response.text();
+        console.log('Response:', responseText);
+
+        const jsonStart = responseText.indexOf('{');
+        if (jsonStart === -1) throw new Error('Respons server tidak valid');
+
+        const validJson = responseText.substring(jsonStart);
+        const result = JSON.parse(validJson);
+
+        alert(result.message);
+        fetchCategories();
+
+        // Reset form
+        document.getElementById('category-form').reset();
+        document.getElementById('category-id').value = '';
+        document.querySelector('button[type="submit"]').textContent = 'Simpan';
+    } catch (error) {
+        console.error('Error saving category:', error);
+        alert('Gagal menyimpan data kategori: ' + error.message);
+    }
+}
+
+
 // Fungsi untuk menangani aksi edit kategori
-function editCategory(id) {
-    console.log('Edit kategori dengan ID:', id);
-    // Implementasikan logika edit kategori di sini
-    alert(`Fungsi edit untuk ID kategori ${id} masih dalam pengembangan.`);
+async function editCategory(id) {
+    try {
+        const response = await fetch(`http://localhost:8000/api/kategori.php?id=${id}`);
+
+        if (!response.ok) {
+            throw new Error('Gagal mengambil data kategori');
+        }
+
+        const responseText = await response.text();
+        console.log('Edit API Response:', responseText);
+
+        const jsonStart = responseText.indexOf('{');
+        if (jsonStart === -1) throw new Error('Response bukan JSON yang valid');
+
+        const validJson = responseText.substring(jsonStart);
+        const category = JSON.parse(validJson);
+
+        // Isi form dengan data kategori yang diambil
+        document.getElementById('category-id').value = category.id_kategori;
+        document.getElementById('jenisKategori').value = category.jenis_kategori;
+        document.getElementById('namaKategori').value = category.nama_kategori;
+        document.querySelector('button[type="submit"]').textContent = 'Perbarui';
+    } catch (error) {
+        console.error('Error editing category:', error);
+        alert('Gagal mengambil data kategori: ' + error.message);
+    }
 }
 
 // Fungsi untuk menangani aksi hapus kategori
-function deleteCategory(id) {
-    console.log('Hapus kategori dengan ID:', id);
-    // Implementasikan logika hapus kategori di sini
-    alert(`Fungsi hapus untuk ID kategori ${id} masih dalam pengembangan.`);
+async function deleteCategory(id) {
+    const confirmDelete = confirm('Apakah Anda yakin ingin menghapus kategori ini?');
+    if (!confirmDelete) return;
+
+    try {
+        const response = await fetch(`http://localhost:8000/api/kategori.php?id=${id}`, {
+            method: 'DELETE',
+        });
+
+        const responseText = await response.text();
+        console.log('Delete API Response:', responseText);
+
+        const jsonStart = responseText.indexOf('{');
+        if (jsonStart === -1) throw new Error('Respons server tidak valid');
+
+        const validJson = responseText.substring(jsonStart);
+        const result = JSON.parse(validJson);
+
+        alert(result.message);
+        fetchCategories();
+    } catch (error) {
+        console.error('Error deleting category:', error);
+        alert('Gagal menghapus kategori: ' + error.message);
+    }
 }
 
 // Panggil fungsi fetchCategories saat halaman dimuat
