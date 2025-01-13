@@ -93,13 +93,12 @@ async function saveCategory(event) {
         const responseText = await response.text();
         console.log('Response:', responseText);
 
+        // Ekstrak hanya bagian JSON
         const jsonStart = responseText.indexOf('{');
         if (jsonStart === -1) throw new Error('Respons server tidak valid');
+        const validJson = JSON.parse(responseText.substring(jsonStart));
 
-        const validJson = responseText.substring(jsonStart);
-        const result = JSON.parse(validJson);
-
-        alert(result.message);
+        alert(validJson.message);
         fetchCategories();
 
         // Reset form
@@ -125,16 +124,14 @@ async function editCategory(id) {
         const responseText = await response.text();
         console.log('Edit API Response:', responseText);
 
+        // Ekstrak hanya bagian JSON
         const jsonStart = responseText.indexOf('{');
         if (jsonStart === -1) throw new Error('Response bukan JSON yang valid');
+        const validJson = JSON.parse(responseText.substring(jsonStart));
 
-        const validJson = responseText.substring(jsonStart);
-        const category = JSON.parse(validJson);
-
-        // Isi form dengan data kategori yang diambil
-        document.getElementById('category-id').value = category.id_kategori;
-        document.getElementById('jenisKategori').value = category.jenis_kategori;
-        document.getElementById('namaKategori').value = category.nama_kategori;
+        document.getElementById('category-id').value = validJson.id_kategori;
+        document.getElementById('jenisKategori').value = validJson.jenis_kategori;
+        document.getElementById('namaKategori').value = validJson.nama_kategori;
         document.querySelector('button[type="submit"]').textContent = 'Perbarui';
     } catch (error) {
         console.error('Error editing category:', error);
@@ -148,26 +145,31 @@ async function deleteCategory(id) {
     if (!confirmDelete) return;
 
     try {
+        // Kirim permintaan DELETE ke API
         const response = await fetch(`http://localhost:8000/api/kategori.php?id=${id}`, {
             method: 'DELETE',
         });
 
+        // Ambil respons mentah dalam bentuk teks
         const responseText = await response.text();
-        console.log('Delete API Response:', responseText);
+        console.log('Delete API Response:', responseText); // Debugging respons mentah
 
+        // Ekstrak bagian JSON dari respons
         const jsonStart = responseText.indexOf('{');
-        if (jsonStart === -1) throw new Error('Respons server tidak valid');
+        if (jsonStart === -1) throw new Error('Respons server bukan JSON yang valid');
 
         const validJson = responseText.substring(jsonStart);
         const result = JSON.parse(validJson);
 
+        // Tampilkan pesan berhasil atau gagal
         alert(result.message);
-        fetchCategories();
+        fetchCategories(); // Refresh daftar kategori setelah penghapusan
     } catch (error) {
         console.error('Error deleting category:', error);
         alert('Gagal menghapus kategori: ' + error.message);
     }
 }
+
 
 // Panggil fungsi fetchCategories saat halaman dimuat
 window.onload = fetchCategories;
