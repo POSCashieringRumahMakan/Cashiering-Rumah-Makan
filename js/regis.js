@@ -28,16 +28,15 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
         });
 
         const checkEmailText = await checkEmailResponse.text();
-        try {
-            const checkEmailResult = JSON.parse(checkEmailText);
-            if (checkEmailResult.message === "Email sudah terdaftar.") {
-                message.textContent = "Email sudah terdaftar!";
-                message.style.color = "red";
-                return;
-            }
-        } catch {
-            console.error("Respons cek email bukan JSON:", checkEmailText);
-            throw new Error("Kesalahan respons cek email.");
+        // Ambil hanya bagian JSON dari respons
+        const jsonStartIndex = checkEmailText.indexOf("{");
+        const jsonEndIndex = checkEmailText.lastIndexOf("}") + 1;
+        const checkEmailResult = JSON.parse(checkEmailText.substring(jsonStartIndex, jsonEndIndex));
+
+        if (checkEmailResult.message === "Email sudah terdaftar.") {
+            message.textContent = "Email sudah terdaftar!";
+            message.style.color = "red";
+            return;
         }
 
         const response = await fetch(API_URL, {
@@ -49,21 +48,20 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
         });
 
         const responseText = await response.text();
-        try {
-            const result = JSON.parse(responseText);
-            if (result.message === "Registrasi berhasil!") {
-                message.textContent = result.message;
-                message.style.color = "green";
-                setTimeout(() => {
-                    window.location.href = "masuk.html";
-                }, 2000);
-            } else {
-                message.textContent = result.message || "Registrasi gagal.";
-                message.style.color = "red";
-            }
-        } catch {
-            console.error("Respons registrasi bukan JSON:", responseText);
-            throw new Error("Kesalahan respons registrasi.");
+        // Ambil hanya bagian JSON dari respons
+        const jsonStartIndexResponse = responseText.indexOf("{");
+        const jsonEndIndexResponse = responseText.lastIndexOf("}") + 1;
+        const result = JSON.parse(responseText.substring(jsonStartIndexResponse, jsonEndIndexResponse));
+
+        if (result.message === "Registrasi berhasil!") {
+            message.textContent = result.message;
+            message.style.color = "green";
+            setTimeout(() => {
+                window.location.href = "masuk.html";
+            }, 2000);
+        } else {
+            message.textContent = result.message || "Registrasi gagal.";
+            message.style.color = "red";
         }
     } catch (error) {
         message.textContent = "Terjadi kesalahan saat menghubungi server.";
