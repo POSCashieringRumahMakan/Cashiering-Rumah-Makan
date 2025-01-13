@@ -1,5 +1,5 @@
 // URL API untuk registrasi
-const API_URL = "http://localhost/pos_cashiering/public/index.php/registrasi";
+const API_URL = "http://localhost:8000/public/registrasi";
 
 // Tangani pengiriman form
 document.getElementById("registrationForm").addEventListener("submit", async function (event) {
