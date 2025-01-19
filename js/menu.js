@@ -115,8 +115,10 @@ function editProduct(id) {
     document.getElementById('kategori').value = product.kategori;
     document.getElementById('harga').value = product.harga;
     document.getElementById('status').value = product.status;
+
     // Ubah teks tombol untuk menunjukkan bahwa ini adalah proses edit
     document.querySelector('button[type="submit"]').textContent = "Perbarui Produk";
+    document.querySelector('.order-summary h3').textContent = 'Form Edit Kategori'; // Ubah judul
 }
 
 

@@ -136,7 +136,7 @@ async function editCategory(id) {
         document.getElementById('namaKategori').value = validJson.nama_kategori;
 
         // Ubah teks tombol dan judul form
-        document.querySelector('button[type="submit"]').textContent = 'Perbarui';
+        document.querySelector('button[type="submit"]').textContent = 'Perbarui Kategori';
         document.querySelector('.order-summary h3').textContent = 'Form Edit Kategori'; // Ubah judul
 
     } catch (error) {
