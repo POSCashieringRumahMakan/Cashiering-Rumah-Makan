@@ -9,20 +9,15 @@ async function fetchData() {
             throw new Error('Gagal mengambil data pengguna');
         }
 
-        // Ambil respons sebagai teks
         const textResponse = await response.text();
-        console.log(textResponse); // Cek respons di console
 
-        // Pisahkan data JSON dengan menghapus bagian pesan "Koneksi berhasil!"
-        const jsonResponse = textResponse.replace("Koneksi berhasil!", "").trim();
+        // Cek dan hapus pesan jika ada
+        const jsonResponse = textResponse.includes("Koneksi berhasil!") 
+            ? textResponse.replace("Koneksi berhasil!", "").trim() 
+            : textResponse.trim();
         
-        // Coba parsing data JSON
         const data = JSON.parse(jsonResponse);
-
-        // Simpan data anggota ke dalam variabel global
         members = data;
-
-        // Tampilkan data pengguna di UI
         displayMembers(members);
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -32,7 +27,7 @@ async function fetchData() {
 // Fungsi untuk menampilkan daftar pelanggan
 function displayMembers(members) {
     const memberList = document.getElementById('member-list');
-    memberList.innerHTML = ''; // Kosongkan daftar sebelumnya
+    memberList.innerHTML = '';
 
     if (members.length === 0) {
         memberList.innerHTML = '<p>Tidak ada data pelanggan.</p>';
@@ -59,15 +54,15 @@ function displayMembers(members) {
 
 // Fungsi untuk mengedit pelanggan
 function editMember(id) {
-    // Cari member berdasarkan id
     const member = members.find((member) => member.id === id);
     if (member) {
-        // Isi form dengan data member yang dipilih
         document.getElementById('member-id').value = member.id;
         document.getElementById('nama').value = member.nama;
         document.getElementById('email').value = member.email;
         document.getElementById('noTelepon').value = member.noTelepon;
         document.getElementById('tingkatan').value = member.tingkatan;
+        document.querySelector('aside h3').textContent = 'Form Edit Data Pelanggan';
+        document.getElementById('submit-btn').textContent = 'Simpan Perubahan';
     }
 }
 
@@ -75,45 +70,46 @@ function editMember(id) {
 async function saveMember(event) {
     event.preventDefault();
 
-    const memberId = document.getElementById('member-id').value;
-    const nama = document.getElementById('nama').value;
-    const email = document.getElementById('email').value;
-    const noTelepon = document.getElementById('noTelepon').value;
-    const tingkatan = document.getElementById('tingkatan').value;
+    const memberId = document.getElementById('member-id').value.trim();
+    const nama = document.getElementById('nama').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const noTelepon = document.getElementById('noTelepon').value.trim();
+    const tingkatan = document.getElementById('tingkatan').value.trim();
 
-    const memberData = {
-        nama,
-        email,
-        noTelepon,
-        tingkatan
-    };
+    if (!nama || !email || !noTelepon || !tingkatan) {
+        alert('Harap isi semua data pelanggan.');
+        return;
+    }
+
+    const memberData = { nama, email, noTelepon, tingkatan };
 
     try {
         let url = 'http://localhost:8000/api/pengguna.php';
         let method = 'POST';
 
-        // Jika ada memberId, berarti kita akan melakukan update
         if (memberId) {
-            url += `?id=${memberId}`;
-            method = 'PUT'; // Gunakan PUT untuk memperbarui data
+            url = `http://localhost:8000/api/pengguna.php?id=${memberId}`;
+            method = 'PUT';
         }
 
         const response = await fetch(url, {
             method: method,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(memberData)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(memberData),
         });
 
         if (!response.ok) {
-            throw new Error('Gagal menyimpan data pengguna');
+            throw new Error(`Gagal menyimpan data pengguna: ${response.statusText}`);
         }
 
-        // Jika berhasil, reset form dan reload data
         document.getElementById('member-form').reset();
         document.getElementById('member-id').value = '';
-        fetchData(); // Muat ulang data pengguna
+        document.querySelector('aside h3').textContent = 'Form Tambah Pelanggan';
+
+        // Mengubah kembali teks tombol ke 'Simpan'
+        document.getElementById('submit-btn').textContent = 'Simpan';
+
+        fetchData();
         alert('Data pelanggan berhasil disimpan!');
     } catch (error) {
         console.error('Error saving member:', error);
@@ -121,13 +117,13 @@ async function saveMember(event) {
     }
 }
 
-// Tampilkan data pengguna saat halaman dimuat
-document.addEventListener('DOMContentLoaded', fetchData);
 
 // Fungsi menghapus pelanggan
 async function deleteMember(id) {
+    if (!confirm(`Anda yakin ingin menghapus pelanggan dengan ID ${id}?`)) {
+        return;
+    }
     try {
-        // Mengirimkan permintaan DELETE ke API
         const response = await fetch(`http://localhost:8000/api/pengguna.php?id=${id}`, {
             method: 'DELETE',
         });
@@ -136,12 +132,12 @@ async function deleteMember(id) {
             throw new Error('Gagal menghapus pelanggan');
         }
 
-        // Setelah data berhasil dihapus, ambil data terbaru
-        fetchData(); // Muat ulang data pengguna
-
+        fetchData();
         alert(`Pelanggan dengan ID ${id} berhasil dihapus.`);
     } catch (error) {
         console.error('Error deleting member:', error);
         alert('Terjadi kesalahan saat menghapus pelanggan.');
     }
 }
+
+document.addEventListener('DOMContentLoaded', fetchData);
