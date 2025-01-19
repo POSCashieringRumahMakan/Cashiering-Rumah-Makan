@@ -33,14 +33,14 @@ async function fetchCategories() {
     }
 }
 
-// Fungsi untuk memperbarui tampilan tabel kategori
+// Modifikasi fungsi updateCategoryTable untuk menampilkan jenis kategori
 function updateCategoryTable(categories) {
     const tableBody = document.querySelector('.category-table tbody');
     tableBody.innerHTML = ''; // Kosongkan tabel sebelum menambahkan data baru
 
     // Periksa apakah data kategori kosong
     if (!categories || categories.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="3">Tidak ada kategori ditemukan.</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="4">Tidak ada kategori ditemukan.</td></tr>';
         return;
     }
 
@@ -49,6 +49,7 @@ function updateCategoryTable(categories) {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${index + 1}</td>
+            <td>${category.jenis_kategori}</td>
             <td>${category.nama_kategori}</td>
             <td>
                 <button class="edit-button" onclick="editCategory(${category.id_kategori})">Edit</button>
