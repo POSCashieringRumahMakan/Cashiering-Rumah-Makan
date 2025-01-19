@@ -102,16 +102,16 @@ async function saveCategory(event) {
         alert(validJson.message);
         fetchCategories();
 
-        // Reset form
+        // Reset form dan ubah kembali ke "Form Tambah Kategori"
         document.getElementById('category-form').reset();
         document.getElementById('category-id').value = '';
         document.querySelector('button[type="submit"]').textContent = 'Simpan';
+        document.querySelector('.order-summary h3').textContent = 'Form Tambah Kategori'; // Reset judul form
     } catch (error) {
         console.error('Error saving category:', error);
         alert('Gagal menyimpan data kategori: ' + error.message);
     }
 }
-
 
 // Fungsi untuk menangani aksi edit kategori
 async function editCategory(id) {
@@ -130,15 +130,21 @@ async function editCategory(id) {
         if (jsonStart === -1) throw new Error('Response bukan JSON yang valid');
         const validJson = JSON.parse(responseText.substring(jsonStart));
 
+        // Isi form dengan data yang akan diedit
         document.getElementById('category-id').value = validJson.id_kategori;
         document.getElementById('jenisKategori').value = validJson.jenis_kategori;
         document.getElementById('namaKategori').value = validJson.nama_kategori;
+
+        // Ubah teks tombol dan judul form
         document.querySelector('button[type="submit"]').textContent = 'Perbarui';
+        document.querySelector('.order-summary h3').textContent = 'Form Edit Kategori'; // Ubah judul
+
     } catch (error) {
         console.error('Error editing category:', error);
         alert('Gagal mengambil data kategori: ' + error.message);
     }
 }
+
 
 // Fungsi untuk menangani aksi hapus kategori
 async function deleteCategory(id) {
