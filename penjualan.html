@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Penjualan - POS</title>
+  <link rel="stylesheet" href="css/penjualan.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body data-page="penjualan">
+  <div class="main-container">
+    <!-- Sidebar akan otomatis dimuat dari sidebar.js -->
+
+    <!-- search bar as top bar -->
+    <div class="top-bar">
+      <input type="text" id="search" placeholder="Cari..." oninput="searchProducts()">
+    </div>
+
+    <section class="content">
+        <h2>💰 Penerimaan Uang - Rumah Makan Padang</h2>
+  
+        <div class="dashboard-cards">
+            <!-- Total Penjualan Harian -->
+            <div class="card total-penjualan">
+                <div class="card-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Total Penjualan Hari Ini</h3>
+                    <p id="total-harian">Rp 0</p>
+                </div>
+            </div>
+        
+            <!-- Ringkasan Metode Pembayaran -->
+            <div class="card metode-pembayaran">
+                <div class="card-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Metode Pembayaran</h3>
+                    <ul>
+                        <li><i class="fas fa-money-bill-wave"></i> Tunai (Cash): <span id="cash-total">Rp 0</span></li>
+                        <li><i class="fas fa-credit-card"></i> Kartu Debit/Kredit: <span id="card-total">Rp 0</span></li>
+                        <li><i class="fas fa-mobile-alt"></i> E-Wallet: <span id="ewallet-total">Rp 0</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Filter Laporan -->
+        <div class="filter-laporan">
+          <label for="filter">Filter: </label>
+          <select id="filter" onchange="filterTransaksi()">
+            <option value="hari">Hari Ini</option>
+            <option value="minggu">Minggu Ini</option>
+            <option value="bulan">Bulan Ini</option>
+          </select>
+        </div>
+  
+        <!-- Tabel Riwayat Transaksi -->
+        <table>
+          <thead>
+            <tr>
+              <th>ID Transaksi</th>
+              <th>Waktu</th>
+              <th>Total</th>
+              <th>Metode Pembayaran</th>
+              <th>Pajak</th>
+              <th>Diskon</th>
+            </tr>
+          </thead>
+          <tbody id="riwayat-transaksi">
+            <!-- Data transaksi akan diisi dengan JavaScript -->
+          </tbody>
+        </table>
+      </section>  
+
+    <script src="js/penjualan.js"></script>
+    <script src="js/sidebar.js"></script>
+</body>
+
+</html>
