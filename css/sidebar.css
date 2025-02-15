@@ -4,7 +4,9 @@
     width: 250px;
     padding: 20px;
     color: white;
-  }
+    height: 100vh; /* Sidebar mengikuti tinggi layar */
+    overflow-y: auto; /* Tambahkan scroll jika isinya lebih panjang */
+}
   
   .sidebar h2 {
     text-align: center;

@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
       <nav class="sidebar-nav">
         <ul>
           <li><a href="index.html" class="sidebar-link" data-page="beranda"><i class="fas fa-tachometer-alt"></i><span>Beranda</span></a></li>
+          <li><a href="absensi.html" class="sidebar-link" data-page="absensi"><i class="fas fa-clock"></i><span>Absensi</span></a></li>
           <li><a href="kategori.html" class="sidebar-link" data-page="kategori"><i class="fas fa-list"></i><span>Kategori</span></a></li>
           <li><a href="menu.html" class="sidebar-link" data-page="menu"><i class="fas fa-utensils"></i><span>Menu</span></a></li>
           <li><a href="kasir.html" class="sidebar-link" data-page="kasir"><i class="fas fa-cash-register"></i><span>Kasir</span></a></li>
