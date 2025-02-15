@@ -1,28 +1,25 @@
+let categories = []; // Simpan daftar kategori global
+
 // Fungsi untuk mendapatkan data produk dari API
 async function fetchProducts() {
     try {
-        const response = await fetch("http://localhost:8000/api/menu.php", {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-        });
+        const response = await fetch("http://localhost:8000/api/menu.php");
+        const textResponse = await response.text();
+        console.log("Raw Response dari API Produk:", textResponse);
 
-        const rawText = await response.text(); // Ambil respons mentah
-        console.log("Server Response:", rawText); // Debug respons dari server
-
-        // Pisahkan pesan dari JSON
-        const jsonStart = rawText.indexOf("["); // Mencari awal array JSON
+        const jsonStart = textResponse.indexOf("[");
         if (jsonStart !== -1) {
-            const validJson = rawText.substring(jsonStart); // Ambil bagian JSON saja
-            const data = JSON.parse(validJson); // Parse JSON
-            products = data; // Update produk
-            renderProducts(); // Render produk
+            const validJson = textResponse.substring(jsonStart);
+            const data = JSON.parse(validJson);
+            console.log("Data Produk setelah parsing:", data);
+            products = data;
+            renderProducts();
         } else {
-            // Jika tidak ditemukan JSON, tampilkan pesan error
-            console.error("Response is not valid JSON:", rawText);
+            console.error("Respons produk tidak valid:", textResponse);
             alert("Terjadi kesalahan: Respons tidak valid.");
         }
     } catch (error) {
-        console.error("Error fetching products:", error); // Tampilkan error
+        console.error("Error fetching products:", error);
         alert("Terjadi kesalahan saat mengambil data produk: " + error.message);
     }
 }
@@ -30,14 +27,24 @@ async function fetchProducts() {
 // Fungsi untuk menampilkan data produk ke dalam halaman
 function renderProducts() {
     const menuList = document.getElementById('menu-list');
-    menuList.innerHTML = ''; // Mengosongkan daftar produk sebelumnya
+    menuList.innerHTML = '';
+
+    console.log("Produk yang akan dirender:", products);
+    console.log("Kategori yang tersedia:", categories);
 
     products.forEach(product => {
+        console.log(`Cocokkan kategori untuk ${product.nama} (ID Kategori: ${product.kategori})`);
+
+        const kategoriProduk = categories.find(cat => String(cat.id_kategori) === String(product.kategori));
+        console.log(`Hasil pencarian kategori:`, kategoriProduk);
+
+        const namaKategori = kategoriProduk ? kategoriProduk.nama_kategori : "Tidak diketahui";
+
         const productCard = document.createElement('div');
         productCard.classList.add('product-card');
         productCard.innerHTML = `
             <h3>${product.nama}</h3>
-            <p>Kategori: ${product.kategori}</p>
+            <p>Kategori: ${namaKategori}</p>
             <p>Harga: Rp ${product.harga}</p>
             <p>Status: ${product.status}</p>
             <button class="edit-btn" onclick="editProduct(${product.id})">Edit</button>
@@ -45,19 +52,22 @@ function renderProducts() {
         `;
         menuList.appendChild(productCard);
     });
+
+    console.log("Produk berhasil dirender.");
 }
 
 // Fungsi untuk menyimpan (menambah atau mengedit) produk
 async function saveProduct(event) {
-    event.preventDefault(); // Mencegah form dikirim secara default
+    event.preventDefault();
 
     const id = document.getElementById('product-id').value;
     const nama = document.getElementById('namaProduk').value;
-    const kategori = document.getElementById('kategori').value;
+    const kategori = document.getElementById('kategori').value; // ID kategori dari dropdown
     const harga = document.getElementById('harga').value;
     const status = document.getElementById('status').value;
 
-    // Validasi data input
+    console.log("ID Kategori yang dipilih:", kategori); // Tambahkan log ini
+
     if (!nama || !kategori || !harga || isNaN(harga)) {
         alert("Harap isi semua kolom dengan benar.");
         return;
@@ -65,17 +75,18 @@ async function saveProduct(event) {
 
     const productData = {
         nama,
-        kategori,
+        kategori, // ID kategori harus dikirim ke API
         harga: parseInt(harga),
         status,
     };
+
+    console.log("Data yang dikirim ke API:", productData); // Debugging
 
     try {
         let method = 'POST';
         let url = "http://localhost:8000/api/menu.php";
 
         if (id) {
-            // Edit produk jika ID ada
             method = 'PUT';
             productData.id = parseInt(id);
         }
@@ -91,9 +102,8 @@ async function saveProduct(event) {
         }
 
         alert("Produk berhasil disimpan.");
-        document.getElementById('product-form').reset(); // Reset form
-        document.getElementById('product-id').value = ''; // Kosongkan ID
-        document.querySelector('button[type="submit"]').textContent = "Simpan Produk"; // Kembali ke teks awal
+        document.getElementById('product-form').reset();
+        document.getElementById('product-id').value = '';
         fetchProducts(); // Refresh daftar produk
     } catch (error) {
         console.error("Error saving product:", error);
@@ -120,7 +130,6 @@ function editProduct(id) {
     document.querySelector('button[type="submit"]').textContent = "Perbarui Produk";
     document.querySelector('.order-summary h3').textContent = 'Form Edit Kategori'; // Ubah judul
 }
-
 
 // Fungsi untuk menghapus produk
 async function deleteProduct(id) {
@@ -179,3 +188,66 @@ function renderFilteredProducts(filteredProducts) {
 
 // Memanggil fetchProducts saat halaman pertama kali dimuat
 document.addEventListener('DOMContentLoaded', fetchProducts);
+
+// Fungsi untuk mendapatkan data kategori dari API
+async function fetchCategories() {
+    try {
+        const response = await fetch("http://localhost:8000/api/kategori.php", {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+        });
+
+        const rawText = await response.text();
+        console.log("Server Response (Kategori):", rawText);
+
+        const jsonStart = rawText.indexOf("[");
+        if (jsonStart !== -1) {
+            const validJson = rawText.substring(jsonStart);
+            categories = JSON.parse(validJson); // Simpan ke variabel global
+
+            console.log("Data Kategori Terparse:", categories); // Debugging
+            populateCategoryDropdown(categories);
+        } else {
+            console.error("Response kategori tidak valid JSON:", rawText);
+            alert("Terjadi kesalahan: Respons kategori tidak valid.");
+        }
+    } catch (error) {
+        console.error("Error fetching categories:", error);
+        alert("Terjadi kesalahan saat mengambil data kategori: " + error.message);
+    }
+}
+
+
+// Fungsi untuk mengisi dropdown kategori
+function populateCategoryDropdown(categories) {
+    const kategoriSelect = document.getElementById("kategori");
+    kategoriSelect.innerHTML = ""; // Kosongkan dropdown sebelum mengisi ulang
+
+    // Tambahkan opsi default
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Pilih Kategori";
+    kategoriSelect.appendChild(defaultOption);
+
+    // Pastikan format data API benar sebelum digunakan
+    if (!Array.isArray(categories) || categories.length === 0) {
+        console.error("Data kategori tidak ditemukan atau format salah:", categories);
+        return;
+    }
+
+    categories.forEach(category => {
+        const option = document.createElement("option");
+        option.value = category.id_kategori; // Pastikan sesuai dengan struktur API
+        option.textContent = category.nama_kategori; // Gunakan nama kategori dari API
+        kategoriSelect.appendChild(option);
+    });
+
+    console.log("Kategori berhasil dimasukkan:", kategoriSelect.innerHTML); // Debugging
+}
+
+
+// Panggil fetchCategories saat halaman pertama kali dimuat
+document.addEventListener("DOMContentLoaded", () => {
+    fetchProducts();
+    fetchCategories();
+});
