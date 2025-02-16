@@ -35,50 +35,69 @@ function renderAbsensiTable() {
 renderAbsensiTable();
 
 function getCurrentTime() {
-    return new Intl.DateTimeFormat('id-ID', {
-        year: 'numeric', month: '2-digit', day: '2-digit',
-        hour: '2-digit', minute: '2-digit', second: '2-digit',
-        hour12: false,
-        timeZone: 'Asia/Jakarta' // Sesuaikan zona waktu jika perlu
-    }).format(new Date()).replaceAll("/", "-");
+    let now = new Date();
+    let tanggal = now.toISOString().split("T")[0]; // Format YYYY-MM-DD
+    let jam = now.toTimeString().split(" ")[0]; // Format HH:MM:SS
+
+    return { tanggal, jam };
 }
 
 async function checkIn() {
-    let now = new Date();
-    let jamMasuk = getCurrentTime().split(" ")[1];
-    let tanggal = getCurrentTime().split(" ")[0];
+    let { tanggal, jam } = getCurrentTime();
+
+    let requestBody = {
+        pengguna_id: user.id,
+        tanggal: tanggal,
+        jam_masuk: jam,
+    };
+
+    console.log("Data yang dikirim ke API (Check-In):", requestBody);
 
     try {
         const response = await fetch("http://localhost:8000/api/absensi.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                pengguna_id: user.id,
-                tanggal: tanggal,
-                jam_masuk: jamMasuk,
-            }),
+            body: JSON.stringify(requestBody),
         });
 
-        if (!response.ok) throw new Error("Gagal melakukan check-in");
+        console.log("Response Status:", response.status);
 
-        absensiStatus = { checkIn: true, jamMasuk, tanggal };
+        let responseText = await response.text(); // Ambil teks respons dulu
+        console.log("Response dari API (Check-In):", responseText);
+
+        // Coba parse hanya JSON
+        let jsonStartIndex = responseText.indexOf("{");
+        if (jsonStartIndex === -1) throw new Error("Respon tidak mengandung JSON yang valid.");
+
+        let result = JSON.parse(responseText.slice(jsonStartIndex));
+
+        console.log("Data hasil parsing JSON:", result);
+
+        absensiStatus = { checkIn: true, jamMasuk: jam, tanggal: tanggal };
         localStorage.setItem("absensiStatus", JSON.stringify(absensiStatus));
 
         document.getElementById("btnCheckIn").disabled = true;
         document.getElementById("btnCheckOut").disabled = false;
 
-        absensi.push({ tanggal, jam_masuk: jamMasuk, jam_keluar: "-", total_jam: "-" });
+        absensi.push({
+            tanggal,
+            jam_masuk: jam,
+            jam_keluar: "-",
+            total_jam: "-"
+        });
+
         saveAbsensiToLocalStorage();
         renderAbsensiTable();
+
+        alert(result.message || "Check-in berhasil!");
     } catch (error) {
-        console.error(error);
-        alert("Terjadi kesalahan saat check-in.");
+        console.error("Error saat check-in:", error);
+        alert(`Terjadi kesalahan saat check-in: ${error.message}`);
     }
 }
 
 async function checkOut() {
-    let now = new Date();
-    let jamKeluar = getCurrentTime().split(" ")[1];
+    let { jam } = getCurrentTime();
 
     if (!absensiStatus.jamMasuk) {
         alert("Anda belum melakukan check-in!");
@@ -91,7 +110,7 @@ async function checkOut() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 pengguna_id: user.id,
-                jam_keluar: jamKeluar
+                jam_keluar: jam
             }),
         });
 
@@ -104,13 +123,13 @@ async function checkOut() {
         absensi = absensi.map(item => {
             if (item.tanggal === absensiStatus.tanggal && item.jam_masuk === absensiStatus.jamMasuk) {
                 let jamMasukTime = new Date(`1970-01-01T${absensiStatus.jamMasuk}`);
-                let jamKeluarTime = new Date(`1970-01-01T${jamKeluar}`);
+                let jamKeluarTime = new Date(`1970-01-01T${jam}`);
                 let totalMilliseconds = jamKeluarTime - jamMasukTime;
                 let totalMenit = Math.floor(totalMilliseconds / (1000 * 60));
                 let totalJam = Math.floor(totalMenit / 60);
                 let sisaMenit = totalMenit % 60;
                 let totalWaktu = totalJam > 0 ? `${totalJam} jam ${sisaMenit} menit` : `${sisaMenit} menit`;
-                return { ...item, jam_keluar: jamKeluar, total_jam: totalWaktu };
+                return { ...item, jam_keluar: jam, total_jam: totalWaktu };
             }
             return item;
         });
