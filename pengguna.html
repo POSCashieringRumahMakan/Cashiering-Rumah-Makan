@@ -46,7 +46,7 @@
             <!-- Title and Action -->
             <div class="content-header">
                 <h1>Laporan Data Pelanggan</h1>
-                <button onclick="printPage()" class="print-btn">Cetak</button>
+                <!-- <button onclick="printPage()" class="print-btn">Cetak</button> -->
             </div>
 
             <!-- Member Cards -->
@@ -60,22 +60,100 @@
             <h3 id="form-title">Form Tambah Pelanggan</h3>
             <form id="member-form" onsubmit="saveMember(event)">
                 <input type="hidden" id="member-id">
+
                 <label for="nama">Nama:</label>
                 <input type="text" id="nama" required>
+
                 <label for="email">Email:</label>
                 <input type="email" id="email" required>
+
                 <label for="noTelepon">No. Telepon:</label>
                 <input type="text" id="noTelepon" required>
-                <label for="tingkatan">Tingkatan:</label>
-                <select id="tingkatan" required>
-                    <option value="Gold">Gold</option>
+
+                <label for="tingkatan">Pilih Tingkatan:</label>
+                <select id="tingkatan" onchange="updateHarga()">
                     <option value="Silver">Silver</option>
+                    <option value="Gold">Gold</option>
                     <option value="Platinum">Platinum</option>
                 </select>
+
+                <!-- Input hidden untuk menyimpan angka asli -->
+                <input type="hidden" id="harga" name="harga">
+
+                <!-- Span untuk menampilkan harga dalam format rupiah -->
+                <p>Harga: <span id="harga-display">Rp 0</span></p>
+
+                <label for="metodePembayaran">Metode Pembayaran:</label>
+                <select id="metodePembayaran" required>
+                    <option value="Cash">Cash</option>
+                    <option value="Dana">Dana</option>
+                </select>
+
                 <button id="submit-btn" type="submit">Simpan</button>
             </form>
         </aside>
     </div>
+
+    <!-- Popup Pembayaran -->
+    <!-- <div id="payment-popup" class="popup">
+        <div class="popup-content">
+            <h3>Bayar untuk <span id="payment-name"></span></h3>
+            <p><strong>Harga:</strong> <span id="payment-price"></span></p>
+            <input type="number" id="cash-given" placeholder="Masukkan uang yang diberikan">
+            <p><strong>Kembalian:</strong> <span id="change"></span></p>
+            <input type="hidden" id="payment-id" /> 
+            <button onclick="confirmPayment()">Bayar</button>
+            <button onclick="closePopup()">Tutup</button>
+        </div>
+    </div> -->
+
+    <!-- Popup Pembayaran -->
+    <div id="payment-popup" class="popup">
+        <div class="popup-content">
+            <h3>Bayar untuk <span id="payment-name"></span></h3>
+            <p><strong>Harga:</strong> <span id="payment-price"></span></p>
+
+            <!-- Pilihan Metode Pembayaran -->
+            <div>
+                <label><input type="radio" name="payment-method" value="Cash" id="payment-method-cash"> Cash</label>
+                <label><input type="radio" name="payment-method" value="Dana" id="payment-method-dana"> Dana</label>
+            </div>
+
+            <!-- Input Uang yang Diberikan -->
+            <input type="number" id="cash-given" placeholder="Masukkan uang yang diberikan">
+            <p><strong>Kembalian:</strong> <span id="change"></span></p>
+
+            <!-- Hidden Input untuk ID Pelanggan -->
+            <input type="hidden" id="payment-id" />
+
+            <!-- Tombol Pembayaran -->
+            <button onclick="confirmPayment()">Bayar</button>
+            <button onclick="closePopup()">Tutup</button>
+        </div>
+    </div>
+
+    <script>
+        function updateHarga() {
+            const tingkatan = document.getElementById("tingkatan").value;
+            const hargaField = document.getElementById("harga");
+            const hargaDisplay = document.getElementById("harga-display");
+
+            // Menentukan harga berdasarkan tingkatan
+            const hargaTingkatan = {
+                "Silver": 50000,
+                "Gold": 100000,
+                "Platinum": 150000
+            };
+
+            const harga = hargaTingkatan[tingkatan];
+
+            // Simpan angka asli dalam input hidden
+            hargaField.value = harga;
+
+            // Tampilkan format rupiah di span
+            hargaDisplay.innerText = harga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+        }
+    </script>
 
     <script src="js/pengguna.js"></script>
 </body>

@@ -4,7 +4,7 @@ let members = []; // Variabel global untuk menyimpan data anggota
 async function fetchData() {
     try {
         const response = await fetch('http://localhost:8000/api/pengguna.php');
-        
+
         if (!response.ok) {
             throw new Error('Gagal mengambil data pengguna');
         }
@@ -12,10 +12,10 @@ async function fetchData() {
         const textResponse = await response.text();
 
         // Cek dan hapus pesan jika ada
-        const jsonResponse = textResponse.includes("Koneksi berhasil!") 
-            ? textResponse.replace("Koneksi berhasil!", "").trim() 
+        const jsonResponse = textResponse.includes("Koneksi berhasil!")
+            ? textResponse.replace("Koneksi berhasil!", "").trim()
             : textResponse.trim();
-        
+
         const data = JSON.parse(jsonResponse);
         members = data;
         displayMembers(members);
@@ -36,21 +36,33 @@ function displayMembers(members) {
 
     members.forEach((member) => {
         const card = document.createElement('div');
+        card.setAttribute('data-id', member.id); // Tambahkan atribut data-id
         card.classList.add('member-card');
+
+        // Tentukan status
+        const status = member.metode_pembayaran === 'Dana' ? 'Lunas' : 'Belum Dibayar';
+        const actionButton = status === 'Belum Dibayar'
+            ? `<button class="pay-btn" onclick="handlePayment(${member.id})">Pembayaran</button>`
+            : ''; // Tidak ada tombol jika sudah lunas
 
         card.innerHTML = `
             <h3>${member.nama}</h3>
             <p><strong>Email:</strong> ${member.email}</p>
             <p><strong>No. Telepon:</strong> ${member.noTelepon}</p>
             <p><strong>Tingkatan:</strong> ${member.tingkatan}</p>
+            <p><strong>Harga:</strong> ${member.harga ? member.harga.toLocaleString('id-ID') : '-'}</p>
+            <p><strong>Metode Pembayaran:</strong> <span class="payment-method">${member.metode_pembayaran ?? '-'}</span></p>
+            <p><strong>Status:</strong> <span class="order-status">${status}</span></p>
             <div class="actions">
                 <button class="edit-btn" onclick="editMember(${member.id})">Edit</button>
                 <button class="delete-btn" onclick="deleteMember(${member.id})">Hapus</button>
+                ${actionButton} 
             </div>
         `;
         memberList.appendChild(card);
     });
 }
+
 
 // Fungsi untuk mengedit pelanggan
 function editMember(id) {
@@ -61,6 +73,8 @@ function editMember(id) {
         document.getElementById('email').value = member.email;
         document.getElementById('noTelepon').value = member.noTelepon;
         document.getElementById('tingkatan').value = member.tingkatan;
+        document.getElementById('harga').value = member.harga; // Tambahkan ini
+        document.getElementById('metodePembayaran').value = member.metode_pembayaran; // Tambahkan ini
         document.querySelector('aside h3').textContent = 'Form Edit Data Pelanggan';
         document.getElementById('submit-btn').textContent = 'Simpan Perubahan';
     }
@@ -75,13 +89,15 @@ async function saveMember(event) {
     const email = document.getElementById('email').value.trim();
     const noTelepon = document.getElementById('noTelepon').value.trim();
     const tingkatan = document.getElementById('tingkatan').value.trim();
+    const harga = document.getElementById('harga').value.trim().replace(/[^\d]/g, ''); // Ambil angka saja
+    const metodePembayaran = document.getElementById('metodePembayaran').value.trim();
 
-    if (!nama || !email || !noTelepon || !tingkatan) {
+    if (!nama || !email || !noTelepon || !tingkatan || !harga || !metodePembayaran) {
         alert('Harap isi semua data pelanggan.');
         return;
     }
 
-    const memberData = { nama, email, noTelepon, tingkatan };
+    const memberData = { nama, email, noTelepon, tingkatan, harga, metode_pembayaran: metodePembayaran };
 
     try {
         let url = 'http://localhost:8000/api/pengguna.php';
@@ -141,3 +157,130 @@ async function deleteMember(id) {
 }
 
 document.addEventListener('DOMContentLoaded', fetchData);
+
+document.getElementById('metodePembayaran').addEventListener('change', function () {
+    const metodePembayaran = this.value;
+    if (metodePembayaran === 'Dana') {  // Jika menggunakan Dana
+        document.getElementById('statusPembayaran').textContent = 'Status: Lunas';
+    } else {  // Jika menggunakan Cash
+        document.getElementById('statusPembayaran').textContent = 'Status: Belum Dibayar';
+    }
+});
+
+
+let selectedMemberId = null; // Variabel untuk menyimpan ID anggota yang dipilih
+
+// Fungsi untuk menampilkan modal dan mengisi data pelanggan
+function handlePayment(id) {
+    // Cari data member berdasarkan ID
+    currentMember = members.find(member => member.id === id);
+    if (!currentMember) return;
+
+    // Isi popup dengan data anggota yang dipilih
+    document.getElementById('payment-name').textContent = currentMember.nama;
+    document.getElementById('payment-price').textContent = currentMember.harga.toLocaleString('id-ID');
+    document.getElementById('payment-id').value = currentMember.id; // Menyimpan ID anggota di input tersembunyi
+
+    // Reset nilai input uang yang diberikan dan kembalian
+    document.getElementById('cash-given').value = '';
+    document.getElementById('change').textContent = '0';
+
+    // Tampilkan popup
+    document.getElementById('payment-popup').style.display = 'flex';
+
+    // Event listener untuk menghitung kembalian
+    document.getElementById('cash-given').addEventListener('input', function () {
+        const cashGiven = parseInt(this.value) || 0;
+        const price = currentMember.harga;
+
+        // Hitung kembalian
+        const change = cashGiven - price;
+        document.getElementById('change').textContent = change < 0 ? 'Kurang' : change.toLocaleString('id-ID');
+    });
+}
+
+
+function closePopup() {
+    // Tutup popup
+    document.getElementById('payment-popup').style.display = 'none';
+}
+
+function confirmPayment() {
+    const paymentMethod = document.querySelector('input[name="payment-method"]:checked');
+    if (!paymentMethod) {
+        alert("Silakan pilih metode pembayaran!");
+        return;
+    }
+
+    const selectedMethod = paymentMethod.value;
+    const cashGiven = parseFloat(document.getElementById('cash-given').value);
+
+    if (isNaN(cashGiven) || cashGiven <= 0) {
+        alert("Masukkan jumlah uang yang diberikan dengan benar!");
+        return;
+    }
+
+    const price = parseFloat(document.getElementById('payment-price').innerText.replace(/[^\d]/g, ''));
+    const change = cashGiven - price;
+
+    if (change < 0) {
+        alert("Uang yang diberikan tidak cukup!");
+        return;
+    }
+
+    document.getElementById('change').innerText = "Rp " + change.toLocaleString();
+
+    const memberId = document.getElementById('payment-id').value;
+
+    // Update status langsung di DOM
+    const card = document.querySelector(`.member-card[data-id="${memberId}"]`);
+    if (card) {
+        const statusElement = card.querySelector('.order-status');
+        const paymentMethodElement = card.querySelector('.payment-method');
+        
+        if (statusElement) statusElement.textContent = "Lunas";
+        if (paymentMethodElement) paymentMethodElement.textContent = selectedMethod;
+    }
+
+    // Kirim PUT request ke backend
+    updatePaymentStatus(memberId, selectedMethod, "Lunas");
+
+    alert("Pembayaran berhasil!");
+    closePopup();
+}
+
+
+async function updatePaymentStatus(memberId, paymentMethod, status) {
+    const updateData = {
+        metode_pembayaran: paymentMethod,
+        status_pembayaran: status
+    };
+
+    try {
+        const response = await fetch(`http://localhost:8000/api/pengguna.php?id=${memberId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updateData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Gagal mengupdate status pembayaran');
+        }
+
+        console.log('Status pembayaran berhasil diperbarui');
+    } catch (error) {
+        console.error('Error updating payment status:', error);
+        alert('Terjadi kesalahan saat mengupdate status pembayaran.');
+    }
+}
+
+// Fungsi untuk menampilkan popup pembayaran
+function openPaymentPopup(name, price, id) {
+    document.getElementById('payment-name').innerText = name;
+    document.getElementById('payment-price').innerText = 'Rp ' + price.toLocaleString();
+    document.getElementById('payment-id').value = id;
+
+    // Menampilkan popup
+    document.getElementById('payment-popup').style.display = 'block';
+}
+
