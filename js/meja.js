@@ -38,7 +38,7 @@ function addTable(event) {
         number: document.getElementById("table-number").value,
         capacity: document.getElementById("capacity").value,
         status: document.getElementById("status").value,
-        location: document.getElementById("location").value,
+        location: document.getElementById("location").value,  // Ambil nilai dari dropdown
     };
     fetch(API_URL, {
         method: "POST",
@@ -46,6 +46,27 @@ function addTable(event) {
         body: JSON.stringify(data),
     }).then(() => {
         closeModal();
+        fetchTables();
+    });
+}
+
+// Simpan perubahan meja
+function saveEditTable(event) {
+    event.preventDefault();
+    const id = document.getElementById("edit-table-form").dataset.id;
+    const data = {
+        id,
+        number: document.getElementById("edit-table-number").value,
+        capacity: document.getElementById("edit-capacity").value,
+        status: document.getElementById("edit-status").value,
+        location: document.getElementById("edit-location").value, // Ambil nilai dari dropdown
+    };
+    fetch(API_URL, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    }).then(() => {
+        closeEditModal();
         fetchTables();
     });
 }
@@ -64,7 +85,7 @@ function editTable(id, number, capacity, status, location) {
     document.getElementById("edit-table-number").value = number;
     document.getElementById("edit-capacity").value = capacity;
     document.getElementById("edit-status").value = status;
-    document.getElementById("edit-location").value = location;
+    document.getElementById("edit-location").value = location; // Pilih lokasi yang sesuai
     document.getElementById("edit-table-form").dataset.id = id;
     document.getElementById("edit-table-modal").style.display = "block";
 }
