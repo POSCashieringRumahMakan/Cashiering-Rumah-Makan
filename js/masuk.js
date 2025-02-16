@@ -55,6 +55,9 @@ document.getElementById("loginForm").addEventListener("submit", async function (
             message.textContent = "Login berhasil!";
             message.style.color = "green";
 
+            // Simpan data user ke localStorage
+            localStorage.setItem("user", JSON.stringify(result.user));
+
             // Tunggu sebentar, lalu arahkan ke halaman dashboard.html
             setTimeout(() => {
                 window.location.href = "index.html";
