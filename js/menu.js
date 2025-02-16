@@ -56,38 +56,39 @@ function renderProducts() {
     console.log("Produk berhasil dirender.");
 }
 
+
+
 // Fungsi untuk menyimpan (menambah atau mengedit) produk
 async function saveProduct(event) {
     event.preventDefault();
 
     const id = document.getElementById('product-id').value;
     const nama = document.getElementById('namaProduk').value;
-    const kategori = document.getElementById('kategori').value; // ID kategori dari dropdown
+    const kategori = document.getElementById('kategori').value; // Ambil value ID kategori
     const harga = document.getElementById('harga').value;
     const status = document.getElementById('status').value;
 
-    console.log("ID Kategori yang dipilih:", kategori); // Tambahkan log ini
+    console.log("📌 ID Kategori yang dipilih:", kategori); // Debugging
 
-    if (!nama || !kategori || !harga || isNaN(harga)) {
+    if (!nama || !kategori || kategori === "" || !harga || isNaN(harga)) {
         alert("Harap isi semua kolom dengan benar.");
         return;
     }
 
     const productData = {
         nama,
-        kategori, // ID kategori harus dikirim ke API
-        harga: parseInt(harga),
+        id_kategori: parseInt(kategori), // Kirim ID kategori sesuai dengan backend
+        harga: parseFloat(harga),
         status,
     };
 
-    console.log("Data yang dikirim ke API:", productData); // Debugging
+    console.log("📌 Data yang dikirim ke API:", productData); // Debugging
 
     try {
-        let method = 'POST';
+        let method = id ? 'PUT' : 'POST';
         let url = "http://localhost:8000/api/menu.php";
 
         if (id) {
-            method = 'PUT';
             productData.id = parseInt(id);
         }
 
@@ -97,19 +98,30 @@ async function saveProduct(event) {
             body: JSON.stringify(productData),
         });
 
-        if (!response.ok) {
-            throw new Error("Gagal menyimpan produk.");
+        const responseText = await response.text();
+        console.log("📌 Response dari server (sebelum parsing JSON):", responseText);
+
+        let jsonStart = responseText.indexOf("{");
+        if (jsonStart === -1) {
+            throw new Error("Response bukan JSON yang valid: " + responseText);
+        }
+        let responseData = JSON.parse(responseText.substring(jsonStart));
+
+        if (!response.ok || responseData.error) {
+            throw new Error(responseData.error || "Gagal menyimpan produk");
         }
 
-        alert("Produk berhasil disimpan.");
+        alert("✅ Produk berhasil disimpan!");
         document.getElementById('product-form').reset();
         document.getElementById('product-id').value = '';
-        fetchProducts(); // Refresh daftar produk
+        fetchProducts();
     } catch (error) {
-        console.error("Error saving product:", error);
+        console.error("❌ Error saving product:", error);
         alert("Terjadi kesalahan saat menyimpan produk: " + error.message);
     }
 }
+
+
 
 // Fungsi untuk mengisi form edit produk
 function editProduct(id) {
@@ -119,41 +131,55 @@ function editProduct(id) {
         alert("Produk tidak ditemukan.");
         return;
     }
-    // Isi form dengan data produk yang akan diedit
+
+    // 🔹 Pastikan nilai kategori diisi dengan benar
     document.getElementById('product-id').value = product.id;
     document.getElementById('namaProduk').value = product.nama;
-    document.getElementById('kategori').value = product.kategori;
+    document.getElementById('kategori').value = product.id_kategori; // ✅ Sesuaikan dengan backend
     document.getElementById('harga').value = product.harga;
     document.getElementById('status').value = product.status;
 
-    // Ubah teks tombol untuk menunjukkan bahwa ini adalah proses edit
-    document.querySelector('button[type="submit"]').textContent = "Perbarui Produk";
-    document.querySelector('.order-summary h3').textContent = 'Form Edit Kategori'; // Ubah judul
+    console.log("📌 Edit Produk - ID Kategori:", product.id_kategori); // ✅ Debugging
 }
+
+
+
 
 // Fungsi untuk menghapus produk
 async function deleteProduct(id) {
-    // Tampilkan dialog konfirmasi
+    // 🔹 Konfirmasi sebelum menghapus
     const confirmDelete = confirm("Apakah Anda yakin ingin menghapus produk ini?");
-    if (!confirmDelete) {
-        return; // Batalkan jika pengguna memilih "Batal"
-    }
+    if (!confirmDelete) return;
 
     try {
-        const response = await fetch("http://localhost:8000/api/menu.php", {
+        console.log("📌 Menghapus produk dengan ID:", id);
+
+        // 🔹 Perbaikan: Kirim ID sebagai Query String (`?id=10`)
+        const url = `http://localhost:8000/api/menu.php?id=${id}`;
+
+        const response = await fetch(url, {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id }) // Kirimkan ID produk yang akan dihapus
+            headers: { 'Content-Type': 'application/json' } // Bisa dihapus jika tidak diperlukan
         });
 
-        if (!response.ok) {
-            throw new Error("Gagal menghapus produk");
+        const responseText = await response.text();
+        console.log("📌 Response dari server (sebelum parsing JSON):", responseText);
+
+        // 🔹 Menghindari pesan tambahan sebelum JSON (contoh: "Koneksi berhasil!")
+        let jsonStart = responseText.indexOf("{");
+        if (jsonStart === -1) {
+            throw new Error("Response bukan JSON yang valid: " + responseText);
+        }
+        let responseData = JSON.parse(responseText.substring(jsonStart));
+
+        if (!response.ok || responseData.error) {
+            throw new Error(responseData.error || "Gagal menghapus produk");
         }
 
-        alert("Produk berhasil dihapus."); // Tampilkan pesan sukses
-        fetchProducts(); // Refresh daftar produk
+        alert("✅ Produk berhasil dihapus!");
+        fetchProducts(); // 🔹 Refresh daftar produk setelah penghapusan
     } catch (error) {
-        console.error("Error deleting product:", error);
+        console.error("❌ Error deleting product:", error);
         alert("Terjadi kesalahan saat menghapus produk: " + error.message);
     }
 }
