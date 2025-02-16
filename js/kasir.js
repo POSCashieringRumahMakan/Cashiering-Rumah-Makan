@@ -14,6 +14,93 @@ const closeTakeaway = document.getElementById("close-takeaway");
 // Objek untuk menyimpan pesanan
 const order = {};
 
+async function fetchKasirData() {
+  try {
+      const response = await fetch("http://localhost:8000/api/kasir.php");
+      if (!response.ok) throw new Error("Gagal mengambil data transaksi");
+
+      const textData = await response.text();
+      console.log("Respons dari server:", textData);
+
+      let jsonStartIndex = textData.indexOf("[");
+      if (jsonStartIndex === -1) throw new Error("JSON tidak ditemukan dalam respons");
+
+      let cleanJsonText = textData.substring(jsonStartIndex).trim();
+      let transactions = JSON.parse(cleanJsonText);
+
+      console.log("Data JSON setelah parsing:", transactions);
+
+      // Ambil detail menu untuk setiap transaksi
+      const transactionsWithMenu = await Promise.all(
+          transactions.map(async (transaction) => {
+              const menuResponse = await fetch(`http://localhost:8000/api/menu.php?transaksi_id=${transaction.id}`);
+              if (!menuResponse.ok) return { ...transaction, menu: [] };
+
+              const menuData = await menuResponse.json();
+              return { ...transaction, menu: menuData };
+          })
+      );
+
+      console.log("Transaksi dengan menu:", transactionsWithMenu);
+      displayKasirData(transactionsWithMenu);
+  } catch (error) {
+      console.error("Error:", error);
+      document.getElementById("order-items").innerHTML = `<p>Gagal memuat transaksi.</p>`;
+  }
+}
+
+
+function displayKasirData(transactions) {
+  console.log("Menampilkan transaksi:", transactions);
+
+  const orderItems = document.getElementById("order-items");
+  orderItems.innerHTML = "";
+
+  if (!transactions || transactions.length === 0) {
+    orderItems.innerHTML = "<p>Tidak ada transaksi ditemukan.</p>";
+    return;
+  }
+
+  let totalKeseluruhan = 0;
+
+  transactions.forEach(transaction => {
+      console.log("Proses transaksi:", transaction);
+
+      const orderDiv = document.createElement("div");
+      orderDiv.classList.add("order");
+
+      let menuList = "";
+      if (transaction.menu && Array.isArray(transaction.menu)) {
+          menuList = transaction.menu.map(item => {
+              totalKeseluruhan += parseFloat(item.subtotal || 0);
+              return `${item.nama_menu} x ${item.kuantitas} = Rp. ${parseFloat(item.subtotal || 0).toLocaleString()}`;
+          }).join("<br>");
+      } else {
+          menuList = "<i>Data menu tidak tersedia.</i>";
+      }
+
+      orderDiv.innerHTML = `
+          <h4>Transaksi ID: ${transaction.id}</h4>
+          <p>Nama: ${transaction.nama_pengguna || "Tidak Diketahui"}</p>
+          <p>Meja: ${transaction.table_id}</p>
+          <p>Metode Pembayaran: ${transaction.metode_pembayaran}</p>
+          <p>Total: Rp. ${parseFloat(transaction.total_harga).toLocaleString()}</p>
+          <p>Waktu: ${transaction.created_at}</p>
+          <p><strong>Pesanan:</strong></p>
+          <p>${menuList}</p>
+      `;
+
+      orderItems.appendChild(orderDiv);
+  });
+
+  document.getElementById("total").textContent = `Total: Rp. ${totalKeseluruhan.toLocaleString()}`;
+}
+
+
+
+// Panggil fetchKasirData saat halaman dimuat
+document.addEventListener("DOMContentLoaded", fetchKasirData);
+
 // Fetch data menu dari API
 async function fetchMenu() {
   try {
@@ -21,15 +108,30 @@ async function fetchMenu() {
     if (!response.ok) throw new Error("Gagal mengambil data menu.");
 
     // Ambil respon sebagai teks
-    const textData = await response.text();
+    let textData = await response.text();
 
-    // Hilangkan teks "Koneksi berhasil!" sebelum JSON
-    const jsonData = textData.replace(/^Koneksi berhasil!/, "");
+    // Cetak respons ke konsol untuk debugging
+    console.log("Respons dari server:", textData);
 
-    // Parse JSON
-    const data = JSON.parse(jsonData);
+    // Hilangkan semua teks tambahan sebelum JSON dimulai
+    let jsonStartIndex = textData.indexOf("["); // Mencari awal array JSON
+    if (jsonStartIndex === -1) throw new Error("JSON tidak ditemukan dalam respons");
 
-    // Tampilkan menu
+    let cleanJsonText = textData.substring(jsonStartIndex).trim();
+
+    // Cek apakah JSON sudah valid sebelum parsing
+    let data;
+    try {
+      data = JSON.parse(cleanJsonText);
+    } catch (parseError) {
+      console.error("Error parsing JSON:", parseError);
+      throw new Error("Format JSON tidak valid");
+    }
+
+    // Cetak data hasil parsing ke konsol
+    console.log("Data JSON setelah parsing:", data);
+
+    // Tampilkan menu di frontend
     displayMenu(data);
   } catch (error) {
     console.error("Error:", error);
@@ -37,28 +139,30 @@ async function fetchMenu() {
   }
 }
 
-// Fungsi untuk menampilkan semua menu
-function displayMenu(menu) {
-  productList.innerHTML = ""; // Bersihkan daftar produk
 
-  menu.forEach(item => {
-    if (item.status === "Tersedia") { // Hanya tampilkan item yang tersedia
-      const productCard = document.createElement("div");
-      productCard.classList.add("product-card");
-      productCard.innerHTML = `
-        <h4>${item.nama}</h4>
-        <p>Rp. ${parseInt(item.harga).toLocaleString()}</p>
-        <p><strong>Status:</strong> ${item.status}</p>
-        <div class="quantity-control">
-          <button onclick="decreaseQuantity('${item.id}', '${item.nama}', ${item.harga})">-</button>
-          <span class="quantity" id="quantity-${item.id}">0</span>
-          <button onclick="increaseQuantity('${item.id}', '${item.nama}', ${item.harga})">+</button>
-        </div>
+// Fungsi untuk menampilkan menu ke frontend
+function displayMenu(menuItems) {
+  const productList = document.getElementById("product-list"); // Sesuaikan dengan ID di HTML
+  productList.innerHTML = ""; // Kosongkan isi sebelumnya
+
+  if (menuItems.length === 0) {
+      productList.innerHTML = "<p>Tidak ada menu tersedia.</p>";
+      return;
+  }
+
+  menuItems.forEach(item => {
+      const menuItem = document.createElement("div");
+      menuItem.classList.add("menu-item");
+      menuItem.innerHTML = `
+          <h3>${item.nama}</h3>
+          <p>Harga: Rp${item.harga.toLocaleString()}</p>
+          <p>Kategori: ${item.nama_kategori}</p>
+          <p>Status: ${item.status}</p>
       `;
-      productList.appendChild(productCard);
-    }
+      productList.appendChild(menuItem);
   });
 }
+
 
 // Fungsi untuk mengurangi kuantitas
 function decreaseQuantity(productId, productName, productPrice) {
@@ -74,6 +178,8 @@ function decreaseQuantity(productId, productName, productPrice) {
 
 // Fungsi untuk menambah kuantitas
 function increaseQuantity(productId, productName, productPrice) {
+  console.log(`Menambahkan ${productName} ke pesanan`);
+
   if (!order[productId]) {
     order[productId] = {
       name: productName,
@@ -84,13 +190,16 @@ function increaseQuantity(productId, productName, productPrice) {
 
   order[productId].quantity++;
 
-  updateOrderSummary();
+  updateOrderSummary(); // Perbarui total setelah menambahkan item
 }
+
 
 // Fungsi untuk memperbarui ringkasan pesanan
 function updateOrderSummary() {
   orderItems.innerHTML = ""; // Bersihkan daftar pesanan
   let total = 0;
+
+  console.log("Data Order:", order); // 🛠️ Debugging: cek isi order
 
   Object.values(order).forEach(item => {
     const li = document.createElement("li");
@@ -101,16 +210,15 @@ function updateOrderSummary() {
   });
 
   // Perbarui total harga
+  console.log("Total Harga:", total); // 🛠️ Debugging: cek total harga
   totalElement.textContent = `Total: Rp. ${total.toLocaleString()}`;
 
-  // Perbarui kuantitas di kartu produk
-  Object.keys(order).forEach(productId => {
-    const quantitySpan = document.getElementById(`quantity-${productId}`);
-    if (quantitySpan) {
-      quantitySpan.textContent = order[productId].quantity;
-    }
-  });
+  // Pastikan total juga muncul di modal pembayaran
+  document.getElementById("takeaway-total").textContent = `Rp. ${total.toLocaleString()}`;
+  document.getElementById("dine-in-total").textContent = `Rp. ${total.toLocaleString()}`;
 }
+
+
 
 // Fungsi untuk membuka pop-up
 function openPopup(popup, totalId) {
@@ -150,5 +258,13 @@ popupOverlay.addEventListener("click", () => {
   popupOverlay.style.display = "none";
 });
 
+
+
 // Panggil fungsi fetch menu saat halaman dimuat
 document.addEventListener("DOMContentLoaded", fetchMenu);
+
+document.addEventListener("DOMContentLoaded", () => {
+  fetchMenu();  // Ambil menu
+  fetchKasirData();  // Ambil data transaksi
+  updateOrderSummary();  // 🔹 Pastikan total langsung diperbarui saat halaman dimuat
+});

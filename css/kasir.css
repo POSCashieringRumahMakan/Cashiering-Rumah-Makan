@@ -565,3 +565,24 @@ body {
     font-size: 18px;
   }
 }
+
+.menu-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.menu-item h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.menu-item p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
