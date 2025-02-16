@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Meja - POS</title>
+  <link rel="stylesheet" href="css/booking.css">
+  <link rel="stylesheet" href="css/kasir.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body data-page="booking">
+  <div class="main-container">
+    
+    <div class="content-container">
+      <div class="top-bar">
+        <input type="text" id="search" placeholder="Cari Booking..." oninput="searchBookings()">
+        <button id="add-booking-btn" onclick="openBookingModal()">Tambah Booking</button>
+      </div>
+      
+      <section class="content">
+        <h2>Data Booking</h2>
+        <div class="booking-container" id="booking-container">
+            <!-- Data dari API akan ditampilkan di sini dalam bentuk card -->
+        </div>
+    
+        <!-- <script src="script.js"></script> -->
+      </section>
+    </div>
+  </div>
+  
+  <!-- Modal Tambah Booking
+  <div id="booking-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeBookingModal()">&times;</span>
+      <h2>Tambah Booking</h2>
+      <form id="booking-form">
+        <label for="customer-name">Nama Customer</label>
+        <input type="text" id="customer-name" required>
+
+        <label for="customer-phone">No HP</label>
+        <input type="text" id="customer-phone" required>
+
+        <label for="customer-email">Email</label>
+        <input type="email" id="customer-email" required>
+
+        <label for="booking-date">Tanggal Booking</label>
+        <input type="date" id="booking-date" required>
+
+        <label for="table-number">No Meja</label>
+        <input type="text" id="table-number" required>
+
+        <button type="submit">Simpan</button>
+      </form>
+    </div>
+  </div> -->
+  
+  <script src="js/booking.js"></script>
+  <script src="js/sidebar.js"></script>
+</body>
+</html>

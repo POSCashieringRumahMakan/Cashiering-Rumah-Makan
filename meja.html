@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Data Meja - POS</title>
   <link rel="stylesheet" href="css/meja.css">
+  
   <link rel="stylesheet" href="css/kasir.css">
   <link rel="stylesheet" href="css/sidebar.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -19,14 +20,14 @@
       <div class="top-bar">
         <!-- Search bar -->
         <input type="text" id="search" placeholder="Cari Meja..." oninput="searchTables()">
-        
       </div>
 
       <section class="content">
         <h1>Data Meja</h1>
         <button id="add-table-btn" onclick="openModal()">Tambah Meja</button>
-        <div id="table-data" class="table-cards-container">
-          <!-- Card meja akan dimasukkan disini oleh JavaScript -->
+        <a href="booking.html" id="add-table-btn">Data Booking</a>
+        <div id="table-" class="table-cards-container">
+          <!-- Card meja akan dimasukkan di sini oleh JavaScript -->
         </div>
       </section>
     </div>
@@ -50,6 +51,9 @@
           <option value="Tidak Tersedia">Tidak Tersedia</option>
         </select>
 
+        <label for="location">Lokasi</label>
+        <input type="text" id="location" required>
+
         <button type="submit">Simpan</button>
       </form>
     </div>
@@ -58,27 +62,33 @@
   <!-- Modal untuk Booking Meja -->
   <div id="booking-modal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="closeBookingModal()">&times;</span>
-      <h2>Booking Meja</h2>
-      <form id="booking-form">
-        <label for="customer-name">Nama Customer</label>
-        <input type="text" id="customer-name" required>
+        <span class="close" onclick="closeBookingModal()">&times;</span>
+        <h2>Booking Meja</h2>
+        <form id="booking-form">
+            <label for="customer-name">Nama Customer</label>
+            <input type="text" id="customer-name" required>
 
-        <label for="customer-phone">No HP</label>
-        <input type="text" id="customer-phone" required>
+            <label for="customer-phone">No HP</label>
+            <input type="text" id="customer-phone" required>
 
-        <label for="customer-email">Email</label>
-        <input type="email" id="customer-email" required>
+            <label for="customer-email">Email</label>
+            <input type="email" id="customer-email" required>
 
-        <label for="booking-date">Tanggal Booking</label>
-        <input type="date" id="booking-date" required>
+            <label for="booking-date">Tanggal Booking</label>
+            <input type="date" id="booking-date" required>
 
-        <button type="submit">Booking</button>
-      </form>
+            <!-- Input hidden untuk menyimpan ID meja -->
+            <input type="hidden" id="table-id">
+
+            <button type="submit">Booking</button>
+        </form>
     </div>
-  </div>
-  <!-- Modal untuk Edit Table -->
-<<div id="edit-table-modal" class="modal">
+</div>
+
+
+  <!-- Modal untuk Edit Meja -->
+ <!-- Modal untuk Edit Meja -->
+ <div id="edit-table-modal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeEditModal()">&times;</span>
     <h2>Edit Meja</h2>
@@ -95,21 +105,25 @@
         <option value="Tidak Tersedia">Tidak Tersedia</option>
       </select>
 
+      <label for="edit-location">Lokasi</label>
+      <input type="text" id="edit-location" required>
+
       <button type="submit">Simpan Perubahan</button>
     </form>
   </div>
 </div>
 
-<!-- Modal Detail Table -->
-<div id="detail-modal" class="modal">
-  <div class="modal-content">
-    <span onclick="closeDetailModal()" class="close">&times;</span>
-    <h2>Detail Meja</h2>
-    <div id="table-detail"></div>
-    <button onclick="closeDetailModal()">Oke</button> <!-- Tombol Oke untuk menutup modal -->
   </div>
-</div>
 
+  <!-- Modal Detail Meja -->
+  <div id="detail-modal" class="modal">
+    <div class="modal-content">
+      <span onclick="closeDetailModal()" class="close">&times;</span>
+      <h2>Detail Meja</h2>
+      <div id="table-detail"></div>
+      <button onclick="closeDetailModal()">Oke</button> <!-- Tombol Oke untuk menutup modal -->
+    </div>
+  </div>
 
   <script src="js/meja.js"></script>
   <script src="js/sidebar.js"></script>

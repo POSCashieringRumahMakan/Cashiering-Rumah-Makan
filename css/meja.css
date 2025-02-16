@@ -16,6 +16,7 @@ body {
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  
 }
 
 /* Top Bar */
@@ -327,6 +328,7 @@ h1 {
   gap: 10px;
   justify-content: center;
   padding: 10px;
+  
 }
 
 #table-data {
@@ -341,6 +343,14 @@ h1 {
   border-radius: 8px;
   background-color: #f9f9f9;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 300px;
+    text-align: left;
+    border-left: 5px solid #254117;
+    transition: transform 0.2s ease-in-out;
 }
 
 .table-card h3 {
@@ -372,13 +382,13 @@ h1 {
 
 
 .table-card h3 {
-  font-size: 9px;
+  font-size: 22px;
   color: #ff6242;
   margin-bottom: 5px;
 }
 
 .table-card p {
-  font-size: 7px;
+  font-size: 14px;
   color: #777;
   margin-bottom: 5px;
 }
@@ -395,7 +405,7 @@ h1 {
 /* Action Buttons in Cards */
 .table-card button {
   padding: 4px 8px;
-  font-size: 7px;
+  font-size: 14px;
   color: white;
   border: none;
   border-radius: 4px;
@@ -509,7 +519,7 @@ form button:hover {
   padding: 10px 8px;
   background-color: #d84315; /* Warna latar belakang hijau */
   color: white; /* Warna teks putih */
-  font-size: 10px; /* Ukuran font */
+  font-size: 15px; /* Ukuran font */
   border: none; /* Menghapus border default */
   border-radius: 5px; /* Membuat sudut tombol melengkung */
   cursor: pointer; /* Menambahkan pointer saat hover */
@@ -525,6 +535,31 @@ form button:hover {
 #add-table-btn:active {
   background-color: #d84315; /* Warna latar belakang saat tombol ditekan */
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+input, select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .modal-content {
+      width: 95%;
+  }
+}
+
 
 
 }
