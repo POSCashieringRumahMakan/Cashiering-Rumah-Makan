@@ -144,9 +144,19 @@ th {
         padding: 15px;
     }
 
+    .main-container {
+        width: 10%;
+    }
+
     table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
     }
+
+    .top-bar input[type="text"] {
+        max-width: 50%;
+        margin: 0 10px;
+        margin-right: 90px;
+      }
 }
