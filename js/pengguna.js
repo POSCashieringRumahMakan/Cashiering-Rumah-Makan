@@ -161,9 +161,9 @@ document.addEventListener('DOMContentLoaded', fetchData);
 document.getElementById('metodePembayaran').addEventListener('change', function () {
     const metodePembayaran = this.value;
     if (metodePembayaran === 'Dana') {  // Jika menggunakan Dana
-        document.getElementById('statusPembayaran').textContent = 'Status: Lunas';
+        // document.getElementById('statusPembayaran').textContent = 'Status: Lunas';
     } else {  // Jika menggunakan Cash
-        document.getElementById('statusPembayaran').textContent = 'Status: Belum Dibayar';
+        // document.getElementById('statusPembayaran').textContent = 'Status: Belum Dibayar';
     }
 });
 
@@ -250,10 +250,34 @@ function confirmPayment() {
 }
 
 
-async function updatePaymentStatus(memberId, paymentMethod, status) {
+// async function updatePaymentStatus(memberId, paymentMethod, status) {
+//     const updateData = {
+//         metode_pembayaran: paymentMethod,
+//         status_pembayaran: status
+//     };
+
+//     try {
+//         const response = await fetch(`http://localhost:8000/api/pengguna.php?id=${memberId}`, {
+//             method: 'PUT',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify(updateData)
+//         });
+
+//         if (!response.ok) {
+//             throw new Error('Gagal mengupdate status pembayaran');
+//         }
+
+//         console.log('Status pembayaran berhasil diperbarui');
+//     } catch (error) {
+//         console.error('Error updating payment status:', error);
+//         alert('Terjadi kesalahan saat mengupdate status pembayaran.');
+//     }
+// }
+
+async function updatePaymentStatus(memberId, paymentMethod, paymentSuccess = false) {
     const updateData = {
         metode_pembayaran: paymentMethod,
-        status_pembayaran: status
+        pembayaran_berhasil: paymentSuccess
     };
 
     try {
@@ -263,16 +287,22 @@ async function updatePaymentStatus(memberId, paymentMethod, status) {
             body: JSON.stringify(updateData)
         });
 
+        const text = await response.text(); // Ambil respons mentah
+        console.log('Raw Response:', text); // Lihat respons sebelum parse JSON
+
+        const jsonString = text.replace(/^Koneksi berhasil!/, ''); // Hapus pesan tambahan
+        const json = JSON.parse(jsonString);
+
         if (!response.ok) {
-            throw new Error('Gagal mengupdate status pembayaran');
+            throw new Error(json.message || 'Gagal mengupdate status pembayaran');
         }
 
-        console.log('Status pembayaran berhasil diperbarui');
+        console.log('Status pembayaran berhasil diperbarui:', json.message);
     } catch (error) {
         console.error('Error updating payment status:', error);
         alert('Terjadi kesalahan saat mengupdate status pembayaran.');
     }
-}
+} // ← Tambahkan kurung kurawal ini
 
 // Fungsi untuk menampilkan popup pembayaran
 function openPaymentPopup(name, price, id) {
