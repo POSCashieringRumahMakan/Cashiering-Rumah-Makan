@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
           <li><a href="pegawai.html" class="sidebar-link" data-page="pegawai"><i class="fa-solid fa-address-card"></i><span>Pegawai</span></a></li>
           <li><a href="meja.html" class="sidebar-link" data-page="meja"><i class="fas fa-chair"></i><span>Meja</span></a></li>
           <li><a href="riwayat.html" class="sidebar-link" data-page="riwayat"><i class="fas fa-receipt"></i><span>Riwayat</span></a></li>
-          <li><a href="penjualan.html" class="sidebar-link" data-page="penjualan"><i class="fas fa-hand-holding-dollar"></i><span>Penjualan</span></a></li>
         </ul>
       </nav>
     </aside>
