@@ -47,6 +47,7 @@ function addTable(event) {
     }).then(() => {
         closeModal();
         fetchTables();
+        alert("Perubahan meja berhasil ditambahkan");
     });
 }
 
@@ -68,17 +69,27 @@ function saveEditTable(event) {
     }).then(() => {
         closeEditModal();
         fetchTables();
+        alert("Perubahan meja berhasil diupdate");
     });
 }
 
 // Hapus meja
 function deleteTable(id) {
-    fetch(API_URL, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id }),
-    }).then(() => fetchTables());
+    const confirmDelete = confirm("Apakah Anda yakin ingin menghapus meja ini?");
+    if (confirmDelete) {
+        fetch(API_URL, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id }),
+        }).then(() => {
+            fetchTables();
+            alert("Meja berhasil dihapus!");
+        });
+    } else {
+        alert("Penghapusan meja dibatalkan.");
+    }
 }
+
 
 // Edit meja (buka modal edit)
 function editTable(id, number, capacity, status, location) {
@@ -108,6 +119,7 @@ function saveEditTable(event) {
     }).then(() => {
         closeEditModal();
         fetchTables();
+        alert("Perubahan meja berhasil diupdate");
     });
 }
 
@@ -132,6 +144,7 @@ function bookTable(event) {
     }).then(() => {
         closeBookingModal();
         fetchTables();
+        alert("Meja berhasil diupdate!");
     });
 }
 
