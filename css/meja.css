@@ -281,6 +281,7 @@ body {
   line-height: 1.6;
 }
 
+
 .main-container {
   width: 30%;
   max-width: 1200px;
@@ -315,7 +316,7 @@ body {
 
 /* Page Title */
 h1 {
-  font-size: 12px;
+  font-size: 30px;
   margin-bottom: 10px;
   color: #ff6242;
   text-align: center;
@@ -453,7 +454,7 @@ form label {
 form input,
 form select {
   padding: 5px;
-  font-size: 8px;
+  font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 4px;
   width: 100%;
@@ -465,7 +466,7 @@ form button {
   color: white;
   border: none;
   border-radius: 5px;
-  font-size: 8px;
+  font-size: 16px;
   font-weight: 300;
   cursor: pointer;
   margin-top: 5px;
@@ -542,7 +543,7 @@ form {
 }
 
 label {
-  margin-top: 10px;
+  margin-top: 20px;
   font-weight: bold;
 }
 
@@ -559,7 +560,17 @@ input, select {
       width: 95%;
   }
 }
+.center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Opsional, jika mau ditengah halaman */
+}
+
+#add-table-btn, #data-booking {
+  margin: 10px; /* Biar ada jarak antara tombol dan link */
 
 
-
+}
 }

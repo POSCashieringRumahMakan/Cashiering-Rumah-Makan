@@ -24,12 +24,38 @@
 
       <section class="content">
         <h1>Data Meja</h1>
-        <button id="add-table-btn" onclick="openModal()">Tambah Meja</button>
-        <a href="booking.html" id="add-table-btn">Data Booking</a>
-        <div id="table-" class="table-cards-container">
-          <!-- Card meja akan dimasukkan di sini oleh JavaScript -->
+        <div class="button-container">
+            <button id="add-table-btn" onclick="openModal()">Tambah Meja</button>
+            <a href="booking.html" id="add-table-btn" style="text-decoration: none;">Data Booking</a>
         </div>
-      </section>
+        
+        <div id="table-" class="table-cards-container">
+            <!-- Card meja akan dimasukkan di sini oleh JavaScript -->
+        </div>
+    </section>
+    
+    <style>
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px; /* Biar ada jarak antara tombol dan konten lain */
+        }
+    
+        #add-table-btn {
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #d84315; /* Ganti warna sesuai tema */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    
+        #add-table-btn:hover {
+            background-color: #51391c; /* Warna saat hover */
+        }
+    </style>
+    
     </div>
   </div>
 
