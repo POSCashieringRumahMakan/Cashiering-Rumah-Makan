@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Absensi - POS</title>
+  <title>Riwayat Absensi - POS</title>
   <link rel="stylesheet" href="css/absensi.css">
   <link rel="stylesheet" href="css/sidebar.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -21,17 +21,12 @@
     </div>
 
     <section class="content">
-      <div class="button-container">
-        <button id="btnRiwayatAbsensi" onclick="window.location.href='riwayat_absensi.html'">Riwayat Absensi</button>
-      </div>
+        <div class="button-container">
+            <button id="btnRiwayatAbsensi" onclick="window.location.href='absensi.html'">Kembali Absensi</button>
+          </div>
         <div class="absensi-container">
-            <h2>Absensi Admin</h2>
+            <h2>Riwayat Absensi Admin</h2>
             <p>Nama: <strong>Admin</strong></p>
-            
-            <button id="btnCheckIn" onclick="checkIn()">Mulai Kerja</button>
-            <button id="btnCheckOut" onclick="checkOut()" disabled>Selesai Kerja</button>
-        
-            <h3>Riwayat Absensi</h3>
             <table>
                 <thead>
                     <tr>
@@ -50,7 +45,6 @@
 
     <script src="js/absensi.js"></script>
     <script src="js/sidebar.js"></script>
-    <!-- <script src="js/riwayat_absensi.js"></script> -->
 </body>
 
 </html>

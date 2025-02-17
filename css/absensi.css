@@ -138,6 +138,27 @@ th {
     color: white;
 }
 
+.button-container {
+    text-align: center;
+    margin: 20px;
+}
+
+#btnRiwayatAbsensi {
+    background-color: #ff6242;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#btnRiwayatAbsensi:hover {
+    background-color: #ff8164;
+    transform: scale(1.05);
+}
+
 @media (max-width: 600px) {
     .absensi-container {
         width: 100%;
@@ -158,5 +179,5 @@ th {
         max-width: 50%;
         margin: 0 10px;
         margin-right: 90px;
-      }
+    }
 }

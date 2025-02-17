@@ -6,6 +6,58 @@ if (!user) {
     window.location.href = "masuk.html";
 }
 
+const penggunaId = user.id; // Ambil ID pengguna dari localStorage
+const apiUrl = `http://localhost:8000/api/absensi.php?pengguna_id=${penggunaId}`;
+
+fetch(apiUrl)
+    .then(response => response.text()) // Ambil response sebagai teks untuk membersihkan teks tambahan
+    .then(data => {
+        // Hilangkan "Koneksi berhasil!" dengan mengambil bagian JSON sebenarnya
+        const jsonData = JSON.parse(data.replace("Koneksi berhasil!", "").trim());
+
+        const absensiTable = document.getElementById("absensiTable");
+        absensiTable.innerHTML = ""; // Kosongkan tabel sebelum mengisi data
+
+        jsonData.forEach(item => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                    <td>${formatTanggal(item.tanggal)}</td>
+                    <td>${item.jam_masuk}</td>
+                    <td>${item.jam_keluar ? item.jam_keluar : "-"}</td>
+                    <td>${item.total_jam ? formatTotalJam(item.total_jam) : "-"}</td>
+                `;
+
+            absensiTable.appendChild(row);
+        });
+    })
+    .catch(error => {
+        console.error("Error fetching data:", error);
+        alert("Gagal mengambil data absensi.");
+    });
+
+/**
+* Fungsi untuk mengubah format tanggal dari "YYYY-MM-DD" menjadi "DD Bulan YYYY"
+*/
+function formatTanggal(tanggal) {
+    const bulanNama = [
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ];
+
+    const [tahun, bulan, hari] = tanggal.split("-");
+    return `${parseInt(hari)} ${bulanNama[parseInt(bulan) - 1]} ${tahun}`;
+}
+
+/**
+ * Fungsi untuk mengubah format total jam dari desimal ke "X jam Y menit"
+ */
+function formatTotalJam(totalJam) {
+    const jam = Math.floor(totalJam); // Ambil bagian jam
+    const menit = Math.round((totalJam - jam) * 60); // Ubah sisa desimal ke menit
+    return `${jam} jam ${menit} menit`;
+}
+
 document.querySelector(".absensi-container p strong").textContent = user.nama;
 
 let absensiStatus = JSON.parse(localStorage.getItem("absensiStatus")) || {};
