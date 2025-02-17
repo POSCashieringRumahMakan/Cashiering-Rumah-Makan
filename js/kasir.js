@@ -212,18 +212,31 @@ async function ambilDataMeja() {
     const response = await fetch("http://localhost:8000/api/table.php");
     const data = await response.json();
 
-    // Pastikan elemen dropdown ditemukan
+    console.log("Data meja dari API:", data); // Debugging: Cek data yang diterima
+
     const dropdownMeja = document.getElementById("nomorMeja");
     if (!dropdownMeja) {
       console.error("Elemen dropdownMeja tidak ditemukan!");
       return;
     }
 
-    // Kosongkan dropdown sebelum diisi ulang
     dropdownMeja.innerHTML = "";
 
-    // Tambahkan pilihan meja ke dropdown
-    data.forEach(meja => {
+    // Filter hanya meja dengan status "Tersedia"
+    const mejaTersedia = data.filter(meja => meja.status.trim().toLowerCase() === "tersedia");
+
+    console.log("Meja tersedia:", mejaTersedia); // Debugging: Cek hasil filter
+
+    if (mejaTersedia.length === 0) {
+      const option = document.createElement("option");
+      option.value = "";
+      option.textContent = "Tidak ada meja tersedia";
+      option.disabled = true;
+      dropdownMeja.appendChild(option);
+      return;
+    }
+
+    mejaTersedia.forEach(meja => {
       const option = document.createElement("option");
       option.value = meja.id;
       option.textContent = `${meja.location} - ${meja.number} (Kapasitas: ${meja.capacity})`;
@@ -234,6 +247,7 @@ async function ambilDataMeja() {
     console.error("Gagal mengambil data meja:", error);
   }
 }
+
 
 // Event listener untuk metode pembayaran
 metodePembayaran.addEventListener("change", function () {
