@@ -335,105 +335,93 @@ body {
 
 /* Styling untuk Pop-Up */
 .popup {
-  display: none;
-  /* Sembunyikan pop-up secara default */
+  display: none; /* Sembunyikan pop-up secara default */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  /* Lebih tinggi dari overlay */
+  animation: fadeIn 0.3s ease-in-out;
 }
 
+/* Styling untuk konten pop-up */
 .popup-content {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Pastikan benar-benar di tengah */
   background-color: #fff;
-  padding: 20px;
+  padding: 25px;
   border-radius: 12px;
-  width: 80%;
-  max-width: 500px;
-  text-align: left;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.popup-content label {
-  display: block;
-  margin-bottom: 5px;
-  /* Kurangi jarak bawah label */
-}
-
-
-.popup h2 {
+  width: 90%;
+  max-width: 450px;
   text-align: center;
-  /* Judul tetap di tengah */
-  font-size: 24px;
-  /* Ukuran font untuk judul */
-  color: #333;
-  margin-bottom: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.popup label {
+/* Buat teks form tetap di tengah */
+.popup-content h2,
+.popup-content label {
+  text-align: center;
   display: block;
-  font-size: 16px;
-  /* Ukuran font label */
-  color: #000;
-  margin: 10px 0 5px;
-  font-weight: 600;
-  margin-bottom: 0px;
-  /* Jarak kecil antara label dan input */
 }
 
+/* Supaya form input tidak terlalu ke kiri */
+.popup-content form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Ini akan memastikan elemen di dalam form rata tengah */
+}
+
+/* Styling input & select agar tetap berada di tengah */
 .popup input,
 .popup select,
 .popup textarea {
-  width: 100%;
-  padding: 10px;
-  margin: 5px 0 15px;
-  /* Tambahkan jarak antar elemen */
-  border-radius: 5px;
+  width: 90%;
+  padding: 12px;
+  margin: 8px auto;
+  border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 14px;
-  /* Ukuran font input */
-  margin-bottom: 8px;
+  display: block;
 }
 
-.popup button {
-  background-color: #ff6242;
-  color: white;
-  padding: 10px 20px;
-  margin: 10px 5px;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-  /* Ukuran font tombol */
-  border-radius: 5px;
-  /* Rounded corners */
-}
-
+/* Untuk textarea agar tidak aneh posisinya */
 .popup textarea {
   resize: none;
-  /* Nonaktifkan resize */
   height: 80px;
-  /* Tinggi default */
 }
 
+/* Styling tombol */
+.popup button {
+  width: 90%;
+  background-color: #ff6242;
+  color: white;
+  padding: 12px 20px;
+  margin-top: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.popup button:hover {
+  background-color: #e0553a;
+}
+
+/* Style khusus untuk tombol batal */
 .popup button#cancel-payment {
   background-color: #f44336;
 }
 
-/* Style untuk form uang tunai (khusus tunai) */
-.popup #cash-amount {
-  display: none;
-  /* Default sembunyikan */
-}
-
-/* Optional: Tambahkan hover effect untuk tombol */
-.popup button:hover {
-  opacity: 0.9;
+.popup button#cancel-payment:hover {
+  background-color: #d32f2f;
 }
 
 /* Overlay effect */
@@ -444,27 +432,17 @@ body {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
-  /* Warna gelap transparan */
   backdrop-filter: blur(5px);
-  /* Efek blur */
   z-index: 999;
-  /* Pastikan ini di atas elemen lainnya */
   display: none;
-  /* Tersembunyi secara default */
-}
-
-/* Pop-up active state */
-.popup-active .popup-overlay {
-  display: block;
-  /* Munculkan overlay */
 }
 
 /* Menata ikon untuk menutup pop-up */
 .close-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
+  top: 12px;
+  right: 15px;
+  font-size: 20px;
   font-weight: bold;
   color: #888;
   cursor: pointer;

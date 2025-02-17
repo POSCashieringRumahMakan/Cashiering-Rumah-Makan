@@ -21,6 +21,30 @@
     </div>
 
     <section class="content">
+      <!-- Categories -->
+      <div class="categories">
+        <!-- Card untuk Makanan -->
+        <button class="category-card active" onclick="showCategory('food')">
+          <i class="fas fa-utensils category-icon"></i>
+          <h3 class="category-title">Makanan Berat</h3>
+          <p class="category-items">13 item</p>
+        </button>
+
+        <!-- Card untuk Minuman -->
+        <button class="category-card" onclick="showCategory('drinks')">
+          <i class="fas fa-coffee category-icon"></i>
+          <h3 class="category-title">Minuman</h3>
+          <p class="category-items">8 item</p>
+        </button>
+
+        <!-- Card untuk Snack -->
+        <button class="category-card" onclick="showCategory('snack')">
+          <i class="fa-solid fa-cookie-bite"></i>
+          <h3 class="category-title">Makanan Ringan</h3>
+          <p class="category-items">7 item</p>
+        </button>
+      </div>
+
       <!-- Products -->
       <div class="products" id="product-list"></div>
     </section>
@@ -33,96 +57,68 @@
         <h4 id="total">Total: Rp. 0</h4>
       </div>
       <!-- Filter for Delivery Options as Cards -->
-      <div class="order-filter">
+      <!-- <div class="order-filter">
         <div class="filter-card" id="takeaway-card" data-option="bawa pulang">
           Bawa Pulang
         </div>
         <div class="filter-card" id="dinein-card" data-option="makan di tempat">
           Makan di Tempat
         </div>
-      </div>
+      </div> -->
 
       <!-- Pay Button -->
-      <button id="pay-button" class="pay-button">Bayar</button>
+      <button id="btnBayar" class="pay-button">Bayar</button>
     </aside>
 
     <!-- Overlay -->
     <div class="popup-overlay"></div>
 
-    <!-- Pop-Up Bawa Pulang -->
-    <div id="takeaway-popup" class="popup">
+    <!-- Pop-Up-->
+    <div id="popupBayar" class="popup">
       <div class="popup-content">
-        <!-- Icon untuk menutup -->
-        <span class="close-btn" id="close-takeaway">&times;</span>
-        <h2>Detail Pesanan Bawa Pulang</h2>
-        <p><strong>Total Pesanan:</strong> Rp. <span id="takeaway-total">0</span></p>
-        <!-- Form input untuk Nama Pemesan dan Catatan -->
-        <label for="takeaway-name-input">Nama Pemesan:</label>
-        <input type="text" id="takeaway-name" placeholder="Masukkan nama pemesan">
-        <label for="takeaway-note-input">Catatan:</label>
-        <textarea id="takeaway-note" placeholder="..."></textarea>
+        <span class="close-btn">&times;</span>
+        <h2>Detail Pembayaran</h2>
 
-        <label for="payment-method">Metode Pembayaran:</label>
-        <select id="payment-method">
-          <option value="dana">Dana</option>
-          <option value="shopeepay">ShopeePay</option>
-          <option value="transfer">Transfer Bank</option>
-          <option value="cash">Tunai</option>
-        </select>
-
-        <label for="cash-amount" id="cash-amount-label" style="display: none;">Jumlah Tunai:</label>
-        <input type="number" id="cash-amount" placeholder="Masukkan jumlah uang" style="display: none;">
-
-        <div>
-          <button id="pay-now">Bayar</button>
-          <button id="print-takeaway">Cetak</button>
+        <div class="order-details">
+          <h3>Detail Pesanan</h3>
+          <ul id="detailPesanan">
+            <!-- Pesanan akan muncul di sini -->
+          </ul>
+          <p><strong>Total:</strong> <span id="totalPesanan">Rp 0</span></p>
         </div>
-      </div>
-    </div>
 
-    <!-- Pop-Up Makan di Tempat -->
-    <div id="dine-in-popup" class="popup">
-      <div class="popup-content">
-        <h2>Detail Pesanan Makan di Tempat</h2>
-        <p><strong>Total Pesanan:</strong> Rp. <span id="dine-in-total">0</span></p>
+        <label for="namaPemesan">Nama Pemesan:</label>
+        <input type="text" id="namaPemesan" placeholder="Masukkan nama pemesan">
 
-        <!-- Form input untuk Nama Pemesan dan Catatan -->
-        <label for="dine-in-name">Nama Pemesan:</label>
-        <input type="text" id="dine-in-name" placeholder="Masukkan nama pemesan">
+        <label for="catatan">Catatan:</label>
+        <textarea id="catatan" placeholder="Tambahkan catatan..."></textarea>
 
-        <label for="dine-in-note">Catatan:</label>
-        <textarea id="dine-in-note" placeholder="Tambahkan catatan..."></textarea>
-
-        <!-- Form input untuk Nomor Meja -->
-        <label for="table-number">Nomor Meja:</label>
-        <select id="table-number">
-          <option value="" disabled selected>Pilih nomor meja</option>
-          <option value="1">A1</option>
-          <option value="2">A2</option>
-          <option value="3">A3</option>
-          <option value="4">B1</option>
-          <option value="5">B2</option>
-          <option value="6">B3</option>
-          <!-- Tambahkan lebih banyak nomor meja jika diperlukan -->
+        <label for="nomorMeja">Nomor Meja:</label>
+        <select id="nomorMeja">
+          <option value="1">Meja 1</option>
+          <option value="2">Meja 2</option>
+          <option value="3">Meja 3</option>
+          <!-- Tambahkan meja sesuai kebutuhan -->
         </select>
 
-        <!-- Pilihan Metode Pembayaran -->
-        <label for="dine-in-payment-method">Metode Pembayaran:</label>
-        <select id="dine-in-payment-method">
-          <option value="dana">Dana</option>
-          <option value="shopeepay">ShopeePay</option>
-          <option value="transfer">Transfer Bank</option>
-          <option value="cash">Tunai</option>
+        <label for="metodePembayaran">Metode Pembayaran:</label>
+        <select id="metodePembayaran">
+          <option value="dana">DANA</option>
+          <option value="tunai">Tunai (Cash)</option>
         </select>
 
-        <!-- Input untuk Jumlah Tunai -->
-        <label for="dine-in-cash-amount" id="dine-in-cash-amount-label" style="display: none;">Jumlah Tunai:</label>
-        <input type="number" id="dine-in-cash-amount" placeholder="Masukkan jumlah uang" style="display: none;">
+        <div id="jumlahTunaiContainer">
+          <label for="jumlahTunai">Jumlah Tunai:</label>
+          <input type="number" id="jumlahTunai" placeholder="Masukkan jumlah tunai" oninput="hitungKembalian()">
+        </div>
+        
+        <div id="uangKembalianContainer">
+          <p><strong>Kembalian:</strong> <span id="uangKembalian">Rp 0</span></p>
+        </div>
 
-        <!-- Tombol Aksi -->
-        <div>
-          <button id="pay-dine-in">Bayar</button>
-          <button id="print-dinein">Cetak</button>
+        <div class="popup-buttons">
+          <button id="btnProsesBayar">Bayar</button>
+          <button id="btnCetak">Cetak</button>
         </div>
       </div>
     </div>

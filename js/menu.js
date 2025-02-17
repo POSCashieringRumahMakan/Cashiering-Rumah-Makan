@@ -146,6 +146,7 @@ async function saveProduct(event) {
 }
 
 // Fungsi untuk mengedit produk
+// Fungsi untuk mengedit produk
 function editProduct(id) {
     const product = products.find(p => p.id == id);
     if (!product) {
@@ -153,12 +154,21 @@ function editProduct(id) {
         return;
     }
 
+    // Isi form dengan data produk yang akan diedit
     document.getElementById('product-id').value = product.id;
     document.getElementById('namaProduk').value = product.nama;
-    document.getElementById('kategori').value = product.id_kategori; // ✅ Perbaikan ID kategori
+    document.getElementById('kategori').value = product.id_kategori;
     document.getElementById('harga').value = product.harga;
     document.getElementById('status').value = product.status;
+
+    // Ubah teks tombol dan judul form
+    document.querySelector('button[type="submit"]').textContent = 'Perbarui Produk';
+    document.querySelector('.order-summary h3').textContent = 'Form Edit Produk'; // Ubah judul
+
+    // Pastikan form ditampilkan jika sebelumnya tersembunyi
+    document.getElementById('product-form').style.display = 'block';
 }
+
 
 // Fungsi untuk menghapus produk
 async function deleteProduct(id) {
