@@ -60,7 +60,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
 
             // Tunggu sebentar, lalu arahkan ke halaman dashboard.html
             setTimeout(() => {
-                window.location.href = "index.html";
+                window.location.href = "beranda.html";
             }, 2000); // Tunggu 2 detik
         } else {
             message.textContent = result.message || "Login gagal. Periksa email dan password Anda.";
