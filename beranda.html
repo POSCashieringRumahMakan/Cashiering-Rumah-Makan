@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beranda - POS Rumah Makan Padang SABAR</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="img/logopadang.png" type="image/png">
+</head>
+
+<body data-page="beranda">
+  <div class="main-container">
+    <!-- Sidebar akan otomatis dimuat dari sidebar.js -->
+
+        <!-- Top Bar -->
+        <div class="top-bar">
+          <input type="text" id="search" placeholder="Cari pelanggan..." oninput="searchMembers()">
+          <!-- Tombol Daftar -->
+          <!-- <a href="masuk.html">
+              <button class="btn-daftar">Daftar</button>
+          </a> -->
+      </div>
+      
+
+    <section class="content">
+      <!-- Halaman Utama / Beranda -->
+      <div class="welcome-message">
+        <h1>Beranda Rumah Makan Padang SABAR</h1>
+        <p>Temukan berbagai pilihan hidangan Padang terbaik yang kami sajikan untuk Anda. Nikmati pengalaman makan yang luar biasa!</p>
+        <p>Kunjungi kami untuk menikmati hidangan lezat atau jelajahi menu kami secara langsung.</p>
+      </div>
+    
+      <!-- Kotak-kotak untuk tautan -->
+      <div class="link-boxes">
+        <a href="kategori.html" class="link-box">
+          <i class="fa-solid fa-list"></i>
+          <span>Kategori</span>
+        </a>
+        <a href="menu.html" class="link-box">
+          <i class="fas fa-utensils"></i>
+          <span>Menu</span>
+        </a>
+        <a href="kasir.html" class="link-box">
+          <i class="fas fa-cash-register"></i>
+          <span>Kasir</span>
+        </a>
+        <a href="pengguna.html" class="link-box">
+          <i class="fas fa-users"></i>
+          <span>Pengguna</span>
+        </a>
+        <a href="pegawai.html" class="link-box">
+          <i class="fa-solid fa-address-card"></i>
+          <span>Pegawai</span>
+        </a>
+        <a href="meja.html" class="link-box">
+          <i class="fas fa-chair"></i>
+          <span>Meja</span>
+        </a>
+        <a href="riwayat.html" class="link-box">
+          <i class="fas fa-receipt"></i>
+          <span>Riwayat Pesanan</span>
+        </a>
+      </div>
+    </section>    
+
+    <!-- <script src="js/kasir.js"></script> -->
+    <script src="js/sidebar.js"></script>
+</div>  
+</body>
+
+</html>
