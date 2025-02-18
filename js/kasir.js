@@ -378,5 +378,16 @@ closePopup.addEventListener("click", () => {
   popupBayar.style.display = "none";
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  const btnRiwayat = document.getElementById("btn-riwayat");
+  
+  if (btnRiwayat) {
+      btnRiwayat.addEventListener("click", function () {
+          window.location.href = "riwayat.html"; // Redirect ke halaman riwayat
+      });
+  }
+});
+
+
 // Panggil fungsi fetch menu saat halaman dimuat
 document.addEventListener("DOMContentLoaded", fetchMenu);
