@@ -46,7 +46,13 @@ function displayMembers(members) {
             : '';
 
         card.innerHTML = `
-            <h3>${member.nama}</h3>
+            <div class="card-container">
+                <div class="print-container" onclick="printCard(${member.id})">
+                    <i class="fa-solid fa-print print-icon" title="Cetak"></i>
+                    <span class="print-text">Cetak</span>
+                </div>
+                <h3>${member.nama}</h3>
+            </div>
             <p><strong>Email:</strong> ${member.email}</p>
             <p><strong>No. Telepon:</strong> ${member.noTelepon}</p>
             <p><strong>Tingkatan:</strong> ${member.tingkatan}</p>
@@ -56,12 +62,147 @@ function displayMembers(members) {
             <div class="actions">
                 <button class="edit-btn" onclick="editMember(${member.id})">Edit</button>
                 <button class="delete-btn" onclick="deleteMember(${member.id})">Hapus</button>
-                ${actionButton} 
+                ${actionButton}
             </div>
         `;
+        
+
         memberList.appendChild(card);
     });
 }
+
+// Fungsi untuk mencetak kartu member
+function printCard(id) {
+    if (!id) {
+        alert('ID tidak valid!');
+        return;
+    }
+
+    // Ambil data pengguna dari backend
+    fetch(`http://localhost:8000/api/pengguna.php?id=${id}`)
+        .then(response => response.text())  // Ambil respons sebagai teks
+        .then(data => {
+            // Menghapus bagian "Koneksi berhasil!" dari respons
+            const jsonData = data.replace('Koneksi berhasil!', '').trim();
+
+            try {
+                // Parsing data JSON
+                const pengguna = JSON.parse(jsonData);
+                console.log('Data Pengguna:', pengguna);  // Debugging
+
+                if (pengguna.error) {
+                    alert(pengguna.error);
+                    return;
+                }
+
+                // Membuka jendela baru untuk menampilkan kartu pengguna
+                let printWindow = window.open("", "", "width=600,height=400");
+                printWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>Cetak Kartu Pengguna</title>
+                            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Menyertakan Font Awesome -->
+                            <style>
+                                body { font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4; }
+                                .card {
+                                    width: 350px;
+                                    height: 210px;
+                                    border: 1px solid #333;
+                                    border-radius: 8px;
+                                    padding: 15px;
+                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                                    background-color: white;
+                                    display: flex;
+                                    flex-direction: column;
+                                    justify-content: space-between;
+                                }
+                                .card-header {
+                                    text-align: center;
+                                    font-size: 20px;
+                                    font-weight: bold;
+                                    margin-bottom: 15px;
+                                }
+                                .card-body {
+                                    flex-grow: 1;
+                                    font-size: 14px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: flex-start;
+                                }
+                                .card-body p {
+                                    margin: 5px 0;
+                                }
+                                .card-footer {
+                                    text-align: center;
+                                    font-size: 12px;
+                                    margin-top: 10px;
+                                    font-weight: bold;
+                                }
+                                .btn-print { display: none; } /* Sembunyikan tombol saat dicetak */
+                                .card-footer .status {
+                                    font-size: 14px;
+                                    color: green;
+                                }
+                                .card-body p strong {
+                                    color: #333;
+                                }
+
+                                /* Styling untuk ikon avatar (Font Awesome) */
+                                .avatar {
+                                    font-size: 80px;  /* Ukuran ikon lebih besar */
+                                    color: #ccc;
+                                    margin-right: 20px; /* Memberikan jarak lebih antara ikon dan teks */
+                                }
+
+                                /* Menata elemen agar ikon di kiri dan teks di kanan */
+                                .card-body .info {
+                                    flex-grow: 1;
+                                }
+
+                            </style>
+                        </head>
+                        <body>
+                            <div class="card">
+                                <div class="card-header">
+                                    Kartu Member
+                                </div>
+                                <div class="card-body">
+                                    <div class="avatar">
+                                        <i class="fas fa-user"></i> <!-- Ikon pengguna dari Font Awesome -->
+                                    </div>
+                                    <div class="info">
+                                        <p><strong>Nama:</strong> ${pengguna.nama}</p>
+                                        <p><strong>Email:</strong> ${pengguna.email}</p>
+                                        <p><strong>No. Telepon:</strong> ${pengguna.noTelepon}</p>
+                                        <p><strong>Tingkatan:</strong> ${pengguna.tingkatan}</p>
+                                        <p><strong>Harga:</strong> ${pengguna.harga ? pengguna.harga.toLocaleString('id-ID') : '-'}</p>
+                                        <p><strong>Metode Pembayaran:</strong> ${pengguna.metode_pembayaran ?? '-'}</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <span class="status">${pengguna.status ?? '-'}</span>
+                                </div>
+                            </div>
+                        </body>
+                    </html>
+                `);
+                printWindow.document.close();
+
+                // Tunggu dokumen selesai dimuat, kemudian cetak
+                printWindow.onload = () => {
+                    printWindow.print();
+                };
+            } catch (error) {
+                console.error("Error parsing JSON:", error);
+                alert("Terjadi kesalahan saat memproses data pengguna.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Terjadi kesalahan saat memuat data pengguna.");
+        });
+}
+
 
 // Fungsi untuk mengedit pelanggan
 function editMember(id) {

@@ -270,6 +270,40 @@ button:hover {
     text-align: center;
 }
 
+.card-container {
+    position: relative;
+    padding-top: 30px; /* Supaya nama tidak tertutup ikon */
+    display: flex;
+    align-items: center;
+}
+
+.print-container {
+    position: absolute;
+    top: 5px;
+    right: 10px; /* Atur jarak dari kanan */
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Jarak antara ikon dan teks */
+    cursor: pointer;
+}
+
+.print-icon {
+    font-size: 18px;
+    color: #4CAF50;
+}
+
+.print-text {
+    font-size: 14px;
+    color: #4CAF50;
+}
+
+.print-container:hover .print-icon,
+.print-container:hover .print-text {
+    color: #45a049;
+}
+
+
+
 /* Gaya Responsif */
 @media (max-width: 768px) {
     .member-cards {
