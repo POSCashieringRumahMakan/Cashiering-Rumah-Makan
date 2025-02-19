@@ -21,9 +21,34 @@
       
       <section class="content">
         <h2>Data Booking</h2>
-        <div class="booking-container" id="booking-container">
-            <!-- Data dari API akan ditampilkan di sini dalam bentuk card -->
+        
+        <!-- Tombol untuk filter Booking -->
+        <div class="booking-filters">
+          <button id="today-bookings-btn">Hari Ini</button>
+          <button id="tomorrow-bookings-btn">Besok</button>
+          <button id="all-bookings-btn">Semua</button>
         </div>
+      
+        <!-- Kontainer untuk setiap kategori booking -->
+        <div id="today-bookings" class="booking-category">
+          <h3>Daftar Booking Hari Ini</h3>
+          <div class="booking-container" id="today-bookings-container"></div>
+        </div>
+      
+        <div id="tomorrow-bookings" class="booking-category">
+          <h3>Daftar Booking Besok</h3>
+          <div class="booking-container" id="tomorrow-bookings-container"></div>
+        </div>
+      
+        <div id="all-bookings" class="booking-category">
+          <h3>Daftar Booking Semua</h3>
+          <div class="booking-container" id="all-bookings-container"></div>
+        </div>
+      </section>
+      
+      
+      
+      
     
         <!-- <script src="script.js"></script> -->
       </section>

@@ -53,4 +53,111 @@ h2 {
     .booking-card {
         width: 90%;
     }
+
+
+    /* Styling untuk tombol */
+.booking-filters {
+    margin-bottom: 20px;
+  }
+  
+  .booking-filters button {
+    padding: 5px 10px;
+    background-color: #ff6242;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 300;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .booking-filters button:hover {
+    background-color: #2e5b3e; /* Warna hijau lebih terang saat hover */
+  }
+  
+  .booking-filters button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #4CAF50; /* Border hijau saat fokus */
+  }
+  
+  /* Styling untuk kategori booking */
+  .booking-category {
+    display: none;
+  }
+  
+  .booking-category h3 {
+    color: #254117; /* Warna hijau tua */
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .booking-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .booking-card {
+    background-color: #f4f4f4;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    margin-bottom: 20px;
+  }
+  
+  .booking-card p {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  
+  .booking-card strong {
+    color: #254117;
+  }
+  /* Styling untuk button Hapus */
+.delete-btn {
+    background-color: #ff4d4d;  /* Warna merah untuk menandakan penghapusan */
+    color: white;  /* Warna teks putih */
+    border: none;  /* Menghilangkan border default */
+    padding: 8px 16px;  /* Memberikan padding untuk button */
+    font-size: 14px;  /* Ukuran font yang tidak terlalu besar */
+    cursor: pointer;  /* Menunjukkan bahwa ini adalah elemen yang bisa diklik */
+    border-radius: 5px;  /* Membuat sudut button lebih rounded */
+    transition: background-color 0.3s ease;  /* Transisi lembut saat hover */
 }
+
+/* Efek hover ketika mouse berada di atas button */
+.delete-btn:hover {
+    background-color: #e60000;  /* Warna merah lebih gelap saat hover */
+}
+
+/* Efek focus agar button tidak hilang ketika difokuskan */
+.delete-btn:focus {
+    outline: none;  /* Menghilangkan outline default */
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.7);  /* Memberikan efek focus dengan shadow */
+}
+
+  
+}
+
+
+#filter-buttons {
+    margin-top: 10px;
+}
+
+#filter-buttons button {
+    padding: 8px 15px;
+    margin: 5px;
+    cursor: pointer;
+    background: #254117;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#filter-buttons button:hover {
+    background: #513B1C;
+}
+
